@@ -5,20 +5,18 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Windows.Forms;
 using Microsoft.Extensions.Logging;
-using NTFSChecker.Services;
+
 
 namespace NTFSChecker
 {
     public partial class MainForm : Form
     {
         private readonly ILogger<MainForm> _logger;
-        private readonly MyLogger _mylogger;
         
         private string SelectedFolderPath { get; set; }
 
         public MainForm(ILogger<MainForm> logger )
         {
-            _mylogger = new MyLogger(ListLogs);
             _logger = logger;
             InitializeComponent();
         }
@@ -28,11 +26,12 @@ namespace NTFSChecker
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
+                
                 openFileDialog.InitialDirectory = "C:\\Users\\Petrino\\Desktop\\PracticeFNS\\NTFSChecker";
                 openFileDialog.ValidateNames = false;
                 openFileDialog.CheckFileExists = false;
                 openFileDialog.CheckPathExists = true;
-                openFileDialog.FileName = "Выберите папку";
+                openFileDialog.FileName = "Выберите";
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -95,6 +94,7 @@ namespace NTFSChecker
                 if (!CompareAccessRules(rootAcl, currentAcl))
                 {
                     _logger.LogWarning($"Различия в правах доступа обнаружены в папке: {path}");
+                    
                     ListLogs.Items.Add($"Различия в правах доступа обнаружены в папке: {path}");
                 }
 
@@ -112,6 +112,7 @@ namespace NTFSChecker
                         var fileAcl = GetFileAccessRules(file);
                         if (!CompareAccessRules(rootAcl, fileAcl))
                         {
+                            ListLogs.Items.Add($"Различия в правах доступа обнаружены в файле: {file}");
                             _logger.LogWarning($"Различия в правах доступа обнаружены в файле: {file}");
                         }
                     }
@@ -121,7 +122,6 @@ namespace NTFSChecker
             }
             catch (UnauthorizedAccessException ex)
             {
-
                 _logger.LogError(ex, $"Недостаточно прав для доступа к: {path}");
             }
             catch (Exception ex)

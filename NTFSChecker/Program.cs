@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Mime;
 using System.Windows.Forms;
-using NTFSChecker.Services;
+
 
 namespace NTFSChecker
 {
@@ -18,8 +18,6 @@ namespace NTFSChecker
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             
-            
-
             var serviceProvider = new ServiceCollection()
                 .AddLogging(logging =>
                 {
