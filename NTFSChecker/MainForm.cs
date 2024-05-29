@@ -83,6 +83,10 @@ namespace NTFSChecker
         private async void CheckDirectory(string path)
         {
             var rootAcl = GetAccessRules(path);
+            var totalItems = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length + 
+                             Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Length;
+            progressBar1.Maximum = totalItems;
+            progressBar1.Value = 0;
             await CheckDirectory(path, rootAcl);
         }
 
@@ -98,7 +102,6 @@ namespace NTFSChecker
                     
                     ListLogs.Items.Add($"Различия в правах доступа обнаружены в папке: {path}");
                 }
-
                 progressBar1.Value++;
                 foreach (var directory in Directory.GetDirectories(path))
                 {
