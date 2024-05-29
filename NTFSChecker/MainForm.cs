@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.Logging;
 
@@ -51,7 +52,7 @@ namespace NTFSChecker
 
         }
 
-        private static bool CompareAccessRules(AuthorizationRuleCollection acl1, AuthorizationRuleCollection acl2)
+        private async static Task<bool> CompareAccessRules(AuthorizationRuleCollection acl1, AuthorizationRuleCollection acl2)
         {
             if (acl1.Count != acl2.Count)
             {
@@ -79,26 +80,26 @@ namespace NTFSChecker
 
             return true;
         }
-        private void CheckDirectory(string path)
+        private async void CheckDirectory(string path)
         {
             var rootAcl = GetAccessRules(path);
-            CheckDirectory(path, rootAcl);
+            await CheckDirectory(path, rootAcl);
         }
 
-        private void CheckDirectory(string path, AuthorizationRuleCollection rootAcl)
+        private async Task CheckDirectory(string path, AuthorizationRuleCollection rootAcl)
         {
             try
             {
                 // Проверяем текущую папку
                 var currentAcl = GetAccessRules(path);
-                if (!CompareAccessRules(rootAcl, currentAcl))
+                if (!await CompareAccessRules(rootAcl, currentAcl))
                 {
                     _logger.LogWarning($"Различия в правах доступа обнаружены в папке: {path}");
                     
                     ListLogs.Items.Add($"Различия в правах доступа обнаружены в папке: {path}");
                 }
 
-                // Рекурсивно проверяем все подпапки
+                progressBar1.Value++;
                 foreach (var directory in Directory.GetDirectories(path))
                 {
                     CheckDirectory(directory, rootAcl);
@@ -110,7 +111,7 @@ namespace NTFSChecker
                     foreach (var file in files)
                     {
                         var fileAcl = GetFileAccessRules(file);
-                        if (!CompareAccessRules(rootAcl, fileAcl))
+                        if (!await CompareAccessRules(rootAcl, fileAcl))
                         {
                             ListLogs.Items.Add($"Различия в правах доступа обнаружены в файле: {file}");
                             _logger.LogWarning($"Различия в правах доступа обнаружены в файле: {file}");

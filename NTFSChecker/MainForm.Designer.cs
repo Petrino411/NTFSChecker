@@ -36,6 +36,7 @@ namespace NTFSChecker
             this.txtFolderPath = new System.Windows.Forms.TextBox();
             this.BtnCheck = new System.Windows.Forms.Button();
             this.ListLogs = new System.Windows.Forms.ListBox();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // BtnOpen
@@ -50,14 +51,14 @@ namespace NTFSChecker
             // 
             // txtFolderPath
             // 
-            this.txtFolderPath.Location = new System.Drawing.Point(119, 96);
+            this.txtFolderPath.Location = new System.Drawing.Point(119, 70);
             this.txtFolderPath.Name = "txtFolderPath";
             this.txtFolderPath.Size = new System.Drawing.Size(540, 20);
             this.txtFolderPath.TabIndex = 1;
             // 
             // BtnCheck
             // 
-            this.BtnCheck.Location = new System.Drawing.Point(333, 144);
+            this.BtnCheck.Location = new System.Drawing.Point(333, 108);
             this.BtnCheck.Name = "BtnCheck";
             this.BtnCheck.Size = new System.Drawing.Size(75, 23);
             this.BtnCheck.TabIndex = 2;
@@ -73,11 +74,19 @@ namespace NTFSChecker
             this.ListLogs.Size = new System.Drawing.Size(702, 212);
             this.ListLogs.TabIndex = 3;
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(119, 167);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(540, 23);
+            this.progressBar1.TabIndex = 4;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.ListLogs);
             this.Controls.Add(this.BtnCheck);
             this.Controls.Add(this.txtFolderPath);
@@ -87,6 +96,8 @@ namespace NTFSChecker
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.ProgressBar progressBar1;
 
         private System.Windows.Forms.ListBox ListLogs;
 
