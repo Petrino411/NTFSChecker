@@ -96,11 +96,6 @@ namespace NTFSChecker
         private async Task CheckDirectoryAsync(string path)
         {
             var rootAcl = GetAccessRules(path);
-            
-            
-            rootData.Add(GetExcelData(path,rootAcl));
-
-            
             var totalItems = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length +
                              Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Length;
             progressBar.Maximum = totalItems;
@@ -138,7 +133,7 @@ namespace NTFSChecker
                 {
                     var fileAcl = GetFileAccessRules(file);
                     
-                    rootData.Add(GetExcelData(path, fileAcl));
+                    rootData.Add(GetExcelData(file, fileAcl));
                     if (!await CompareAccessRules(rootAcl, fileAcl))
                     {
                         LogToUI($"Различия в правах доступа обнаружены в файле: {file}");
@@ -212,11 +207,7 @@ namespace NTFSChecker
 
         private ExcelDataModel GetExcelData(string path, AuthorizationRuleCollection rules)
         {
-            var data = new ExcelDataModel
-            {
-                DirName = path
-            };
-            data.SetAccessUsers(rules);
+            var data = new ExcelDataModel(path, UserGroupHelper.GetAccessRulesWithGroupDescription(path), rules);
             return data;
 
         }

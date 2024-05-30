@@ -49,10 +49,18 @@ public class ExcelWriter
             WriteCell(row, 2, item.Ip);
             WriteCell(row, 3, item.DirName);
             WriteCell(row, 4, item.Purpose);
-            WriteCell(row, 5, item.DescriptionUsers);
-            WriteCell(row, 6, item.AccessUsers);
+            WriteCell(row, 5, item.AccessUsers.Item1);
+            WriteCell(row, 6, item.AccessUsers.Item2); //TODO 
             row++;
         }
+        
+        AutoFitColumnsAndRows();
+    }
+
+    private void AutoFitColumnsAndRows()
+    {
+        _Worksheet.Columns.AutoFit();
+        _Worksheet.Rows.AutoFit();
     }
 
 

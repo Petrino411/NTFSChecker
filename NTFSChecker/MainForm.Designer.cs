@@ -37,14 +37,15 @@ namespace NTFSChecker
             this.BtnCheck = new System.Windows.Forms.Button();
             this.ListLogs = new System.Windows.Forms.ListBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.button1 = new System.Windows.Forms.Button();
+            this.ExportToExcel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // BtnOpen
             // 
-            this.BtnOpen.Location = new System.Drawing.Point(425, 36);
+            this.BtnOpen.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.BtnOpen.Location = new System.Drawing.Point(469, 32);
             this.BtnOpen.Name = "BtnOpen";
-            this.BtnOpen.Size = new System.Drawing.Size(75, 23);
+            this.BtnOpen.Size = new System.Drawing.Size(106, 34);
             this.BtnOpen.TabIndex = 0;
             this.BtnOpen.Text = "Открыть";
             this.BtnOpen.UseVisualStyleBackColor = true;
@@ -52,16 +53,18 @@ namespace NTFSChecker
             // 
             // txtFolderPath
             // 
-            this.txtFolderPath.Location = new System.Drawing.Point(192, 76);
+            this.txtFolderPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtFolderPath.Location = new System.Drawing.Point(43, 85);
             this.txtFolderPath.Name = "txtFolderPath";
-            this.txtFolderPath.Size = new System.Drawing.Size(540, 20);
+            this.txtFolderPath.Size = new System.Drawing.Size(983, 24);
             this.txtFolderPath.TabIndex = 1;
             // 
             // BtnCheck
             // 
-            this.BtnCheck.Location = new System.Drawing.Point(425, 120);
+            this.BtnCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.BtnCheck.Location = new System.Drawing.Point(469, 115);
             this.BtnCheck.Name = "BtnCheck";
-            this.BtnCheck.Size = new System.Drawing.Size(75, 23);
+            this.BtnCheck.Size = new System.Drawing.Size(106, 33);
             this.BtnCheck.TabIndex = 2;
             this.BtnCheck.Text = "Проверить";
             this.BtnCheck.UseVisualStyleBackColor = true;
@@ -69,47 +72,50 @@ namespace NTFSChecker
             // 
             // ListLogs
             // 
+            this.ListLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ListLogs.FormattingEnabled = true;
+            this.ListLogs.ItemHeight = 18;
             this.ListLogs.Location = new System.Drawing.Point(43, 196);
             this.ListLogs.Name = "ListLogs";
-            this.ListLogs.Size = new System.Drawing.Size(868, 290);
+            this.ListLogs.Size = new System.Drawing.Size(983, 418);
             this.ListLogs.TabIndex = 3;
             // 
             // progressBar
             // 
             this.progressBar.Location = new System.Drawing.Point(43, 167);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(868, 23);
+            this.progressBar.Size = new System.Drawing.Size(983, 23);
             this.progressBar.TabIndex = 4;
             // 
-            // button1
+            // ExportToExcel
             // 
-            this.button1.Location = new System.Drawing.Point(740, 523);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(144, 29);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.ExportToExcel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ExportToExcel.Location = new System.Drawing.Point(854, 639);
+            this.ExportToExcel.Name = "ExportToExcel";
+            this.ExportToExcel.Size = new System.Drawing.Size(144, 29);
+            this.ExportToExcel.TabIndex = 5;
+            this.ExportToExcel.Text = "Excel";
+            this.ExportToExcel.UseVisualStyleBackColor = true;
+            this.ExportToExcel.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(958, 594);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(1054, 694);
+            this.Controls.Add(this.ExportToExcel);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.ListLogs);
             this.Controls.Add(this.BtnCheck);
             this.Controls.Add(this.txtFolderPath);
             this.Controls.Add(this.BtnOpen);
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "NTFSChecker";
             this.ResumeLayout(false);
             this.PerformLayout();
         }
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button ExportToExcel;
 
         private System.Windows.Forms.ProgressBar progressBar;
 

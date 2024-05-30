@@ -1,4 +1,6 @@
-﻿using System.Security.AccessControl;
+﻿using System;
+using System.Collections.Generic;
+using System.Security.AccessControl;
 
 namespace NTFSChecker.Models;
 
@@ -8,30 +10,19 @@ public class ExcelDataModel
     public string DirName { get; set; }
     public string Ip { get; set; }
     public string Purpose { get; set; }
-    public string DescriptionUsers { get; set; }
-    public string AccessUsers { get; set; }
+    public Tuple<AuthorizationRuleCollection, List<string>> AccessUsers { get; set; }
 
     public ExcelDataModel()
     {
         
     }
     
-    public ExcelDataModel(string dirName, string ip, string purpose, string descriptionUsers, string accessUsers)
+    public ExcelDataModel(string dirName, List<string> descriptionUsers, AuthorizationRuleCollection accessUsers)
     {
         DirName = dirName;
-        Ip = ip;
-        Purpose = purpose;
-        DescriptionUsers = descriptionUsers;
-        AccessUsers = accessUsers;
+        AccessUsers[accessUsers] = descriptionUsers;
     }
 
-    public void SetAccessUsers(AuthorizationRuleCollection ruleCollection)
-    {
-        foreach (AuthorizationRule rule in ruleCollection)
-        {
-            AccessUsers += "\n" + rule.IdentityReference;
-        }
-    }
 
 
 }
