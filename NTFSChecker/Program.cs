@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 
@@ -8,15 +9,17 @@ namespace NTFSChecker
 {
     internal static class Program
     {
+        
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
             var serviceProvider = new ServiceCollection()
                 .AddLogging(logging =>
                 {

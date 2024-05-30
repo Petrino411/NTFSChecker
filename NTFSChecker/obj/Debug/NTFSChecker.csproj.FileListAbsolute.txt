@@ -53,16 +53,7 @@ C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\System.Text.Encodings
 C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\System.Text.Json.xml
 C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\System.Threading.Tasks.Extensions.xml
 C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\System.ValueTuple.xml
-C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\obj\Debug\NTFSChecker.csproj.SuggestedBindingRedirects.cache
-C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\obj\Debug\NTFSChecker.exe.config
 C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\obj\Debug\NTFSChecker.csproj.CopyComplete
-C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\Serilog.dll
-C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\Serilog.Extensions.Logging.dll
-C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\Serilog.Sinks.File.dll
-C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\Serilog.xml
-C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\Serilog.Extensions.Logging.xml
-C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\Serilog.Sinks.File.pdb
-C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\Serilog.Sinks.File.xml
 C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\obj\Debug\NTFSChecker.MainForm.resources
 F:\PracticeFNS\NTFSChecker\obj\Debug\NTFSChecker.csproj.AssemblyReference.cache
 F:\PracticeFNS\NTFSChecker\obj\Debug\NTFSChecker.MainForm.resources
@@ -108,3 +99,5 @@ F:\PracticeFNS\NTFSChecker\bin\Debug\Microsoft.Extensions.Options.xml
 F:\PracticeFNS\NTFSChecker\bin\Debug\Microsoft.Extensions.Options.ConfigurationExtensions.xml
 F:\PracticeFNS\NTFSChecker\obj\Debug\NTFSChec.6E5B6F38.Up2Date
 F:\PracticeFNS\NTFSChecker\obj\Debug\NTFSChecker.exe
+C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\Microsoft.Office.Interop.Excel.dll
+C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\stdole.dll

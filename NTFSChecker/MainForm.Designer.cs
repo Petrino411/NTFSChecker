@@ -36,12 +36,13 @@ namespace NTFSChecker
             this.txtFolderPath = new System.Windows.Forms.TextBox();
             this.BtnCheck = new System.Windows.Forms.Button();
             this.ListLogs = new System.Windows.Forms.ListBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // BtnOpen
             // 
-            this.BtnOpen.Location = new System.Drawing.Point(333, 41);
+            this.BtnOpen.Location = new System.Drawing.Point(425, 36);
             this.BtnOpen.Name = "BtnOpen";
             this.BtnOpen.Size = new System.Drawing.Size(75, 23);
             this.BtnOpen.TabIndex = 0;
@@ -51,14 +52,14 @@ namespace NTFSChecker
             // 
             // txtFolderPath
             // 
-            this.txtFolderPath.Location = new System.Drawing.Point(119, 70);
+            this.txtFolderPath.Location = new System.Drawing.Point(192, 76);
             this.txtFolderPath.Name = "txtFolderPath";
             this.txtFolderPath.Size = new System.Drawing.Size(540, 20);
             this.txtFolderPath.TabIndex = 1;
             // 
             // BtnCheck
             // 
-            this.BtnCheck.Location = new System.Drawing.Point(333, 108);
+            this.BtnCheck.Location = new System.Drawing.Point(425, 120);
             this.BtnCheck.Name = "BtnCheck";
             this.BtnCheck.Size = new System.Drawing.Size(75, 23);
             this.BtnCheck.TabIndex = 2;
@@ -71,22 +72,33 @@ namespace NTFSChecker
             this.ListLogs.FormattingEnabled = true;
             this.ListLogs.Location = new System.Drawing.Point(43, 196);
             this.ListLogs.Name = "ListLogs";
-            this.ListLogs.Size = new System.Drawing.Size(702, 212);
+            this.ListLogs.Size = new System.Drawing.Size(868, 290);
             this.ListLogs.TabIndex = 3;
             // 
-            // progressBar1
+            // progressBar
             // 
-            this.progressBar1.Location = new System.Drawing.Point(119, 167);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(540, 23);
-            this.progressBar1.TabIndex = 4;
+            this.progressBar.Location = new System.Drawing.Point(43, 167);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(868, 23);
+            this.progressBar.TabIndex = 4;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(740, 523);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(144, 29);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.progressBar1);
+            this.ClientSize = new System.Drawing.Size(958, 594);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.ListLogs);
             this.Controls.Add(this.BtnCheck);
             this.Controls.Add(this.txtFolderPath);
@@ -97,7 +109,9 @@ namespace NTFSChecker
             this.PerformLayout();
         }
 
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button button1;
+
+        private System.Windows.Forms.ProgressBar progressBar;
 
         private System.Windows.Forms.ListBox ListLogs;
 

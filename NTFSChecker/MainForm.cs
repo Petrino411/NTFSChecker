@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.Logging;
+using NTFSChecker.Models;
+using NTFSChecker.Services;
 
 
 namespace NTFSChecker
@@ -13,10 +15,12 @@ namespace NTFSChecker
     public partial class MainForm : Form
     {
         private readonly ILogger<MainForm> _logger;
-        
+
         private string SelectedFolderPath { get; set; }
 
-        public MainForm(ILogger<MainForm> logger )
+        private List<ExcelDataModel> rootData { get; set; } = [];
+
+        public MainForm(ILogger<MainForm> logger)
         {
             _logger = logger;
             InitializeComponent();
@@ -27,7 +31,6 @@ namespace NTFSChecker
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                
                 openFileDialog.InitialDirectory = "C:\\Users\\Petrino\\Desktop\\PracticeFNS\\NTFSChecker";
                 openFileDialog.ValidateNames = false;
                 openFileDialog.CheckFileExists = false;
@@ -38,21 +41,30 @@ namespace NTFSChecker
                 {
                     SelectedFolderPath = Path.GetDirectoryName(openFileDialog.FileName);
                     txtFolderPath.Text = SelectedFolderPath;
-                    ListLogs.Items.Add($"Выбрана папка: {SelectedFolderPath}");
+                    LogToUI($"Выбрана папка: {SelectedFolderPath}");
                     _logger.LogInformation($"Выбрана папка: {SelectedFolderPath}");
                     txtFolderPath.Text = SelectedFolderPath;
                 }
             }
         }
 
-        private void BtnCheck_Click(object sender, EventArgs e)
+        private async void BtnCheck_Click(object sender, EventArgs e)
         {
-            if (txtFolderPath.Text is null) return;
-            CheckDirectory(txtFolderPath.Text);
-
+            if (txtFolderPath.Text is null or "") return;
+            try
+            {
+                await CheckDirectoryAsync(txtFolderPath.Text);
+                LogToUI("Операция прошла успешно");
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception.ToString());
+                throw;
+            }
         }
 
-        private async static Task<bool> CompareAccessRules(AuthorizationRuleCollection acl1, AuthorizationRuleCollection acl2)
+        private async static Task<bool> CompareAccessRules(AuthorizationRuleCollection acl1,
+            AuthorizationRuleCollection acl2)
         {
             if (acl1.Count != acl2.Count)
             {
@@ -80,49 +92,61 @@ namespace NTFSChecker
 
             return true;
         }
-        private async void CheckDirectory(string path)
+
+        private async Task CheckDirectoryAsync(string path)
         {
             var rootAcl = GetAccessRules(path);
-            var totalItems = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length + 
+            
+            
+            rootData.Add(GetExcelData(path,rootAcl));
+
+            
+            var totalItems = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length +
                              Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Length;
-            progressBar1.Maximum = totalItems;
-            progressBar1.Value = 0;
-            await CheckDirectory(path, rootAcl);
+            progressBar.Maximum = totalItems;
+            progressBar.Value = 0;
+            await CheckDirectoryAsync(path, rootAcl);
         }
 
-        private async Task CheckDirectory(string path, AuthorizationRuleCollection rootAcl)
+        private async Task CheckDirectoryAsync(string path, AuthorizationRuleCollection rootAcl)
         {
+            _logger.LogInformation($"Проверяется: {path}");
+            LogToUI($"Проверяется: {path}");
             try
             {
-                // Проверяем текущую папку
                 var currentAcl = GetAccessRules(path);
+                
+                rootData.Add(GetExcelData(path, currentAcl));
+                
                 if (!await CompareAccessRules(rootAcl, currentAcl))
                 {
                     _logger.LogWarning($"Различия в правах доступа обнаружены в папке: {path}");
-                    
-                    ListLogs.Items.Add($"Различия в правах доступа обнаружены в папке: {path}");
+
+                    LogToUI($"Различия в правах доступа обнаружены в папке: {path}");
                 }
-                progressBar1.Value++;
+
+                UpdateProgress();
+
                 foreach (var directory in Directory.GetDirectories(path))
                 {
-                    CheckDirectory(directory, rootAcl);
+                    await CheckDirectoryAsync(directory, rootAcl);
                 }
+
 
                 var files = Directory.GetFiles(path);
-                if (Directory.EnumerateFiles(path).ToList().Count != 0)
+                foreach (var file in files)
                 {
-                    foreach (var file in files)
+                    var fileAcl = GetFileAccessRules(file);
+                    
+                    rootData.Add(GetExcelData(path, fileAcl));
+                    if (!await CompareAccessRules(rootAcl, fileAcl))
                     {
-                        var fileAcl = GetFileAccessRules(file);
-                        if (!await CompareAccessRules(rootAcl, fileAcl))
-                        {
-                            ListLogs.Items.Add($"Различия в правах доступа обнаружены в файле: {file}");
-                            _logger.LogWarning($"Различия в правах доступа обнаружены в файле: {file}");
-                        }
+                        LogToUI($"Различия в правах доступа обнаружены в файле: {file}");
+                        _logger.LogWarning($"Различия в правах доступа обнаружены в файле: {file}");
                     }
-                }
 
-                
+                    UpdateProgress();
+                }
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -134,17 +158,67 @@ namespace NTFSChecker
             }
         }
 
-        static AuthorizationRuleCollection GetAccessRules(string path)
+        private AuthorizationRuleCollection GetAccessRules(string path)
         {
             var directoryInfo = new DirectoryInfo(path);
             var directorySecurity = directoryInfo.GetAccessControl();
             return directorySecurity.GetAccessRules(true, true, typeof(NTAccount));
         }
-        static AuthorizationRuleCollection GetFileAccessRules(string filePath)
+
+        private AuthorizationRuleCollection GetFileAccessRules(string filePath)
         {
-            FileInfo fileInfo = new FileInfo(filePath);
-            FileSecurity fileSecurity = fileInfo.GetAccessControl();
+            var fileInfo = new FileInfo(filePath);
+            var fileSecurity = fileInfo.GetAccessControl();
             return fileSecurity.GetAccessRules(true, true, typeof(NTAccount));
+        }
+
+        private void UpdateProgress()
+        {
+            if (progressBar.InvokeRequired)
+            {
+                progressBar.Invoke(new Action(() => progressBar.Value++));
+            }
+            else
+            {
+                progressBar.Value++;
+            }
+        }
+
+        private void LogToUI(string message)
+        {
+            ListLogs.Items.Add(message);
+            ListLogs.SelectedIndex = ListLogs.Items.Count - 1;
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            var excel = new ExcelWriter();
+            var headers = new List<string>()
+            {
+                "Наименование сервера",
+                "IP",
+                "Каталог",
+                "Назначение",
+                "Кому предоставлен доступ",
+                "Назначение прав доступа"
+            };
+
+            excel.SetTableHead(headers);
+            excel.WriteData(rootData);
+
+            excel.Show();
+            
+        }
+
+        private ExcelDataModel GetExcelData(string path, AuthorizationRuleCollection rules)
+        {
+            var data = new ExcelDataModel
+            {
+                DirName = path
+            };
+            data.SetAccessUsers(rules);
+            return data;
+
         }
     }
 }
