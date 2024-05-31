@@ -6,6 +6,7 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.Logging;
+using NTFSChecker.Extentions;
 using NTFSChecker.Models;
 using NTFSChecker.Services;
 
@@ -17,6 +18,8 @@ namespace NTFSChecker
         private readonly ILogger<MainForm> _logger;
 
         private string SelectedFolderPath { get; set; }
+
+        private UserGroupHelper userGroupHelper { get; set; } = new UserGroupHelper();
 
         private List<ExcelDataModel> rootData { get; set; } = [];
 
@@ -110,9 +113,9 @@ namespace NTFSChecker
             try
             {
                 var currentAcl = GetAccessRules(path);
-                
-                rootData.Add(GetExcelData(path, currentAcl));
-                
+
+                rootData.Add(new ExcelDataModel(path, currentAcl, userGroupHelper));
+
                 if (!await CompareAccessRules(rootAcl, currentAcl))
                 {
                     _logger.LogWarning($"Различия в правах доступа обнаружены в папке: {path}");
@@ -132,8 +135,8 @@ namespace NTFSChecker
                 foreach (var file in files)
                 {
                     var fileAcl = GetFileAccessRules(file);
-                    
-                    rootData.Add(GetExcelData(file, fileAcl));
+
+                    rootData.Add(new ExcelDataModel(file, fileAcl, userGroupHelper));
                     if (!await CompareAccessRules(rootAcl, fileAcl))
                     {
                         LogToUI($"Различия в правах доступа обнаружены в файле: {file}");
@@ -185,7 +188,7 @@ namespace NTFSChecker
             ListLogs.SelectedIndex = ListLogs.Items.Count - 1;
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private async void button1_Click_1(object sender, EventArgs e)
         {
             var excel = new ExcelWriter();
             var headers = new List<string>()
@@ -198,18 +201,10 @@ namespace NTFSChecker
                 "Назначение прав доступа"
             };
 
-            excel.SetTableHead(headers);
-            excel.WriteData(rootData);
+            await excel.SetTableHeadAsync(headers);
+            await excel.WriteDataAsync(rootData);
 
             excel.Show();
-            
-        }
-
-        private ExcelDataModel GetExcelData(string path, AuthorizationRuleCollection rules)
-        {
-            var data = new ExcelDataModel(path, UserGroupHelper.GetAccessRulesWithGroupDescription(path), rules);
-            return data;
-
         }
     }
 }

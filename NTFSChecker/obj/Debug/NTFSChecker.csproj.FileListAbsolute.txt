@@ -101,3 +101,9 @@ F:\PracticeFNS\NTFSChecker\obj\Debug\NTFSChec.6E5B6F38.Up2Date
 F:\PracticeFNS\NTFSChecker\obj\Debug\NTFSChecker.exe
 C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\Microsoft.Office.Interop.Excel.dll
 C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\stdole.dll
+C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\System.Security.Principal.Windows.dll
+C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\System.Security.Principal.Windows.xml
+C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\Microsoft.Identity.Client.dll
+C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\Microsoft.Identity.Client.xml
+C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\Microsoft.IdentityModel.Abstractions.xml

@@ -4,52 +4,86 @@ using System.Security.Principal;
 using System.DirectoryServices.AccountManagement;
 using System.Security.AccessControl;
 using System.IO;
-
-namespace NTFSChecker.Services;
-
-
+using System.Threading.Tasks;
 
 public class UserGroupHelper
 {
-    public static List<string> GetAccessRulesWithGroupDescription(string path)
+    private Dictionary<string, List<string>> Groups { get; set; }
+
+    public UserGroupHelper()
+    {
+        Groups = GetUserGroups();
+
+    }
+    public async Task<List<string>> GetAccessRulesWithGroupDescriptionAsync(string path)
     {
         var accessRules = new List<string>();
 
-        var security = File.GetAccessControl(path);
-        var rules = security.GetAccessRules(true, true, typeof(NTAccount));
-
-        foreach (FileSystemAccessRule rule in rules)
-        {
-            var identity = rule.IdentityReference as NTAccount;
-            if (identity != null)
-            {
-                var groupDescription = GetGroupDescription(identity);
-                var accessRuleDescription = $"{identity.Value}: {rule.AccessControlType} ({groupDescription})";
-                accessRules.Add(accessRuleDescription);
-            }
-        }
-
-        return accessRules;
-    }
-
-    private static string GetGroupDescription(NTAccount account)
-    {
         try
         {
-            using (var context = new PrincipalContext(ContextType.Domain))
-            using (var group = GroupPrincipal.FindByIdentity(context, account.Value))
+            var security = File.GetAccessControl(path);
+            var rules = security.GetAccessRules(true, true, typeof(NTAccount));
+
+            
+            foreach (FileSystemAccessRule rule in rules)
             {
-                if (group != null)
+                var identity = rule.IdentityReference as NTAccount;
+                if (identity != null)
                 {
-                    return group.Description ?? "No Description";
+                    var groupDescription = GetUserGroupDescriptionsAsync(identity.Value.Split('\\')[1], Groups);
+                    var accessRuleDescription = $"{identity.Value}: {rule.AccessControlType} (Groups: {string.Join(", ", groupDescription)})\n";
+                    accessRules.Add(accessRuleDescription);
                 }
             }
         }
         catch (Exception ex)
         {
-            return $"Error: {ex.Message}";
+            accessRules.Add($"Error retrieving access rules: {ex.Message}");
         }
 
-        return "Not a Group or No Description";
+        return accessRules;
+    }
+    
+    
+    private Dictionary<string, List<string>> GetUserGroups()
+    {
+        var userGroups = new Dictionary<string, List<string>>();
+
+        try
+        {
+            using (var context = new PrincipalContext(ContextType.Machine))
+            using (var searcher = new PrincipalSearcher(new GroupPrincipal(context)))
+            {
+                foreach (var result in searcher.FindAll())
+                {
+                    if (result is GroupPrincipal group)
+                    {
+                        foreach (var member in group.GetMembers())
+                        {
+                            if (!userGroups.ContainsKey(member.SamAccountName))
+                            {
+                                userGroups[member.SamAccountName] = new List<string>();
+                            }
+                            userGroups[member.SamAccountName].Add(group.Description);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Local machine lookup failed: {ex.Message}");
+        }
+
+        return userGroups;
+    }
+
+    private static List<string> GetUserGroupDescriptionsAsync(string userName, Dictionary<string, List<string>> userGroups)
+    {
+        if (userGroups.ContainsKey(userName))
+        {
+            return userGroups[userName];
+        }
+        return new List<string> { "No Groups or No Description" };
     }
 }

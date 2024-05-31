@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using NTFSChecker.Models;
 // using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -26,31 +27,31 @@ public class ExcelWriter
         _excelApp.Visible = true;
     }
     
-    public void WriteCell(int row, int column, string value)
+    public async Task WriteCellAsync(int row, int column, string value)
     {
         _Worksheet.Cells[row, column] = value;
     }
 
-    public void SetTableHead(List<string> headers)
+    public async Task SetTableHeadAsync(List<string> headers)
     {
         for (var i = 0; i < headers.Count; i++)
         {
-            WriteCell( 1, i + 1, headers[i]);
+            await WriteCellAsync( 1, i + 1, headers[i]);
         }
     }
 
-    public void WriteData(List<ExcelDataModel> data)
+    public async Task WriteDataAsync(List<ExcelDataModel> data)
     {
-        int row = 2; 
+        var row = 2;
         foreach (var item in data)
         {
-           
-            WriteCell(row, 1, item.ServerName);
-            WriteCell(row, 2, item.Ip);
-            WriteCell(row, 3, item.DirName);
-            WriteCell(row, 4, item.Purpose);
-            WriteCell(row, 5, item.AccessUsers.Item1);
-            WriteCell(row, 6, item.AccessUsers.Item2); //TODO 
+            await WriteCellAsync(row, 1, item.ServerName);
+            await WriteCellAsync(row, 2, item.Ip);
+            await WriteCellAsync(row, 3, item.DirName);
+            Console.WriteLine($"Exporting {item.DirName} to excel");
+            await WriteCellAsync(row, 4, item.Purpose);
+            await WriteCellAsync(row, 5, string.Join("\n", item.DescriptionUsers));
+            await WriteCellAsync(row, 6, string.Join("\n", item.AccessUsers));
             row++;
         }
         
