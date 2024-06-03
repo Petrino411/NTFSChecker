@@ -36,14 +36,6 @@ public class ExcelDataModel
             }
         }
     }
-    
-    public ExcelDataModel(string dirName, List<string> descriptionUsers, AuthorizationRuleCollection accessUsers)
-    {
-        DirName = dirName;
-        SetAccessUsers(accessUsers);
-        DescriptionUsers = descriptionUsers;
-
-    }
 
     public ExcelDataModel(string path, AuthorizationRuleCollection rules, UserGroupHelper userGroupHelper)
     {

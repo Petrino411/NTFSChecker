@@ -32,3 +32,5 @@
 *.app
 /NTFSChecker/packages
 /NTFSChecker/.idea
+/NTFSChecker/bin
+/NTFSChecker/obj

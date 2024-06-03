@@ -6,7 +6,6 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.Logging;
-using NTFSChecker.Extentions;
 using NTFSChecker.Models;
 using NTFSChecker.Services;
 
@@ -16,16 +15,16 @@ namespace NTFSChecker
     public partial class MainForm : Form
     {
         private readonly ILogger<MainForm> _logger;
-
+        private readonly ExcelWriter _excelWriter;
         private string SelectedFolderPath { get; set; }
-
-        private UserGroupHelper userGroupHelper { get; set; } = new UserGroupHelper();
-
+        private UserGroupHelper userGroupHelper { get; set; } = new();
         private List<ExcelDataModel> rootData { get; set; } = [];
 
-        public MainForm(ILogger<MainForm> logger)
+
+        public MainForm(ILogger<MainForm> logger, ExcelWriter excelWriter)
         {
             _logger = logger;
+            _excelWriter = excelWriter;
             InitializeComponent();
         }
 
@@ -101,7 +100,7 @@ namespace NTFSChecker
             var rootAcl = GetAccessRules(path);
             var totalItems = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length +
                              Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Length;
-            progressBar.Maximum = totalItems;
+            progressBar.Maximum = totalItems+1;
             progressBar.Value = 0;
             await CheckDirectoryAsync(path, rootAcl);
         }
@@ -188,23 +187,31 @@ namespace NTFSChecker
             ListLogs.SelectedIndex = ListLogs.Items.Count - 1;
         }
 
-        private async void button1_Click_1(object sender, EventArgs e)
+        private async void ExportToExcelClick(object sender, EventArgs e)
         {
-            var excel = new ExcelWriter();
-            var headers = new List<string>()
+            try
             {
-                "Наименование сервера",
-                "IP",
-                "Каталог",
-                "Назначение",
-                "Кому предоставлен доступ",
-                "Назначение прав доступа"
-            };
+                var headers = new List<string>()
+                {
+                    "Наименование сервера",
+                    "IP",
+                    "Каталог",
+                    "Назначение",
+                    "Кому предоставлен доступ",
+                    "Назначение прав доступа"
+                };
 
-            await excel.SetTableHeadAsync(headers);
-            await excel.WriteDataAsync(rootData);
+                await _excelWriter.SetTableHeadAsync(headers);
+                await _excelWriter.WriteDataAsync(rootData);
+                _excelWriter.AutoFitColumnsAndRows();
 
-            excel.Show();
+                _excelWriter.SaveTempAndShow();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                _logger.LogError(ex.ToString());
+            }
         }
     }
 }

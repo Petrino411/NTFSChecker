@@ -96,7 +96,7 @@ namespace NTFSChecker
             this.ExportToExcel.TabIndex = 5;
             this.ExportToExcel.Text = "Excel";
             this.ExportToExcel.UseVisualStyleBackColor = true;
-            this.ExportToExcel.Click += new System.EventHandler(this.button1_Click_1);
+            this.ExportToExcel.Click += new System.EventHandler(this.ExportToExcelClick);
             // 
             // MainForm
             // 
