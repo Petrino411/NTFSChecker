@@ -15,6 +15,8 @@ public class ExcelDataModel
     public List<string> DescriptionUsers { get; set; } = [];
     public List<string> AccessUsers { get; private set; } = [];
 
+    public bool ChangesFlag { get; set; }
+
     public ExcelDataModel()
     {
         
@@ -37,12 +39,13 @@ public class ExcelDataModel
         }
     }
 
-    public ExcelDataModel(string path, AuthorizationRuleCollection rules, UserGroupHelper userGroupHelper)
+    public ExcelDataModel(string path, AuthorizationRuleCollection rules, List<string> descriptionUsers, bool areChanges)
     {
         DirName = path;
         SetAccessUsers(rules);
-        DescriptionUsers = userGroupHelper.GetAccessRulesWithGroupDescriptionAsync(path).Result;
-        
+        DescriptionUsers = descriptionUsers;
+        ChangesFlag = areChanges;
+
     }
 
 

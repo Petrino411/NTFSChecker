@@ -49,6 +49,7 @@ namespace NTFSChecker
             });
             
             services.AddSingleton<ExcelWriter>();
+            services.AddSingleton<UserGroupHelper>();
             services.AddTransient<MainForm>();
 
             return services;

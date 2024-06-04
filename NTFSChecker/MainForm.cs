@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using System.Windows.Forms;
 using Microsoft.Extensions.Logging;
 using NTFSChecker.Models;
 using NTFSChecker.Services;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 
 
 namespace NTFSChecker
@@ -15,21 +17,24 @@ namespace NTFSChecker
     public partial class MainForm : Form
     {
         private readonly ILogger<MainForm> _logger;
+
         private readonly ExcelWriter _excelWriter;
         private string SelectedFolderPath { get; set; }
-        private UserGroupHelper userGroupHelper { get; set; } = new();
+        private UserGroupHelper _userGroupHelper;
         private List<ExcelDataModel> rootData { get; set; } = [];
+        private bool changesCheckBox { get; set; } = false;
 
 
-        public MainForm(ILogger<MainForm> logger, ExcelWriter excelWriter)
+        public MainForm(ILogger<MainForm> logger, ExcelWriter excelWriter, UserGroupHelper userGroupHelper)
         {
-            _logger = logger;
+            _userGroupHelper = userGroupHelper;
             _excelWriter = excelWriter;
+            _logger = logger;
             InitializeComponent();
         }
 
 
-        private void button1_Click(object sender, EventArgs e)
+        private void BtnOpen_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -52,7 +57,8 @@ namespace NTFSChecker
 
         private async void BtnCheck_Click(object sender, EventArgs e)
         {
-            if (txtFolderPath.Text is null or "") return;
+            rootData.Clear();
+            if (string.IsNullOrEmpty(txtFolderPath.Text)) return;
             try
             {
                 await CheckDirectoryAsync(txtFolderPath.Text);
@@ -100,7 +106,7 @@ namespace NTFSChecker
             var rootAcl = GetAccessRules(path);
             var totalItems = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length +
                              Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Length;
-            progressBar.Maximum = totalItems+1;
+            progressBar.Maximum = totalItems + 1;
             progressBar.Value = 0;
             await CheckDirectoryAsync(path, rootAcl);
         }
@@ -113,13 +119,20 @@ namespace NTFSChecker
             {
                 var currentAcl = GetAccessRules(path);
 
-                rootData.Add(new ExcelDataModel(path, currentAcl, userGroupHelper));
-
                 if (!await CompareAccessRules(rootAcl, currentAcl))
                 {
+                    rootData.Add(new ExcelDataModel(path, currentAcl,
+                        await _userGroupHelper.GetAccessRulesWithGroupDescriptionAsync(path), true));
+
+
                     _logger.LogWarning($"Различия в правах доступа обнаружены в папке: {path}");
 
                     LogToUI($"Различия в правах доступа обнаружены в папке: {path}");
+                }
+                else
+                {
+                    rootData.Add(new ExcelDataModel(path, currentAcl,
+                        await _userGroupHelper.GetAccessRulesWithGroupDescriptionAsync(path), false));
                 }
 
                 UpdateProgress();
@@ -135,11 +148,18 @@ namespace NTFSChecker
                 {
                     var fileAcl = GetFileAccessRules(file);
 
-                    rootData.Add(new ExcelDataModel(file, fileAcl, userGroupHelper));
                     if (!await CompareAccessRules(rootAcl, fileAcl))
                     {
+                        rootData.Add(new ExcelDataModel(file, fileAcl,
+                            await _userGroupHelper.GetAccessRulesWithGroupDescriptionAsync(path), true));
+
                         LogToUI($"Различия в правах доступа обнаружены в файле: {file}");
                         _logger.LogWarning($"Различия в правах доступа обнаружены в файле: {file}");
+                    }
+                    else
+                    {
+                        rootData.Add(new ExcelDataModel(file, fileAcl,
+                            await _userGroupHelper.GetAccessRulesWithGroupDescriptionAsync(path), false));
                     }
 
                     UpdateProgress();
@@ -191,7 +211,8 @@ namespace NTFSChecker
         {
             try
             {
-                var headers = new List<string>()
+                List<ExcelDataModel> data = [];
+                var headers = new List<string>
                 {
                     "Наименование сервера",
                     "IP",
@@ -201,17 +222,37 @@ namespace NTFSChecker
                     "Назначение прав доступа"
                 };
 
+                if (!changesCheckBox)
+                {
+                    data.Add(rootData[0]);
+                    data.AddRange(rootData.Where(x => x.ChangesFlag).ToList());
+                }
+                else
+                {
+                    data = rootData;
+                }
+                
+                
+
+                _excelWriter.CreateNewFile();
                 await _excelWriter.SetTableHeadAsync(headers);
-                await _excelWriter.WriteDataAsync(rootData);
+                await _excelWriter.WriteDataAsync(data);
                 _excelWriter.AutoFitColumnsAndRows();
 
                 _excelWriter.SaveTempAndShow();
+                
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred: {ex.Message}");
                 _logger.LogError(ex.ToString());
             }
+        }
+
+
+        private void ChangesCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            changesCheckBox = ChangesCheckBox.Checked;
         }
     }
 }

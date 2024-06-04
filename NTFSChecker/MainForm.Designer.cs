@@ -38,6 +38,7 @@ namespace NTFSChecker
             this.ListLogs = new System.Windows.Forms.ListBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.ExportToExcel = new System.Windows.Forms.Button();
+            this.ChangesCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // BtnOpen
@@ -49,7 +50,7 @@ namespace NTFSChecker
             this.BtnOpen.TabIndex = 0;
             this.BtnOpen.Text = "Открыть";
             this.BtnOpen.UseVisualStyleBackColor = true;
-            this.BtnOpen.Click += new System.EventHandler(this.button1_Click);
+            this.BtnOpen.Click += new System.EventHandler(this.BtnOpen_Click);
             // 
             // txtFolderPath
             // 
@@ -98,11 +99,23 @@ namespace NTFSChecker
             this.ExportToExcel.UseVisualStyleBackColor = true;
             this.ExportToExcel.Click += new System.EventHandler(this.ExportToExcelClick);
             // 
+            // ChangesCheckBox
+            // 
+            this.ChangesCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ChangesCheckBox.Location = new System.Drawing.Point(604, 639);
+            this.ChangesCheckBox.Name = "ChangesCheckBox";
+            this.ChangesCheckBox.Size = new System.Drawing.Size(244, 29);
+            this.ChangesCheckBox.TabIndex = 6;
+            this.ChangesCheckBox.Text = "Экспортировать все папки";
+            this.ChangesCheckBox.UseVisualStyleBackColor = true;
+            this.ChangesCheckBox.CheckedChanged += new System.EventHandler(this.ChangesCheckBox_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1054, 694);
+            this.Controls.Add(this.ChangesCheckBox);
             this.Controls.Add(this.ExportToExcel);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.ListLogs);
@@ -114,6 +127,8 @@ namespace NTFSChecker
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.CheckBox ChangesCheckBox;
 
         private System.Windows.Forms.Button ExportToExcel;
 

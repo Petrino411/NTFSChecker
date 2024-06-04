@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Principal;
 using System.DirectoryServices.AccountManagement;
-using System.Security.AccessControl;
 using System.IO;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+
+namespace NTFSChecker.Services;
 
 public class UserGroupHelper
 {
     private Dictionary<string, List<string>> Groups { get; set; }
+    private ILogger<UserGroupHelper> _logger;
 
-    public UserGroupHelper()
+    public UserGroupHelper(ILogger<UserGroupHelper> logger)
     {
+        _logger = logger;
         Groups = GetUserGroups();
 
     }
@@ -31,14 +36,15 @@ public class UserGroupHelper
                 if (identity != null)
                 {
                     var groupDescription = GetUserGroupDescriptionsAsync(identity.Value.Split('\\')[1], Groups);
-                    var accessRuleDescription = $"{identity.Value}: {rule.AccessControlType} (Groups: {string.Join(", ", groupDescription)})\n";
+                    var accessRuleDescription = $"{identity.Value}: Группы: {string.Join(";\n ", groupDescription)}\n";
                     accessRules.Add(accessRuleDescription);
                 }
             }
         }
         catch (Exception ex)
         {
-            accessRules.Add($"Error retrieving access rules: {ex.Message}");
+            accessRules.Add($"Ошибка в получении прав: {ex.Message}");
+            _logger.LogError($"Ошибка в получении прав: {ex.Message}");
         }
 
         return accessRules;
@@ -64,7 +70,7 @@ public class UserGroupHelper
                             {
                                 userGroups[member.SamAccountName] = new List<string>();
                             }
-                            userGroups[member.SamAccountName].Add(group.Description);
+                            userGroups[member.SamAccountName].Add($"{group.Name}: {group.Description}");
                         }
                     }
                 }
@@ -72,7 +78,7 @@ public class UserGroupHelper
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Local machine lookup failed: {ex.Message}");
+            _logger.LogError($"Проверка не пройдена: {ex.Message}");
         }
 
         return userGroups;
@@ -84,6 +90,6 @@ public class UserGroupHelper
         {
             return userGroups[userName];
         }
-        return new List<string> { "No Groups or No Description" };
+        return new List<string> { "Нет групп или описания" };
     }
 }
