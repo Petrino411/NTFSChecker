@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NTFSChecker.Models;
 using OfficeOpenXml;
-using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.Style;
-using OfficeOpenXml.Style.XmlAccess;
+
 
 namespace NTFSChecker.Services
 {
