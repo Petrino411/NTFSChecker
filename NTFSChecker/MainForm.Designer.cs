@@ -32,6 +32,7 @@ namespace NTFSChecker
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.BtnOpen = new System.Windows.Forms.Button();
             this.txtFolderPath = new System.Windows.Forms.TextBox();
             this.BtnCheck = new System.Windows.Forms.Button();
@@ -57,7 +58,7 @@ namespace NTFSChecker
             this.txtFolderPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtFolderPath.Location = new System.Drawing.Point(43, 85);
             this.txtFolderPath.Name = "txtFolderPath";
-            this.txtFolderPath.Size = new System.Drawing.Size(983, 24);
+            this.txtFolderPath.Size = new System.Drawing.Size(983, 22);
             this.txtFolderPath.TabIndex = 1;
             // 
             // BtnCheck
@@ -75,10 +76,10 @@ namespace NTFSChecker
             // 
             this.ListLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ListLogs.FormattingEnabled = true;
-            this.ListLogs.ItemHeight = 18;
+            this.ListLogs.ItemHeight = 16;
             this.ListLogs.Location = new System.Drawing.Point(43, 196);
             this.ListLogs.Name = "ListLogs";
-            this.ListLogs.Size = new System.Drawing.Size(983, 418);
+            this.ListLogs.Size = new System.Drawing.Size(983, 404);
             this.ListLogs.TabIndex = 3;
             // 
             // progressBar
@@ -102,11 +103,11 @@ namespace NTFSChecker
             // ChangesCheckBox
             // 
             this.ChangesCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ChangesCheckBox.Location = new System.Drawing.Point(604, 639);
+            this.ChangesCheckBox.Location = new System.Drawing.Point(668, 639);
             this.ChangesCheckBox.Name = "ChangesCheckBox";
-            this.ChangesCheckBox.Size = new System.Drawing.Size(244, 29);
+            this.ChangesCheckBox.Size = new System.Drawing.Size(180, 29);
             this.ChangesCheckBox.TabIndex = 6;
-            this.ChangesCheckBox.Text = "Экспортировать все папки";
+            this.ChangesCheckBox.Text = "Экспортировать все\r\n";
             this.ChangesCheckBox.UseVisualStyleBackColor = true;
             this.ChangesCheckBox.CheckedChanged += new System.EventHandler(this.ChangesCheckBox_CheckedChanged);
             // 
@@ -122,6 +123,7 @@ namespace NTFSChecker
             this.Controls.Add(this.BtnCheck);
             this.Controls.Add(this.txtFolderPath);
             this.Controls.Add(this.BtnOpen);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "NTFSChecker";
             this.ResumeLayout(false);

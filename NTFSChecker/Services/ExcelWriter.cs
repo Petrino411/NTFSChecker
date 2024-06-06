@@ -62,46 +62,87 @@ namespace NTFSChecker.Services
                 cell.Style.Font.Color.SetColor(color);
             }
         }
-        
+
         private async Task WriteCellAsync(int row, int column, List<string> users, List<string> mainDirUsers)
         {
+            try
+            {
+                Dictionary<string, string> mainDirUsersDict = new();
+                Dictionary<string, string> usersDict = new();
+                try
+                {
+                    mainDirUsersDict = mainDirUsers
+                        .Select(u => u.Split(new[] { ':' }, 2))
+                        .ToDictionary(
+                            u => u[0].Trim(),
+                            u => u.Length > 1 ? u[1].Trim() : string.Empty
+                        );
+
+                    usersDict = users
+                        .Select(u => u.Split(new[] { ':' }, 2))
+                        .ToDictionary(
+                            u => u[0].Trim(),
+                            u => u.Length > 1 ? u[1].Trim() : string.Empty
+                        );
+                }
+                catch (ArgumentException e)
+                {
+                    _logger.LogError($"Словарь - пиво {e}");
+                }
+
+                var colorDifferences = new List<(string user, Color color)>();
+
+                foreach (var mainUser in mainDirUsersDict)
+                {
+                    if (usersDict.TryGetValue(mainUser.Key, out var userRights))
+                    {
+                        // Если права отличаются
+                        if (mainUser.Value != userRights)
+                        {
+                            colorDifferences.Add((
+                                $"{mainUser.Key}: {mainUser.Value} (корневой) -> {userRights} (дочерний)",
+                                Color.Purple));
+                        }
+                        else
+                        {
+                            colorDifferences.Add(($"{mainUser.Key}: {mainUser.Value}", Color.Black));
+                        }
+                    }
+                    else
+                    {
+                        colorDifferences.Add(($"{mainUser.Key}: {mainUser.Value}", Color.Orange));
+                    }
+                }
+
+
+                foreach (var user in usersDict)
+                {
+                    if (!mainDirUsersDict.ContainsKey(user.Key))
+                    {
+                        // Пользователь отсутствует в корневом каталоге
+                        colorDifferences.Add(($"{user.Key}: {user.Value}", Color.Red));
+                    }
+                }
+
+                colorDifferences.Sort((x, y) => string.Compare(x.user, y.user, StringComparison.Ordinal));
+
+                foreach (var (user, color) in colorDifferences)
+                {
+                    var cell = _worksheet.Cells[row, column];
+                    cell.Style.WrapText = true;
+                    cell.Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                    var richText = cell.RichText.Add(user + "\n");
+                    richText.Color = color;
+                }
+            }
             
-            var differences = new List<string>();
-            var colorDifferences = new List<(string user, Color color)>();
-
-            foreach (var user in mainDirUsers)
+            catch (Exception e)
             {
-                if (!users.Contains(user))
-                {
-                    colorDifferences.Add((user, Color.Gray)); 
-                }
+                _logger.LogError($"Ошибка  {e}");
             }
-
-            foreach (var user in users)
-            {
-                if (!mainDirUsers.Contains(user))
-                {
-                    colorDifferences.Add((user, Color.Red)); 
-                }
-                else
-                {
-                    colorDifferences.Add((user, Color.Black)); 
-                }
-            }
-
-            colorDifferences.Sort();
-
-            foreach (var (user, color) in colorDifferences)
-            {
-                var cell = _worksheet.Cells[row, column];
-                cell.Style.WrapText = true;
-                cell.Style.VerticalAlignment = ExcelVerticalAlignment.Top;
-                var richText = cell.RichText.Add(user + "\n");
-                richText.Color= color;
-            }
+            
         }
-        
-        
+
 
         public async Task SetTableHeadAsync(List<string> headers)
         {
@@ -128,7 +169,7 @@ namespace NTFSChecker.Services
 
                 var sortedDescriptionUsers = item.DescriptionUsers.OrderBy(x => x).ToList();
                 await WriteCellAsync(row, 5, string.Join("\n", sortedDescriptionUsers));
-                
+
                 var sortedAccessUsers = item.AccessUsers.OrderBy(x => x).ToList();
                 await WriteCellAsync(row, 6, sortedAccessUsers, mainDirData);
 
@@ -144,7 +185,7 @@ namespace NTFSChecker.Services
                 _worksheet.Column(i).Width = 40;
             }
         }
-        
+
         public void SaveTempAndShow()
         {
             try

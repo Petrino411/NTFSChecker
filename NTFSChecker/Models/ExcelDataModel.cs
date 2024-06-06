@@ -19,9 +19,8 @@ public class ExcelDataModel
 
     public ExcelDataModel()
     {
-        
     }
-    
+
     public void SetAccessUsers(AuthorizationRuleCollection rules)
     {
         AccessUsers.Clear();
@@ -32,22 +31,44 @@ public class ExcelDataModel
                 var identity = fsRule.IdentityReference as NTAccount;
                 if (identity != null)
                 {
-                    var accessType = fsRule.FileSystemRights.ToString();
-                    AccessUsers.Add($"{identity.Value}: {accessType}");
+                    string accessType;
+                    try
+                    {
+                        accessType = fsRule.FileSystemRights.ToString();
+                        if (int.TryParse(accessType, out _))
+                        {
+                            accessType = "Права не определены";
+                        }
+                    }
+                    catch
+                    {
+                        accessType = "Права не определены";
+                    }
+                    
+                    string inheritanceInfo = fsRule.IsInherited 
+                        ? $"Наследуется" 
+                        : "Не наследуется";
+
+                    if (accessType.StartsWith("Права не определены"))
+                    {
+                        AccessUsers.Add($"{identity.Value}, {inheritanceInfo}, ({fsRule.FileSystemRights}): {accessType}");
+                    }
+                    else
+                    {
+                        AccessUsers.Add($"{identity.Value}, {inheritanceInfo}: {accessType}");
+                    }
+                    
                 }
             }
         }
     }
 
-    public ExcelDataModel(string path, AuthorizationRuleCollection rules, List<string> descriptionUsers, bool areChanges)
+    public ExcelDataModel(string path, AuthorizationRuleCollection rules, List<string> descriptionUsers,
+        bool areChanges)
     {
         DirName = path;
         SetAccessUsers(rules);
         DescriptionUsers = descriptionUsers;
         ChangesFlag = areChanges;
-
     }
-
-
-
 }

@@ -232,8 +232,6 @@ namespace NTFSChecker
                     data = rootData;
                 }
                 
-                
-
                 _excelWriter.CreateNewFile();
                 await _excelWriter.SetTableHeadAsync(headers);
                 await _excelWriter.WriteDataAsync(data);
