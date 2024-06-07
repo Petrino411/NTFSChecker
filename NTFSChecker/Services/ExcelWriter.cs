@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using NTFSChecker.Extentions;
 using NTFSChecker.Models;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -50,7 +51,7 @@ namespace NTFSChecker.Services
             _logger.LogInformation($"Получен путь сохранения файла {fileName}");
             return fileName;
         }
-        
+
         public void CreateLegend()
         {
             var legendStartColumn = _worksheet.Dimension.End.Column + 2;
@@ -60,8 +61,7 @@ namespace NTFSChecker.Services
             {
                 ("Группы пользователей нет у корневого каталога или прав меньше", Color.Red),
                 ("Группы пользователей нет у дочернего каталога или прав меньше", Color.Orange),
-                ("Новые права", Color.Blue),
-                ("Недостаточно прав", Color.Purple),
+                ("Отличия в правах", Color.Purple),
                 ("Без изменений", Color.Black)
             };
 
@@ -93,82 +93,86 @@ namespace NTFSChecker.Services
 
         private async Task WriteCellAsync(int row, int column, List<string> users, List<string> mainDirUsers)
         {
-            try
+            var mainDirUsersDict = mainDirUsers
+                .Select(u => u.Split(new[] { ':' }, 2))
+                .ToDictionaryWithSuffix(
+                    u => u[0].Trim(),
+                    u => u.Length > 1 ? u[1].Trim() : string.Empty
+                );
+
+            var usersDict = users
+                .Select(u => u.Split(new[] { ':' }, 2))
+                .ToDictionaryWithSuffix(
+                    u => u[0].Trim(),
+                    u => u.Length > 1 ? u[1].Trim() : string.Empty
+                );
+
+            var colorDifferences = new List<(string user, string difference, Color color, bool fullColor)>();
+
+            foreach (var mainUser in mainDirUsersDict)
             {
-                Dictionary<string, string> mainDirUsersDict = new();
-                Dictionary<string, string> usersDict = new();
-                try
+                if (usersDict.TryGetValue(mainUser.Key, out var userRights))
                 {
-                    mainDirUsersDict = mainDirUsers
-                        .Select(u => u.Split(new[] { ':' }, 2))
-                        .ToDictionary(
-                            u => u[0].Trim(),
-                            u => u.Length > 1 ? u[1].Trim() : string.Empty
-                        );
-
-                    usersDict = users
-                        .Select(u => u.Split(new[] { ':' }, 2))
-                        .ToDictionary(
-                            u => u[0].Trim(),
-                            u => u.Length > 1 ? u[1].Trim() : string.Empty
-                        );
-                }
-                catch (ArgumentException e)
-                {
-                    _logger.LogError($"Словарь - пиво {e}");
-                }
-
-                var colorDifferences = new List<(string user, Color color)>();
-
-                foreach (var mainUser in mainDirUsersDict)
-                {
-                    if (usersDict.TryGetValue(mainUser.Key, out var userRights))
+                    // Если права отличаются
+                    if (mainUser.Value != userRights)
                     {
-                        // Если права отличаются
-                        if (mainUser.Value != userRights)
-                        {
-                            colorDifferences.Add((
-                                $"{mainUser.Key}: {mainUser.Value} (корневой) -> {userRights} (дочерний)",
-                                Color.Purple));
-                        }
-                        else
-                        {
-                            colorDifferences.Add(($"{mainUser.Key}: {mainUser.Value}", Color.Black));
-                        }
+                        colorDifferences.Add((
+                            mainUser.Key,
+                            userRights,
+                            Color.Purple,
+                            false)); // Название группы черное, различие выделено
                     }
                     else
                     {
-                        colorDifferences.Add(($"{mainUser.Key}: {mainUser.Value}", Color.Orange));
+                        colorDifferences.Add((
+                            mainUser.Key,
+                            mainUser.Value,
+                            Color.Black,
+                            false)); // Все черное
                     }
                 }
-
-
-                foreach (var user in usersDict)
+                else
                 {
-                    if (!mainDirUsersDict.ContainsKey(user.Key))
-                    {
-                        // Пользователь отсутствует в корневом каталоге
-                        colorDifferences.Add(($"{user.Key}: {user.Value}", Color.Red));
-                    }
-                }
-
-                colorDifferences.Sort((x, y) => string.Compare(x.user, y.user, StringComparison.Ordinal));
-
-                foreach (var (user, color) in colorDifferences)
-                {
-                    var cell = _worksheet.Cells[row, column];
-                    cell.Style.WrapText = true;
-                    cell.Style.VerticalAlignment = ExcelVerticalAlignment.Top;
-                    var richText = cell.RichText.Add(user + "\n");
-                    richText.Color = color;
+                    colorDifferences.Add((
+                        mainUser.Key,
+                        mainUser.Value,
+                        Color.Orange,
+                        true)); // Весь объект оранжевый
                 }
             }
-            
-            catch (Exception e)
+
+            foreach (var user in usersDict)
             {
-                _logger.LogError($"Ошибка  {e}");
+                if (!mainDirUsersDict.ContainsKey(user.Key))
+                {
+                    colorDifferences.Add((
+                        user.Key,
+                        user.Value,
+                        Color.Red,
+                        true)); // Весь объект красный
+                }
             }
-            
+
+            var cell = _worksheet.Cells[row, column];
+            cell.Style.WrapText = true;
+            cell.Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+
+            foreach (var (user, difference, color, fullColor) in colorDifferences)
+            {
+                if (fullColor)
+                {
+                    var richTextFull = cell.RichText.Add($"{user}: {difference}\n");
+                    richTextFull.Color = color;
+                }
+                else
+                {
+                    var richTextUser = cell.RichText.Add($"{user}: ");
+                    richTextUser.Color = Color.Black;
+
+                    var richTextDifference = cell.RichText.Add($"{difference}\n");
+                    richTextDifference.Color = color;
+                }
+            }
         }
 
 

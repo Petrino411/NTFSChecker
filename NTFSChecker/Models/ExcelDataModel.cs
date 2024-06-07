@@ -45,17 +45,15 @@ public class ExcelDataModel
                         accessType = "Права не определены";
                     }
                     
-                    string inheritanceInfo = fsRule.IsInherited 
-                        ? $"Наследуется" 
-                        : "Не наследуется";
+                   
 
                     if (accessType.StartsWith("Права не определены"))
                     {
-                        AccessUsers.Add($"{identity.Value}, {inheritanceInfo}, ({fsRule.FileSystemRights}): {accessType}");
+                        AccessUsers.Add($"{identity.Value}, ({fsRule.FileSystemRights}): {accessType}");
                     }
                     else
                     {
-                        AccessUsers.Add($"{identity.Value}, {inheritanceInfo}: {accessType}");
+                        AccessUsers.Add($"{identity.Value}: {accessType}");
                     }
                     
                 }

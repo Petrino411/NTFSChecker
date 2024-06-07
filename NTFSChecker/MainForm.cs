@@ -34,7 +34,7 @@ namespace NTFSChecker
         }
 
 
-        private void BtnOpen_Click(object sender, EventArgs e)
+        private async void BtnOpen_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {

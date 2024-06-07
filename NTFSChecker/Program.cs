@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.Configuration;
 using NTFSChecker.Services;
@@ -12,30 +13,27 @@ namespace NTFSChecker
     internal static class Program
     {
         private static IServiceProvider ServiceProvider { get; set; }
-        
+
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
         [STAThread]
         private static void Main()
         {
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             var services = ConfigureServices();
             ServiceProvider = services.BuildServiceProvider();
 
-            
             var mainForm = ServiceProvider.GetRequiredService<MainForm>();
             Application.Run(mainForm);
-
         }
-        
+
         private static IServiceCollection ConfigureServices()
         {
             var services = new ServiceCollection();
-            
+
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .Build();
@@ -47,7 +45,7 @@ namespace NTFSChecker
                 builder.AddConsole();
                 builder.AddDebug();
             });
-            
+
             services.AddSingleton<ExcelWriter>();
             services.AddSingleton<UserGroupHelper>();
             services.AddTransient<MainForm>();
