@@ -100,7 +100,6 @@ namespace NTFSChecker
             this.txtFolderPath.Name = "txtFolderPath";
             this.txtFolderPath.Size = new System.Drawing.Size(1068, 24);
             this.txtFolderPath.TabIndex = 1;
-            this.txtFolderPath.Text = "C:\\Users\\Petrino\\Desktop\\PracticeFNS\\NTFSChecker\\For testing bad";
             // 
             // BtnOpen
             // 
