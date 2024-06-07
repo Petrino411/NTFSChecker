@@ -50,6 +50,34 @@ namespace NTFSChecker.Services
             _logger.LogInformation($"Получен путь сохранения файла {fileName}");
             return fileName;
         }
+        
+        public void CreateLegend()
+        {
+            var legendStartColumn = _worksheet.Dimension.End.Column + 2;
+            var legendStartRow = 1;
+
+            var legends = new List<(string text, Color color)>
+            {
+                ("Группы пользователей нет у корневого каталога или прав меньше", Color.Red),
+                ("Группы пользователей нет у дочернего каталога или прав меньше", Color.Orange),
+                ("Новые права", Color.Blue),
+                ("Недостаточно прав", Color.Purple),
+                ("Без изменений", Color.Black)
+            };
+
+            foreach (var (text, color) in legends)
+            {
+                var colorCell = _worksheet.Cells[legendStartRow, legendStartColumn];
+                colorCell.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                colorCell.Style.Fill.BackgroundColor.SetColor(color);
+
+                var textCell = _worksheet.Cells[legendStartRow + 1, legendStartColumn];
+                textCell.Value = text;
+                textCell.Style.WrapText = true;
+
+                legendStartColumn++;
+            }
+        }
 
         private async Task WriteCellAsync(int row, int column, string value, Color color = default)
         {
@@ -156,7 +184,7 @@ namespace NTFSChecker.Services
         public async Task WriteDataAsync(List<ExcelDataModel> data)
         {
             var row = 2;
-            var mainDirData = data[0].AccessUsers.OrderBy(x => x).ToList();
+            var mainDirData = data.FirstOrDefault().AccessUsers.OrderBy(x => x).ToList();
 
 
             foreach (var item in data)

@@ -211,6 +211,11 @@ namespace NTFSChecker
         {
             try
             {
+                if (rootData.Count == 0)
+                {
+                    return;
+                }
+
                 List<ExcelDataModel> data = [];
                 var headers = new List<string>
                 {
@@ -224,7 +229,7 @@ namespace NTFSChecker
 
                 if (!changesCheckBox)
                 {
-                    data.Add(rootData[0]);
+                    data.Add(rootData.FirstOrDefault());
                     data.AddRange(rootData.Where(x => x.ChangesFlag).ToList());
                 }
                 else
@@ -235,6 +240,7 @@ namespace NTFSChecker
                 _excelWriter.CreateNewFile();
                 await _excelWriter.SetTableHeadAsync(headers);
                 await _excelWriter.WriteDataAsync(data);
+                _excelWriter.CreateLegend();
                 _excelWriter.AutoFitColumnsAndRows();
 
                 _excelWriter.SaveTempAndShow();
