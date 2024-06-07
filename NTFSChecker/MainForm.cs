@@ -34,7 +34,7 @@ namespace NTFSChecker
         }
 
 
-        private async void BtnOpen_Click(object sender, EventArgs e)
+        private void BtnOpen_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -61,7 +61,7 @@ namespace NTFSChecker
             if (string.IsNullOrEmpty(txtFolderPath.Text)) return;
             try
             {
-                await CheckDirectoryAsync(txtFolderPath.Text);
+                await Task.Run(async () => { await CheckDirectoryAsync(txtFolderPath.Text); });
                 LogToUI("Операция прошла успешно");
             }
             catch (Exception exception)
@@ -106,8 +106,8 @@ namespace NTFSChecker
             var rootAcl = GetAccessRules(path);
             var totalItems = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length +
                              Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Length;
-            progressBar.Maximum = totalItems + 1;
-            progressBar.Value = 0;
+            this.Invoke((MethodInvoker)(() => progressBar.Maximum = totalItems + 1));
+            this.Invoke((MethodInvoker)(() => progressBar.Value = 0));
             await CheckDirectoryAsync(path, rootAcl);
         }
 
@@ -203,54 +203,56 @@ namespace NTFSChecker
 
         private void LogToUI(string message)
         {
-            ListLogs.Items.Add(message);
-            ListLogs.SelectedIndex = ListLogs.Items.Count - 1;
+            this.Invoke((MethodInvoker)(() => ListLogs.Items.Add(message)));
+            this.Invoke((MethodInvoker)(() => ListLogs.SelectedIndex = ListLogs.Items.Count - 1));
         }
 
         private async void ExportToExcelClick(object sender, EventArgs e)
         {
-            try
+            await Task.Run(async () =>
             {
-                if (rootData.Count == 0)
+                try
                 {
-                    return;
-                }
+                    if (rootData.Count == 0)
+                    {
+                        return;
+                    }
 
-                List<ExcelDataModel> data = [];
-                var headers = new List<string>
-                {
-                    "Наименование сервера",
-                    "IP",
-                    "Каталог",
-                    "Назначение",
-                    "Кому предоставлен доступ",
-                    "Назначение прав доступа"
-                };
+                    List<ExcelDataModel> data = [];
+                    var headers = new List<string>
+                    {
+                        "Наименование сервера",
+                        "IP",
+                        "Каталог",
+                        "Назначение",
+                        "Кому предоставлен доступ",
+                        "Назначение прав доступа"
+                    };
 
-                if (!changesCheckBox)
-                {
-                    data.Add(rootData.FirstOrDefault());
-                    data.AddRange(rootData.Where(x => x.ChangesFlag).ToList());
-                }
-                else
-                {
-                    data = rootData;
-                }
-                
-                _excelWriter.CreateNewFile();
-                await _excelWriter.SetTableHeadAsync(headers);
-                await _excelWriter.WriteDataAsync(data);
-                _excelWriter.CreateLegend();
-                _excelWriter.AutoFitColumnsAndRows();
+                    if (!changesCheckBox)
+                    {
+                        data.Add(rootData.FirstOrDefault());
+                        data.AddRange(rootData.Where(x => x.ChangesFlag).ToList());
+                    }
+                    else
+                    {
+                        data = rootData;
+                    }
 
-                _excelWriter.SaveTempAndShow();
-                
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-                _logger.LogError(ex.ToString());
-            }
+                    _excelWriter.CreateNewFile();
+                    await _excelWriter.SetTableHeadAsync(headers);
+                    await _excelWriter.WriteDataAsync(data);
+                    await _excelWriter.CreateLegendAsync();
+                    await _excelWriter.AutoFitColumnsAndRowsAsync();
+
+                    await _excelWriter.SaveTempAndShowAsync();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred: {ex.Message}");
+                    _logger.LogError(ex.ToString());
+                }
+            });
         }
 
 

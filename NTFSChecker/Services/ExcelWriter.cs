@@ -52,7 +52,7 @@ namespace NTFSChecker.Services
             return fileName;
         }
 
-        public void CreateLegend()
+        public async Task CreateLegendAsync()
         {
             var legendStartColumn = _worksheet.Dimension.End.Column + 2;
             var legendStartRow = 1;
@@ -209,7 +209,7 @@ namespace NTFSChecker.Services
             }
         }
 
-        public void AutoFitColumnsAndRows()
+        public async Task AutoFitColumnsAndRowsAsync()
         {
             _worksheet.Cells[_worksheet.Dimension.Address].AutoFitColumns();
             for (int i = 1; i <= _worksheet.Dimension.Columns; i++)
@@ -218,7 +218,7 @@ namespace NTFSChecker.Services
             }
         }
 
-        public void SaveTempAndShow()
+        public async Task SaveTempAndShowAsync()
         {
             try
             {

@@ -17,7 +17,7 @@ public class UserGroupHelper
     public UserGroupHelper(ILogger<UserGroupHelper> logger)
     {
         _logger = logger;
-        Groups = GetUserGroups();
+        Groups = GetUserGroupsAsync().Result;
 
     }
     public async Task<List<string>> GetAccessRulesWithGroupDescriptionAsync(string path)
@@ -35,7 +35,7 @@ public class UserGroupHelper
                 var identity = rule.IdentityReference as NTAccount;
                 if (identity != null)
                 {
-                    var groupDescription = GetUserGroupDescriptionsAsync(identity.Value.Split('\\')[1], Groups);
+                    var groupDescription =await GetUserGroupDescriptionsAsync(identity.Value.Split('\\')[1], Groups);
                     var accessRuleDescription = $"{identity.Value}: Группы: {string.Join(";\n ", groupDescription)}\n";
                     accessRules.Add(accessRuleDescription);
                 }
@@ -51,7 +51,7 @@ public class UserGroupHelper
     }
     
     
-    private Dictionary<string, List<string>> GetUserGroups()
+    private async Task<Dictionary<string, List<string>>>  GetUserGroupsAsync()
     {
         var userGroups = new Dictionary<string, List<string>>();
 
@@ -84,7 +84,7 @@ public class UserGroupHelper
         return userGroups;
     }
 
-    private static List<string> GetUserGroupDescriptionsAsync(string userName, Dictionary<string, List<string>> userGroups)
+    private static async Task<List<string>>  GetUserGroupDescriptionsAsync(string userName, Dictionary<string, List<string>> userGroups)
     {
         if (userGroups.ContainsKey(userName))
         {
