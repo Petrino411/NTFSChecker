@@ -11,7 +11,7 @@ namespace NTFSChecker.Services;
 
 public class UserGroupHelper
 {
-    private Dictionary<string, List<string>> Groups { get; set; }
+    private Dictionary<string, string> Groups { get; set; }
     private ILogger<UserGroupHelper> _logger;
 
     public UserGroupHelper(ILogger<UserGroupHelper> logger)
@@ -20,40 +20,27 @@ public class UserGroupHelper
         Groups = GetUserGroupsAsync().Result;
 
     }
-    public async Task<List<string>> GetAccessRulesWithGroupDescriptionAsync(string path)
+    public async Task<string> GetGroupDescriptionAsync(FileSystemAccessRule rule)
     {
-        var accessRules = new List<string>();
-
         try
         {
-            var security = File.GetAccessControl(path);
-            var rules = security.GetAccessRules(true, true, typeof(NTAccount));
+            var identity = rule.IdentityReference as NTAccount;
 
-            
-            foreach (FileSystemAccessRule rule in rules)
-            {
-                var identity = rule.IdentityReference as NTAccount;
-                if (identity != null)
-                {
-                    var groupDescription =await GetUserGroupDescriptionsAsync(identity.Value.Split('\\')[1], Groups);
-                    var accessRuleDescription = $"{identity.Value}: Группы: {string.Join(";\n ", groupDescription)}\n";
-                    accessRules.Add(accessRuleDescription);
-                }
-            }
+            var groupDescription =await GetUserGroupDescriptionsAsync(identity.Value.Split('\\')[1]);
+            return  groupDescription;
         }
         catch (Exception ex)
         {
-            accessRules.Add($"Ошибка в получении прав: {ex.Message}");
             _logger.LogError($"Ошибка в получении прав: {ex.Message}");
         }
-
-        return accessRules;
+        return  null;
+        
     }
     
     
-    private async Task<Dictionary<string, List<string>>>  GetUserGroupsAsync()
+    private async Task<Dictionary<string, string>>  GetUserGroupsAsync()
     {
-        var userGroups = new Dictionary<string, List<string>>();
+        var userGroups = new Dictionary<string, string>();
 
         try
         {
@@ -64,14 +51,9 @@ public class UserGroupHelper
                 {
                     if (result is GroupPrincipal group)
                     {
-                        foreach (var member in group.GetMembers())
-                        {
-                            if (!userGroups.ContainsKey(member.SamAccountName))
-                            {
-                                userGroups[member.SamAccountName] = new List<string>();
-                            }
-                            userGroups[member.SamAccountName].Add($"{group.Name}: {group.Description}");
-                        }
+                        
+                        userGroups[group.SamAccountName] = group.Description;
+                        
                     }
                 }
             }
@@ -84,12 +66,12 @@ public class UserGroupHelper
         return userGroups;
     }
 
-    private static async Task<List<string>>  GetUserGroupDescriptionsAsync(string userName, Dictionary<string, List<string>> userGroups)
+    private  async Task<string>  GetUserGroupDescriptionsAsync(string userName)
     {
-        if (userGroups.ContainsKey(userName))
+        if (Groups.ContainsKey(userName))
         {
-            return userGroups[userName];
+            return Groups[userName];
         }
-        return new List<string> { "Нет групп или описания" };
+        return "Нет групп или описания";
     }
 }

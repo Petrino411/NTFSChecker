@@ -42,6 +42,7 @@ namespace NTFSChecker
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.ListLogs = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -61,9 +62,9 @@ namespace NTFSChecker
             // 
             this.ChangesCheckBox.AutoSize = true;
             this.ChangesCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ChangesCheckBox.Location = new System.Drawing.Point(736, 3);
+            this.ChangesCheckBox.Location = new System.Drawing.Point(761, 3);
             this.ChangesCheckBox.Name = "ChangesCheckBox";
-            this.ChangesCheckBox.Size = new System.Drawing.Size(185, 24);
+            this.ChangesCheckBox.Size = new System.Drawing.Size(160, 21);
             this.ChangesCheckBox.TabIndex = 6;
             this.ChangesCheckBox.Text = "Экспортировать все\r\n";
             this.ChangesCheckBox.UseVisualStyleBackColor = true;
@@ -84,7 +85,7 @@ namespace NTFSChecker
             // 
             this.BtnCheck.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.BtnCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BtnCheck.Location = new System.Drawing.Point(484, 73);
+            this.BtnCheck.Location = new System.Drawing.Point(484, 71);
             this.BtnCheck.Name = "BtnCheck";
             this.BtnCheck.Size = new System.Drawing.Size(106, 33);
             this.BtnCheck.TabIndex = 2;
@@ -98,7 +99,7 @@ namespace NTFSChecker
             this.txtFolderPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtFolderPath.Location = new System.Drawing.Point(3, 43);
             this.txtFolderPath.Name = "txtFolderPath";
-            this.txtFolderPath.Size = new System.Drawing.Size(1068, 24);
+            this.txtFolderPath.Size = new System.Drawing.Size(1068, 22);
             this.txtFolderPath.TabIndex = 1;
             // 
             // BtnOpen
@@ -116,7 +117,7 @@ namespace NTFSChecker
             // progressBar
             // 
             this.progressBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.progressBar.Location = new System.Drawing.Point(3, 112);
+            this.progressBar.Location = new System.Drawing.Point(3, 110);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(1068, 30);
             this.progressBar.TabIndex = 4;
@@ -126,10 +127,10 @@ namespace NTFSChecker
             this.ListLogs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ListLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ListLogs.FormattingEnabled = true;
-            this.ListLogs.ItemHeight = 18;
-            this.ListLogs.Location = new System.Drawing.Point(3, 148);
+            this.ListLogs.ItemHeight = 16;
+            this.ListLogs.Location = new System.Drawing.Point(3, 146);
             this.ListLogs.Name = "ListLogs";
-            this.ListLogs.Size = new System.Drawing.Size(1068, 437);
+            this.ListLogs.Size = new System.Drawing.Size(1068, 439);
             this.ListLogs.TabIndex = 3;
             // 
             // tableLayoutPanel1
@@ -153,6 +154,11 @@ namespace NTFSChecker
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1074, 588);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 15);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -165,13 +171,14 @@ namespace NTFSChecker
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Location = new System.Drawing.Point(15, 15);
             this.Name = "MainForm";
-            this.Text = "NTFSChecker";
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
         }
+
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 

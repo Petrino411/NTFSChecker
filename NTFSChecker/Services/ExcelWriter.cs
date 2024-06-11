@@ -59,8 +59,8 @@ namespace NTFSChecker.Services
 
             var legends = new List<(string text, Color color)>
             {
-                ("Группы пользователей нет у корневого каталога или прав меньше", Color.Red),
-                ("Группы пользователей нет у дочернего каталога или прав меньше", Color.Orange),
+                ("Группы пользователей нет у корневого каталога", Color.Red),
+                ("Группы пользователей нет у дочернего каталога", Color.Orange),
                 ("Отличия в правах", Color.Purple),
                 ("Без изменений", Color.Black)
             };
@@ -91,90 +91,6 @@ namespace NTFSChecker.Services
             }
         }
 
-        private async Task WriteCellAsync(int row, int column, List<string> users, List<string> mainDirUsers)
-        {
-            var mainDirUsersDict = mainDirUsers
-                .Select(u => u.Split(new[] { ':' }, 2))
-                .ToDictionaryWithSuffix(
-                    u => u[0].Trim(),
-                    u => u.Length > 1 ? u[1].Trim() : string.Empty
-                );
-
-            var usersDict = users
-                .Select(u => u.Split(new[] { ':' }, 2))
-                .ToDictionaryWithSuffix(
-                    u => u[0].Trim(),
-                    u => u.Length > 1 ? u[1].Trim() : string.Empty
-                );
-
-            var colorDifferences = new List<(string user, string difference, Color color, bool fullColor)>();
-
-            foreach (var mainUser in mainDirUsersDict)
-            {
-                if (usersDict.TryGetValue(mainUser.Key, out var userRights))
-                {
-                    // Если права отличаются
-                    if (mainUser.Value != userRights)
-                    {
-                        colorDifferences.Add((
-                            mainUser.Key,
-                            userRights,
-                            Color.Purple,
-                            false)); // Название группы черное, различие выделено
-                    }
-                    else
-                    {
-                        colorDifferences.Add((
-                            mainUser.Key,
-                            mainUser.Value,
-                            Color.Black,
-                            false)); // Все черное
-                    }
-                }
-                else
-                {
-                    colorDifferences.Add((
-                        mainUser.Key,
-                        mainUser.Value,
-                        Color.Orange,
-                        true)); // Весь объект оранжевый
-                }
-            }
-
-            foreach (var user in usersDict)
-            {
-                if (!mainDirUsersDict.ContainsKey(user.Key))
-                {
-                    colorDifferences.Add((
-                        user.Key,
-                        user.Value,
-                        Color.Red,
-                        true)); // Весь объект красный
-                }
-            }
-
-            var cell = _worksheet.Cells[row, column];
-            cell.Style.WrapText = true;
-            cell.Style.VerticalAlignment = ExcelVerticalAlignment.Top;
-
-            foreach (var (user, difference, color, fullColor) in colorDifferences)
-            {
-                if (fullColor)
-                {
-                    var richTextFull = cell.RichText.Add($"{user}: {difference}\n");
-                    richTextFull.Color = color;
-                }
-                else
-                {
-                    var richTextUser = cell.RichText.Add($"{user}: ");
-                    richTextUser.Color = Color.Black;
-
-                    var richTextDifference = cell.RichText.Add($"{difference}\n");
-                    richTextDifference.Color = color;
-                }
-            }
-        }
-
 
         public async Task SetTableHeadAsync(List<string> headers)
         {
@@ -188,26 +104,113 @@ namespace NTFSChecker.Services
         public async Task WriteDataAsync(List<ExcelDataModel> data)
         {
             var row = 2;
-            var mainDirData = data.FirstOrDefault().AccessUsers.OrderBy(x => x).ToList();
-
+            var mainDirAccessUsers = data.FirstOrDefault()!.AccessUsers;
+            var prevRow = 0;
 
             foreach (var item in data)
             {
+                _logger.LogInformation($"Экспортируется {item.DirName}");
+                
                 await WriteCellAsync(row, 1, item.ServerName);
                 await WriteCellAsync(row, 2, item.Ip);
                 await WriteCellAsync(row, 3, item.DirName);
-                _logger.LogInformation($"Экспортируется {item.DirName}");
                 await WriteCellAsync(row, 4, item.Purpose);
-
-                var sortedDescriptionUsers = item.DescriptionUsers.OrderBy(x => x).ToList();
-                await WriteCellAsync(row, 5, string.Join("\n", sortedDescriptionUsers));
-
-                var sortedAccessUsers = item.AccessUsers.OrderBy(x => x).ToList();
-                await WriteCellAsync(row, 6, sortedAccessUsers, mainDirData);
-
-                row++;
+                
+                prevRow =  row;
+                
+                row = await WriteAccessUsersAsync(row, 5, item.AccessUsers, mainDirAccessUsers, row == 2);
+                
+                _worksheet.Cells[prevRow, 1, row - 1, 1].Merge = true;
+                _worksheet.Cells[prevRow, 2, row - 1, 2].Merge = true;
+                _worksheet.Cells[prevRow, 3, row - 1, 3].Merge = true;
+                _worksheet.Cells[prevRow, 4, row - 1, 4].Merge = true;
+                
             }
         }
+
+        private async Task<int> WriteAccessUsersAsync(int startRow, int startColumn, List<List<string>> accessUsers,
+            List<List<string>> mainDirAccessUsers, bool isRootDirectory)
+        {
+            int[] EqualsIndices = { 1, 2, 3 };
+            var count = 0;
+
+            foreach (var accessUser in accessUsers)
+            {
+                if (isRootDirectory)
+                {
+                    // корневой каталог
+                    for (int i = 0; i < accessUser.Count; i++)
+                    {
+                        var cell = _worksheet.Cells[startRow, startColumn + i];
+                        cell.Value = accessUser[i];
+                        cell.Style.WrapText = true;
+                        cell.Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                        cell.Style.Font.Color.SetColor(Color.Black); // Без изменений
+                    }
+                }
+                else
+                {
+                    bool isGroupInMainDir = mainDirAccessUsers.Any(mu => mu[1] == accessUser[1]);
+
+                    for (int i = 0; i < accessUser.Count; i++)
+                    {
+                        var cell = _worksheet.Cells[startRow, startColumn + i];
+                        cell.Value = accessUser[i];
+                        cell.Style.WrapText = true;
+                        cell.Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+
+                        if (isGroupInMainDir)
+                        {
+                            if (mainDirAccessUsers.Any(mainDirAccessUser =>
+                                    EqualsIndices.All(index =>
+                                        accessUser[index] == mainDirAccessUser[index]))) // Полное равенство
+                            {
+                                cell.Style.Font.Color.SetColor(Color.Black); // Без изменений
+                            }
+                            else if (mainDirAccessUsers.Any(mu => mu[3] == accessUser[3]))
+                            {
+                                if (i == 2)
+                                {
+                                    cell.Style.Font.Color.SetColor(Color.Purple); // Отличие в наборе прав
+                                }
+                            }
+                            else
+                            {
+                                if (i == 3)
+                                {
+                                    cell.Style.Font.Color.SetColor(Color.Purple); // Отличие в типе прав
+                                }
+                            }
+                        }
+                        else
+                        {
+                            cell.Style.Font.Color.SetColor(Color.Red); // Нет в корневом
+                        }
+                    }
+                }
+
+
+                startRow++;
+            }
+            foreach (var mainDirAccessUser in mainDirAccessUsers)
+            {
+                if (!accessUsers.Any(x => x.SequenceEqual(mainDirAccessUser)))
+                {
+                    for (int i = 0; i < mainDirAccessUser.Count; i++)
+                    {
+                        var cell = _worksheet.Cells[startRow, startColumn + i];
+                        cell.Value = mainDirAccessUser[i];
+                        cell.Style.WrapText = true;
+                        cell.Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                        cell.Style.Font.Color.SetColor(Color.Orange); // Нет в дочернем
+                    }
+                    startRow++;
+                }
+                
+            }
+            return startRow;
+        }
+
 
         public async Task AutoFitColumnsAndRowsAsync()
         {

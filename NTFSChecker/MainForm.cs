@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.AccessControl;
@@ -36,6 +37,9 @@ namespace NTFSChecker
 
         private void BtnOpen_Click(object sender, EventArgs e)
         {
+            this.Invoke((MethodInvoker)(() => ListLogs.Items.Clear()));
+            this.Invoke((MethodInvoker)(() => progressBar.Value  =  0));
+
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.InitialDirectory = "C:\\Users\\Petrino\\Desktop\\PracticeFNS\\NTFSChecker";
@@ -121,8 +125,8 @@ namespace NTFSChecker
 
                 if (!await CompareAccessRules(rootAcl, currentAcl))
                 {
-                    rootData.Add(new ExcelDataModel(path, currentAcl,
-                        await _userGroupHelper.GetAccessRulesWithGroupDescriptionAsync(path), true));
+                    rootData.Add(new ExcelDataModel(path, _userGroupHelper, currentAcl,
+                        true));
 
 
                     _logger.LogWarning($"Различия в правах доступа обнаружены в папке: {path}");
@@ -131,8 +135,8 @@ namespace NTFSChecker
                 }
                 else
                 {
-                    rootData.Add(new ExcelDataModel(path, currentAcl,
-                        await _userGroupHelper.GetAccessRulesWithGroupDescriptionAsync(path), false));
+                    rootData.Add(new ExcelDataModel(path, _userGroupHelper, currentAcl,
+                        false));
                 }
 
                 UpdateProgress();
@@ -150,16 +154,16 @@ namespace NTFSChecker
 
                     if (!await CompareAccessRules(rootAcl, fileAcl))
                     {
-                        rootData.Add(new ExcelDataModel(file, fileAcl,
-                            await _userGroupHelper.GetAccessRulesWithGroupDescriptionAsync(path), true));
+                        rootData.Add(new ExcelDataModel(file, _userGroupHelper, fileAcl,
+                             true));
 
                         LogToUI($"Различия в правах доступа обнаружены в файле: {file}");
                         _logger.LogWarning($"Различия в правах доступа обнаружены в файле: {file}");
                     }
                     else
                     {
-                        rootData.Add(new ExcelDataModel(file, fileAcl,
-                            await _userGroupHelper.GetAccessRulesWithGroupDescriptionAsync(path), false));
+                        rootData.Add(new ExcelDataModel(file, _userGroupHelper, fileAcl,
+                             false));
                     }
 
                     UpdateProgress();
@@ -204,7 +208,8 @@ namespace NTFSChecker
         private void LogToUI(string message)
         {
             this.Invoke((MethodInvoker)(() => ListLogs.Items.Add(message)));
-            this.Invoke((MethodInvoker)(() => ListLogs.SelectedIndex = ListLogs.Items.Count - 1));
+            // this.Invoke((MethodInvoker)(() => ListLogs.SelectedIndex = ListLogs.Items.Count - 1));
+            this.Invoke((MethodInvoker)(() => ListLogs.SelectedItem = message));
         }
 
         private async void ExportToExcelClick(object sender, EventArgs e)
@@ -226,7 +231,9 @@ namespace NTFSChecker
                         "Каталог",
                         "Назначение",
                         "Кому предоставлен доступ",
-                        "Назначение прав доступа"
+                        "Назначение прав доступа",
+                        "Права доступа",
+                        "Тип прав"
                     };
 
                     if (!changesCheckBox)
@@ -246,6 +253,7 @@ namespace NTFSChecker
                     await _excelWriter.AutoFitColumnsAndRowsAsync();
 
                     await _excelWriter.SaveTempAndShowAsync();
+                    
                 }
                 catch (Exception ex)
                 {
@@ -260,5 +268,6 @@ namespace NTFSChecker
         {
             changesCheckBox = ChangesCheckBox.Checked;
         }
+        
     }
 }
