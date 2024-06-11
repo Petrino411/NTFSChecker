@@ -20,6 +20,7 @@ namespace NTFSChecker.Services
         private string _filePath;
         private ILogger<ExcelWriter> _logger;
 
+
         public ExcelWriter(ILogger<ExcelWriter> logger)
         {
             _logger = logger;
@@ -40,12 +41,17 @@ namespace NTFSChecker.Services
 
         private string GetUniqueFilePath()
         {
-            var directory = Path.GetTempPath();
-            var fileName = Path.Combine(directory, $"{Guid.NewGuid()}.xlsx");
+            var workDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\Reports";
+            if (!Directory.Exists(workDirectory))
+            {
+                Directory.CreateDirectory(workDirectory);
+            }
+
+            var fileName = Path.Combine(workDirectory, $"{Guid.NewGuid()}.xlsx");
 
             while (File.Exists(fileName))
             {
-                fileName = Path.Combine(directory, $"{Guid.NewGuid()}.xlsx");
+                fileName = Path.Combine(workDirectory, $"{Guid.NewGuid()}.xlsx");
             }
 
             _logger.LogInformation($"Получен путь сохранения файла {fileName}");
@@ -194,7 +200,7 @@ namespace NTFSChecker.Services
             }
             foreach (var mainDirAccessUser in mainDirAccessUsers)
             {
-                if (!accessUsers.Any(x => x.SequenceEqual(mainDirAccessUser)))
+                if (!accessUsers.Any(x => x[1] == mainDirAccessUser[1]))
                 {
                     for (int i = 0; i < mainDirAccessUser.Count; i++)
                     {
