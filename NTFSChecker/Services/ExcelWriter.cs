@@ -200,7 +200,7 @@ namespace NTFSChecker.Services
             }
             foreach (var mainDirAccessUser in mainDirAccessUsers)
             {
-                if (!accessUsers.Any(x => x[1] == mainDirAccessUser[1]))
+                if (!accessUsers.Any(x => x.SequenceEqual(mainDirAccessUser)))
                 {
                     for (int i = 0; i < mainDirAccessUser.Count; i++)
                     {
