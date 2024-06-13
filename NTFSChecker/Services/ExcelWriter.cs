@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NTFSChecker.Extentions;
-using NTFSChecker.Models;
+using NTFSChecker.DTO;
+using static System.Drawing.ColorTranslator;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 
@@ -19,7 +20,7 @@ namespace NTFSChecker.Services
         private ExcelWorksheet _worksheet;
         private string _filePath;
         private ILogger<ExcelWriter> _logger;
-
+        
 
         public ExcelWriter(ILogger<ExcelWriter> logger)
         {
@@ -65,9 +66,12 @@ namespace NTFSChecker.Services
 
             var legends = new List<(string text, Color color)>
             {
-                ("Группы пользователей нет у корневого каталога", Color.Red),
-                ("Группы пользователей нет у дочернего каталога", Color.Orange),
-                ("Отличия в правах", Color.Purple),
+                ("Группы пользователей нет у корневого каталога", 
+                    FromHtml(System.Configuration.ConfigurationManager.AppSettings["MainDirColor"])),
+                ("Группы пользователей нет у дочернего каталога", 
+                    FromHtml(System.Configuration.ConfigurationManager.AppSettings["CurDirColor"])),
+                ("Отличия в правах", 
+                    FromHtml(System.Configuration.ConfigurationManager.AppSettings["RightsColor"])),
                 ("Без изменений", Color.Black)
             };
 
@@ -116,21 +120,20 @@ namespace NTFSChecker.Services
             foreach (var item in data)
             {
                 _logger.LogInformation($"Экспортируется {item.DirName}");
-                
+
                 await WriteCellAsync(row, 1, item.ServerName);
                 await WriteCellAsync(row, 2, item.Ip);
                 await WriteCellAsync(row, 3, item.DirName);
                 await WriteCellAsync(row, 4, item.Purpose);
-                
-                prevRow =  row;
-                
+
+                prevRow = row;
+
                 row = await WriteAccessUsersAsync(row, 5, item.AccessUsers, mainDirAccessUsers, row == 2);
-                
+
                 _worksheet.Cells[prevRow, 1, row - 1, 1].Merge = true;
                 _worksheet.Cells[prevRow, 2, row - 1, 2].Merge = true;
                 _worksheet.Cells[prevRow, 3, row - 1, 3].Merge = true;
                 _worksheet.Cells[prevRow, 4, row - 1, 4].Merge = true;
-                
             }
         }
 
@@ -175,22 +178,19 @@ namespace NTFSChecker.Services
                             }
                             else if (mainDirAccessUsers.Any(mu => mu[3] == accessUser[3]))
                             {
-                                if (i == 2)
-                                {
-                                    cell.Style.Font.Color.SetColor(Color.Purple); // Отличие в наборе прав
-                                }
+                                cell.Style.Font.Color.SetColor(
+                                    FromHtml(System.Configuration.ConfigurationManager.AppSettings["RightsColor"])); // Отличие в наборе прав
                             }
                             else
                             {
-                                if (i == 3)
-                                {
-                                    cell.Style.Font.Color.SetColor(Color.Purple); // Отличие в типе прав
-                                }
+                                cell.Style.Font.Color.SetColor(
+                                    FromHtml(System.Configuration.ConfigurationManager.AppSettings["RightsColor"])); // Отличие в типе прав
                             }
                         }
                         else
                         {
-                            cell.Style.Font.Color.SetColor(Color.Red); // Нет в корневом
+                            cell.Style.Font.Color.SetColor(
+                                FromHtml(System.Configuration.ConfigurationManager.AppSettings["MainDirColor"])); // Нет в корневом
                         }
                     }
                 }
@@ -198,6 +198,7 @@ namespace NTFSChecker.Services
 
                 startRow++;
             }
+
             foreach (var mainDirAccessUser in mainDirAccessUsers)
             {
                 if (!accessUsers.Any(x => x.SequenceEqual(mainDirAccessUser)))
@@ -208,12 +209,14 @@ namespace NTFSChecker.Services
                         cell.Value = mainDirAccessUser[i];
                         cell.Style.WrapText = true;
                         cell.Style.VerticalAlignment = ExcelVerticalAlignment.Top;
-                        cell.Style.Font.Color.SetColor(Color.Orange); // Нет в дочернем
+                        cell.Style.Font.Color.SetColor(
+                            FromHtml(System.Configuration.ConfigurationManager.AppSettings["CurDirColor"])); // Нет в дочернем
                     }
+
                     startRow++;
                 }
-                
             }
+
             return startRow;
         }
 

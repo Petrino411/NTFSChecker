@@ -157,3 +157,6 @@ F:\PracticeFNS\NTFSChecker\bin\Debug\Microsoft.IO.RecyclableMemoryStream.xml
 F:\PracticeFNS\NTFSChecker\bin\Debug\System.Security.Cryptography.Pkcs.xml
 F:\PracticeFNS\NTFSChecker\bin\Debug\System.Security.Principal.Windows.xml
 F:\PracticeFNS\NTFSChecker\bin\Debug\System.Text.Encoding.CodePages.xml
+F:\PracticeFNS\NTFSChecker\obj\Debug\NTFSChecker.ColorSettingsForm.resources
+F:\PracticeFNS\NTFSChecker\bin\Debug\Newtonsoft.Json.dll
+F:\PracticeFNS\NTFSChecker\bin\Debug\Newtonsoft.Json.xml
