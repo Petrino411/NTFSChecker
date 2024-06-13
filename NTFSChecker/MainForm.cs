@@ -82,8 +82,11 @@ namespace NTFSChecker
             {
                 try
                 {
+                    Invoke(new Action(() => Cursor  = Cursors.WaitCursor));
+                    
                     if (_directoryChecker.RootData.Count == 0)
                     {
+                        Invoke(new Action(() => Cursor  = Cursors.Default));
                         return;
                     }
 
@@ -117,6 +120,7 @@ namespace NTFSChecker
                     await _excelWriter.AutoFitColumnsAndRowsAsync();
 
                     await _excelWriter.SaveTempAndShowAsync();
+                    Invoke(new Action(() => Cursor  = Cursors.Default));
                     
                 }
                 catch (Exception ex)
