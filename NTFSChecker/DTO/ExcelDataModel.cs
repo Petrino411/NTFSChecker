@@ -41,7 +41,7 @@ public class ExcelDataModel
             {
                 accessType = "Права не определены";
             }
-            var item  = new List<string>(){ await userGroupHelper.GetGroupDescriptionAsync(rule), 
+            var item  = new List<string>(){ await userGroupHelper.GetDescriptionAsync(rule), 
                 rule.IdentityReference.Value,  accessType,  rule.AccessControlType.ToString()};
             AccessUsers.Add(item);
             

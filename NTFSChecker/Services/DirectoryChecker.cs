@@ -16,10 +16,9 @@ namespace NTFSChecker.Services
         private readonly UserGroupHelper _userGroupHelper;
 
         public List<ExcelDataModel> RootData { get; set; } = new List<ExcelDataModel>();
-
-        public event EventHandler<int> ProgressUpdated;
-        public event EventHandler<int> TotalItemsUpdated;
+        
         public event EventHandler<string> LogMessage;
+        public event EventHandler<(int, int)> ProgressUpdate;
 
         public DirectoryChecker(ILogger<DirectoryChecker> logger, UserGroupHelper userGroupHelper)
         {
@@ -30,49 +29,90 @@ namespace NTFSChecker.Services
         public async Task CheckDirectoryAsync(string path)
         {
             var rootAcl = await GetAccessRules(path);
-            var totalItems = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length +
-                             Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Length;
-
-            TotalItemsUpdated?.Invoke(this, totalItems + 1);
+            // var totalItems = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length +
+            //                  Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Length;
             
+            var dirs = 0;
+            var files = 0;
             async Task CheckDirectoryAsyncInternal(string subPath)
             {
                 var currentAcl = await GetAccessRules(subPath);
-                
-                
-
-                if (!await CompareAccessRules(rootAcl, currentAcl))
+                if (currentAcl is not null)
                 {
-                    RootData.Add(new ExcelDataModel(subPath, _userGroupHelper, currentAcl, true));
-                    LogMessage?.Invoke(this, $"Различия в правах доступа обнаружены в папке: {subPath}");
-                }
-                else
-                {
-                    RootData.Add(new ExcelDataModel(subPath, _userGroupHelper, currentAcl, false));
-                }
-                ProgressUpdated?.Invoke(this, 1);
-
-                foreach (var directory in Directory.GetDirectories(subPath))
-                {
-                    await CheckDirectoryAsyncInternal(directory);
-                }
-
-                foreach (var file in Directory.GetFiles(subPath))
-                {
-                    var fileAcl = await GetFileAccessRules(file);
-                    if (!await CompareAccessRules(rootAcl, fileAcl))
+                    if (!await CompareAccessRules(rootAcl, currentAcl))
                     {
-                        RootData.Add(new ExcelDataModel(file, _userGroupHelper, fileAcl, true));
-                        LogMessage?.Invoke(this, $"Различия в правах доступа обнаружены в файле: {file}");
+                        RootData.Add(new ExcelDataModel(subPath, _userGroupHelper, currentAcl, true));
+                        LogMessage?.Invoke(this, $"Различия в правах доступа обнаружены в папке: {subPath}");
                     }
                     else
                     {
-                        RootData.Add(new ExcelDataModel(file, _userGroupHelper, fileAcl, false));
+                        RootData.Add(new ExcelDataModel(subPath, _userGroupHelper, currentAcl, false));
                     }
-                    ProgressUpdated?.Invoke(this, 1);
+                    dirs ++;
+                    ProgressUpdate?.Invoke(this, (dirs,  files));
+                    
                 }
-            }
+                else
+                {
+                    LogMessage?.Invoke(this, $"Ошибка при получении прав: {subPath}");
+                }
 
+                try
+                {
+                    foreach (var directory in Directory.GetDirectories(subPath))
+                    {
+                        await CheckDirectoryAsyncInternal(directory);
+                    }
+
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    LogMessage?.Invoke(this, $"Отказано в доступе:  {subPath}\n {ex.Message}");
+                }
+                catch (Exception e)
+                {
+                    LogMessage?.Invoke(this, $"Ошибка при получении прав: {subPath}");
+                }
+
+                try
+                {
+                    foreach (var file in Directory.GetFiles(subPath))
+                    {
+                        var fileAcl = await GetFileAccessRules(file);
+                        if (fileAcl is not null)
+                        {
+                        
+                            if (!await CompareAccessRules(rootAcl, fileAcl))
+                            {
+                                RootData.Add(new ExcelDataModel(file, _userGroupHelper, fileAcl, true));
+                                LogMessage?.Invoke(this, $"Различия в правах доступа обнаружены в файле: {file}");
+                            }
+                            else
+                            {
+                                RootData.Add(new ExcelDataModel(file, _userGroupHelper, fileAcl, false));
+                            }
+                            files ++;
+                            ProgressUpdate?.Invoke(this, (dirs,  files));
+                        
+                        }
+                        else
+                        {
+                            LogMessage?.Invoke(this, $"Ошибка при получении прав: {subPath}");
+                        }
+
+                    }
+
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    LogMessage?.Invoke(this, $"Отказано в доступе:  {subPath}\n {ex.Message}");
+                }
+                catch (Exception e)
+                {
+                    LogMessage.Invoke(this, $"Ошибка при получении прав: {subPath}\n  {e.Message}");
+                }
+                
+            }
             await Task.Run(() => CheckDirectoryAsyncInternal(path));
         }
 
@@ -110,12 +150,18 @@ namespace NTFSChecker.Services
             return await Task.Run(() =>
             {
                 var directoryInfo = new DirectoryInfo(path);
-                var directorySecurity = directoryInfo.GetAccessControl();
-                var acl = directorySecurity.GetAccessRules(true, true, typeof(NTAccount));
+                try
+                {
+                    var directorySecurity = directoryInfo.GetAccessControl();
+                    var acl = directorySecurity.GetAccessRules(true, true, typeof(NTAccount));
 
-                return FilterAccessRules(acl).ToList();
-                
-
+                    return FilterAccessRules(acl).ToList();
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "Ошибка при получении прав доступа к файлу: {path}", path);
+                    return null;
+                }
                 
             });
         }
@@ -125,9 +171,20 @@ namespace NTFSChecker.Services
             return await Task.Run(() =>
             {
                 var fileInfo = new FileInfo(filePath);
-                var fileSecurity = fileInfo.GetAccessControl();
-                var acl = fileSecurity.GetAccessRules(true, true, typeof(NTAccount));
-                return FilterAccessRules(acl).ToList();
+                try
+                {
+                    var fileSecurity = fileInfo.GetAccessControl();
+                    var acl = fileSecurity.GetAccessRules(true, true, typeof(NTAccount));
+                    return FilterAccessRules(acl).ToList();
+
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "Ошибка при получении прав доступа к файлу: {filePath}", filePath);
+                    return null;
+                    
+                }
+
             });
         }
         

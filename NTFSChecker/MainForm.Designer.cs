@@ -32,13 +32,15 @@ namespace NTFSChecker
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.BtnCheck = new System.Windows.Forms.Button();
             this.txtFolderPath = new System.Windows.Forms.TextBox();
             this.BtnOpen = new System.Windows.Forms.Button();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.ListLogs = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelTimer = new System.Windows.Forms.Label();
+            this.labelInfo = new System.Windows.Forms.Label();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.менюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,6 +50,7 @@ namespace NTFSChecker
             this.экспортToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AllExportTool = new System.Windows.Forms.ToolStripMenuItem();
             this.IgnoreUndefinedTool = new System.Windows.Forms.ToolStripMenuItem();
+            this.Timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -55,10 +58,11 @@ namespace NTFSChecker
             // BtnCheck
             // 
             this.BtnCheck.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.tableLayoutPanel1.SetColumnSpan(this.BtnCheck, 2);
             this.BtnCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BtnCheck.Location = new System.Drawing.Point(561, 75);
+            this.BtnCheck.Location = new System.Drawing.Point(448, 75);
             this.BtnCheck.Name = "BtnCheck";
-            this.BtnCheck.Size = new System.Drawing.Size(106, 33);
+            this.BtnCheck.Size = new System.Drawing.Size(109, 33);
             this.BtnCheck.TabIndex = 2;
             this.BtnCheck.Text = "Проверить";
             this.BtnCheck.UseVisualStyleBackColor = true;
@@ -66,19 +70,21 @@ namespace NTFSChecker
             // 
             // txtFolderPath
             // 
+            this.tableLayoutPanel1.SetColumnSpan(this.txtFolderPath, 2);
             this.txtFolderPath.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtFolderPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtFolderPath.Location = new System.Drawing.Point(5, 45);
             this.txtFolderPath.Margin = new System.Windows.Forms.Padding(5);
             this.txtFolderPath.Name = "txtFolderPath";
-            this.txtFolderPath.Size = new System.Drawing.Size(1219, 22);
+            this.txtFolderPath.Size = new System.Drawing.Size(995, 22);
             this.txtFolderPath.TabIndex = 1;
             // 
             // BtnOpen
             // 
             this.BtnOpen.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.tableLayoutPanel1.SetColumnSpan(this.BtnOpen, 2);
             this.BtnOpen.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BtnOpen.Location = new System.Drawing.Point(561, 3);
+            this.BtnOpen.Location = new System.Drawing.Point(449, 3);
             this.BtnOpen.Name = "BtnOpen";
             this.BtnOpen.Size = new System.Drawing.Size(106, 34);
             this.BtnOpen.TabIndex = 0;
@@ -86,35 +92,30 @@ namespace NTFSChecker
             this.BtnOpen.UseVisualStyleBackColor = true;
             this.BtnOpen.Click += new System.EventHandler(this.BtnOpen_Click);
             // 
-            // progressBar
-            // 
-            this.progressBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.progressBar.Location = new System.Drawing.Point(5, 116);
-            this.progressBar.Margin = new System.Windows.Forms.Padding(5);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(1219, 30);
-            this.progressBar.TabIndex = 4;
-            // 
             // ListLogs
             // 
+            this.tableLayoutPanel1.SetColumnSpan(this.ListLogs, 2);
             this.ListLogs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ListLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ListLogs.FormattingEnabled = true;
+            this.ListLogs.HorizontalScrollbar = true;
             this.ListLogs.ItemHeight = 16;
-            this.ListLogs.Location = new System.Drawing.Point(5, 156);
+            this.ListLogs.Location = new System.Drawing.Point(5, 116);
             this.ListLogs.Margin = new System.Windows.Forms.Padding(5);
             this.ListLogs.Name = "ListLogs";
-            this.ListLogs.Size = new System.Drawing.Size(1219, 332);
+            this.ListLogs.Size = new System.Drawing.Size(995, 372);
             this.ListLogs.TabIndex = 3;
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.labelTimer, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.labelInfo, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.BtnOpen, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.ListLogs, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.ListLogs, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.txtFolderPath, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.progressBar, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.BtnCheck, 0, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 24);
@@ -125,8 +126,27 @@ namespace NTFSChecker
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1229, 493);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1005, 548);
             this.tableLayoutPanel1.TabIndex = 8;
+            // 
+            // labelTimer
+            // 
+            this.labelTimer.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.labelTimer.Location = new System.Drawing.Point(926, 514);
+            this.labelTimer.Name = "labelTimer";
+            this.labelTimer.Size = new System.Drawing.Size(76, 13);
+            this.labelTimer.TabIndex = 10;
+            this.labelTimer.Text = "00:00:00.0000";
+            // 
+            // labelInfo
+            // 
+            this.labelInfo.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.labelInfo.Location = new System.Drawing.Point(3, 494);
+            this.labelInfo.Name = "labelInfo";
+            this.labelInfo.Size = new System.Drawing.Size(176, 52);
+            this.labelInfo.TabIndex = 10;
+            this.labelInfo.Text = "Проверено:\nпапок:\nфайлов:";
             // 
             // toolStripProgressBar1
             // 
@@ -138,7 +158,7 @@ namespace NTFSChecker
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.менюToolStripMenuItem, this.настройкиToolStripMenuItem });
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1229, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1005, 24);
             this.menuStrip1.TabIndex = 9;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -168,7 +188,7 @@ namespace NTFSChecker
             // цветаToolStripMenuItem
             // 
             this.цветаToolStripMenuItem.Name = "цветаToolStripMenuItem";
-            this.цветаToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.цветаToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.цветаToolStripMenuItem.Text = "Цвета";
             this.цветаToolStripMenuItem.Click += new System.EventHandler(this.цветаToolStripMenuItem_Click);
             // 
@@ -176,7 +196,7 @@ namespace NTFSChecker
             // 
             this.экспортToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.AllExportTool, this.IgnoreUndefinedTool });
             this.экспортToolStripMenuItem.Name = "экспортToolStripMenuItem";
-            this.экспортToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.экспортToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.экспортToolStripMenuItem.Text = "Экспорт";
             // 
             // AllExportTool
@@ -194,12 +214,16 @@ namespace NTFSChecker
             this.IgnoreUndefinedTool.Text = "Игнорировать неопределенные права";
             this.IgnoreUndefinedTool.Click += new System.EventHandler(this.IgnoreUndefinedTool_CheckedChanged);
             // 
+            // Timer1
+            // 
+            this.Timer1.Tick += new System.EventHandler(this.TimerTick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1229, 517);
+            this.ClientSize = new System.Drawing.Size(1005, 572);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.menuStrip1);
             this.ForeColor = System.Drawing.SystemColors.Desktop;
@@ -215,6 +239,10 @@ namespace NTFSChecker
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.Label labelTimer;
+
+        private System.Windows.Forms.Label labelInfo;
 
         private System.Windows.Forms.ToolStripMenuItem ExcelTool;
 
@@ -232,9 +260,9 @@ namespace NTFSChecker
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 
-        public System.Windows.Forms.ProgressBar progressBar;
-
         private System.Windows.Forms.ListBox ListLogs;
+        
+        private System.Windows.Forms.Timer Timer1;
 
         #endregion
 

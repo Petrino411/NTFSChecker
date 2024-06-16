@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,26 +11,31 @@ using Microsoft.Extensions.Logging;
 using NTFSChecker.DTO;
 using NTFSChecker.Services;
 
+
 namespace NTFSChecker
 {
     public partial class MainForm : Form
     {
         private readonly ILogger<MainForm> _logger;
         private readonly ExcelWriter _excelWriter;
+        
+        private Stopwatch  _stopwatch;
         private string SelectedFolderPath { get; set; }
 
         private readonly DirectoryChecker _directoryChecker;
 
         public MainForm(ILogger<MainForm> logger, ExcelWriter excelWriter, DirectoryChecker directoryChecker)
         {
+            _stopwatch  = new Stopwatch();
+
+            SelectedFolderPath = string.Empty;
             _directoryChecker = directoryChecker;
             _excelWriter = excelWriter;
             _logger = logger;
             InitializeComponent();
-
-            _directoryChecker.ProgressUpdated += OnProgressUpdated;
+            
             _directoryChecker.LogMessage += OnLogMessage;
-            _directoryChecker.TotalItemsUpdated += OnTotalItemsUpdated;
+            _directoryChecker.ProgressUpdate += OnProgressUpdate;
             
             bool.TryParse(ConfigurationManager.AppSettings["IgnoreUndefined"], out bool flag); 
             IgnoreUndefinedTool.Checked = flag;
@@ -37,8 +43,10 @@ namespace NTFSChecker
 
         private void BtnOpen_Click(object sender, EventArgs e)
         {
+            StopWatchReset();
+            _directoryChecker.RootData.Clear();
             ListLogs.Items.Clear();
-            progressBar.Value = 0;
+            labelInfo.Text = $"Проверено:\nпапок:\nфайлов:";
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -60,14 +68,20 @@ namespace NTFSChecker
 
         private async void BtnCheck_Click(object sender, EventArgs e)
         {
+            StopWatchReset();
+            StopWatchStart();
             _directoryChecker.RootData.Clear();
-            progressBar.Value  =  0;
             ListLogs.Items.Clear();
+            labelInfo.Text = $"Проверено:\nпапок:\nфайлов:";
+            DisableControls();
+            
             if (string.IsNullOrEmpty(txtFolderPath.Text)) return;
             try
             {
                 await Task.Run(async () => { await _directoryChecker.CheckDirectoryAsync(txtFolderPath.Text); });
                 LogToUI("Операция прошла успешно");
+                StopWatchStop();
+                EnableControls();
             }
             catch (Exception exception)
             {
@@ -131,31 +145,13 @@ namespace NTFSChecker
             });
         }
         
+        private void OnProgressUpdate(object sender, (int dirs, int files) info )
+        {
+            Invoke(new Action(() => labelInfo.Text = $"Проверено:\nпапок:{info.dirs}\nфайлов:{info.files}"));
+        }
         
-        private void OnTotalItemsUpdated(object sender, int progress)
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new Action(() => progressBar.Maximum = progress));
-            }
-            else
-            {
-                progressBar.Maximum = progress;
-            }
-        }
-
-        private void OnProgressUpdated(object sender, int progress)
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new Action(() => progressBar.Value += progress));
-            }
-            else
-            {
-                progressBar.Value += progress;
-            }
-        }
-
+        
+        
         private void OnLogMessage(object sender, string message)
         {
             LogToUI(message);
@@ -191,6 +187,48 @@ namespace NTFSChecker
             config.AppSettings.Settings["IgnoreUndefined"].Value = IgnoreUndefinedTool.Checked.ToString();
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        private void StopWatchStart()
+        {
+            Timer1.Start();
+            _stopwatch.Start();
+        }
+        private void StopWatchStop()
+        {
+            Timer1.Stop();
+            _stopwatch.Stop();
+        }
+        
+        private void StopWatchReset()
+        {
+            _stopwatch.Reset();
+            labelTimer.Text = "00:00:00:000";
+        }
+
+        private void TimerTick(object sender, EventArgs e)
+        {
+            var elapsed = _stopwatch.Elapsed;
+            labelTimer.Text =
+                $"{Math.Floor(elapsed.TotalHours):00}:{elapsed.Minutes:00}:{elapsed.Seconds:00}:{elapsed.Milliseconds:00}";
+        }
+
+        private void DisableControls()
+        {
+            BtnOpen.Enabled  =  false;
+            BtnCheck.Enabled  =  false;
+            txtFolderPath.Enabled =  false;
+            menuStrip1.Enabled  =  false;
+            
+        }
+        
+        private void EnableControls()
+        {
+            BtnOpen.Enabled  =  true;
+            BtnCheck.Enabled  =  true;
+            txtFolderPath.Enabled =  true;
+            menuStrip1.Enabled  =  true;
+            
         }
     }
 }
