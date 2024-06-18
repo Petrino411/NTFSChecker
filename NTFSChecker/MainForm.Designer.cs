@@ -39,8 +39,9 @@ namespace NTFSChecker
             this.BtnOpen = new System.Windows.Forms.Button();
             this.ListLogs = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelTimer = new System.Windows.Forms.Label();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.labelInfo = new System.Windows.Forms.Label();
+            this.labelTimer = new System.Windows.Forms.Label();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.менюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,7 +59,7 @@ namespace NTFSChecker
             // BtnCheck
             // 
             this.BtnCheck.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.tableLayoutPanel1.SetColumnSpan(this.BtnCheck, 2);
+            this.tableLayoutPanel1.SetColumnSpan(this.BtnCheck, 3);
             this.BtnCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.BtnCheck.Location = new System.Drawing.Point(448, 75);
             this.BtnCheck.Name = "BtnCheck";
@@ -70,7 +71,7 @@ namespace NTFSChecker
             // 
             // txtFolderPath
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.txtFolderPath, 2);
+            this.tableLayoutPanel1.SetColumnSpan(this.txtFolderPath, 3);
             this.txtFolderPath.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtFolderPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtFolderPath.Location = new System.Drawing.Point(5, 45);
@@ -82,7 +83,7 @@ namespace NTFSChecker
             // BtnOpen
             // 
             this.BtnOpen.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.tableLayoutPanel1.SetColumnSpan(this.BtnOpen, 2);
+            this.tableLayoutPanel1.SetColumnSpan(this.BtnOpen, 3);
             this.BtnOpen.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.BtnOpen.Location = new System.Drawing.Point(449, 3);
             this.BtnOpen.Name = "BtnOpen";
@@ -94,7 +95,7 @@ namespace NTFSChecker
             // 
             // ListLogs
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.ListLogs, 2);
+            this.tableLayoutPanel1.SetColumnSpan(this.ListLogs, 3);
             this.ListLogs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ListLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ListLogs.FormattingEnabled = true;
@@ -108,19 +109,21 @@ namespace NTFSChecker
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.labelTimer, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.labelInfo, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.BtnOpen, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.ListLogs, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.txtFolderPath, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.BtnCheck, 0, 2);
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel1.Controls.Add(this.progressBar, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.labelInfo, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.BtnOpen, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ListLogs, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.txtFolderPath, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.BtnCheck, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.labelTimer, 2, 5);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 24);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -130,14 +133,13 @@ namespace NTFSChecker
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1005, 548);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
-            // labelTimer
+            // progressBar
             // 
-            this.labelTimer.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.labelTimer.Location = new System.Drawing.Point(926, 514);
-            this.labelTimer.Name = "labelTimer";
-            this.labelTimer.Size = new System.Drawing.Size(76, 13);
-            this.labelTimer.TabIndex = 10;
-            this.labelTimer.Text = "00:00:00.0000";
+            this.progressBar.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.progressBar.Location = new System.Drawing.Point(204, 509);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(597, 23);
+            this.progressBar.TabIndex = 10;
             // 
             // labelInfo
             // 
@@ -147,6 +149,15 @@ namespace NTFSChecker
             this.labelInfo.Size = new System.Drawing.Size(176, 52);
             this.labelInfo.TabIndex = 10;
             this.labelInfo.Text = "Проверено:\nпапок:\nфайлов:";
+            // 
+            // labelTimer
+            // 
+            this.labelTimer.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.labelTimer.Location = new System.Drawing.Point(902, 509);
+            this.labelTimer.Name = "labelTimer";
+            this.labelTimer.Size = new System.Drawing.Size(100, 23);
+            this.labelTimer.TabIndex = 11;
+            this.labelTimer.Text = "00:00:00:000";
             // 
             // toolStripProgressBar1
             // 
@@ -240,6 +251,7 @@ namespace NTFSChecker
             this.PerformLayout();
         }
 
+        private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label labelTimer;
 
         private System.Windows.Forms.Label labelInfo;

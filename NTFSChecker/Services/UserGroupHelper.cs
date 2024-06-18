@@ -33,7 +33,7 @@ public class UserGroupHelper
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Ошибка в получении прав: {ex.Message}");
+            _logger.LogError($"Ошибка в получении прав: {ex.Message}? {rule.IdentityReference}");
         }
         return  null;
         

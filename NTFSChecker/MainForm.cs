@@ -19,14 +19,20 @@ namespace NTFSChecker
         private readonly ILogger<MainForm> _logger;
         private readonly ExcelWriter _excelWriter;
         
-        private Stopwatch  _stopwatch;
+        private readonly Stopwatch  _stopwatch;
         private string SelectedFolderPath { get; set; }
 
         private readonly DirectoryChecker _directoryChecker;
 
+        private int _files = 0;
+        private int _directories = 0;
+        
+        public event EventHandler<int> ItemsCounted;
+
         public MainForm(ILogger<MainForm> logger, ExcelWriter excelWriter, DirectoryChecker directoryChecker)
         {
             _stopwatch  = new Stopwatch();
+            ItemsCounted += OnItemsCounted;
 
             SelectedFolderPath = string.Empty;
             _directoryChecker = directoryChecker;
@@ -44,9 +50,7 @@ namespace NTFSChecker
         private void BtnOpen_Click(object sender, EventArgs e)
         {
             StopWatchReset();
-            _directoryChecker.RootData.Clear();
-            ListLogs.Items.Clear();
-            labelInfo.Text = $"Проверено:\nпапок:\nфайлов:";
+            Reset();
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -70,14 +74,13 @@ namespace NTFSChecker
         {
             StopWatchReset();
             StopWatchStart();
-            _directoryChecker.RootData.Clear();
-            ListLogs.Items.Clear();
-            labelInfo.Text = $"Проверено:\nпапок:\nфайлов:";
+            Reset();
             DisableControls();
             
             if (string.IsNullOrEmpty(txtFolderPath.Text)) return;
             try
             {
+                Task.Run(async () => { await CountItems(txtFolderPath.Text); });
                 await Task.Run(async () => { await _directoryChecker.CheckDirectoryAsync(txtFolderPath.Text); });
                 LogToUI("Операция прошла успешно");
                 StopWatchStop();
@@ -89,7 +92,31 @@ namespace NTFSChecker
                 throw;
             }
         }
-        
+
+        private async Task CountItems(string path)
+        {
+            var totalItems = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length +
+                             Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Length;
+            ItemsCounted?.Invoke(this, totalItems);
+        }
+
+        private void Reset()
+        {
+            progressBar.Value = 0;
+            progressBar.Maximum = 100;
+            _directoryChecker.RootData.Clear();
+            ListLogs.Items.Clear();
+            labelInfo.Text = $"Проверено:\nпапок:\nфайлов:";
+            
+        }
+
+        private void OnItemsCounted(object sender, int count)
+        {
+            Invoke(new Action(() => progressBar.Maximum = count+1));
+            Invoke(new Action(() => progressBar.Value = _files + _directories));
+        }
+
+
         private async void ExportToExcelClick(object sender, EventArgs e)
         {
             await Task.Run(async () =>
@@ -147,6 +174,16 @@ namespace NTFSChecker
         
         private void OnProgressUpdate(object sender, (int dirs, int files) info )
         {
+            _files = info.files;
+            _directories  = info.dirs;
+            var max= 0;
+            Invoke(new Action(() =>  max = progressBar.Maximum));
+            if (max > 100)
+            {
+                Invoke(new Action(() => progressBar.Value = _files + _directories));
+            }
+
+
             Invoke(new Action(() => labelInfo.Text = $"Проверено:\nпапок:{info.dirs}\nфайлов:{info.files}"));
         }
         
