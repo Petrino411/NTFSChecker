@@ -11,16 +11,21 @@ namespace NTFSChecker.Services;
 
 public class UserGroupHelper
 {
-    private Dictionary<string, string> Groups { get; set; }
-    private Dictionary<string, string> Users { get; set; }
+    private Dictionary<string, string> LocalGroups { get; set; }
+    private Dictionary<string, string> DomainGroups { get; set; }
+    private Dictionary<string, string> LocalUsers { get; set; }
+    private Dictionary<string, string> DomainUsers { get; set; }
     private ILogger<UserGroupHelper> _logger;
 
     public UserGroupHelper(ILogger<UserGroupHelper> logger)
     {
         _logger = logger;
-        Groups = GetUserGroupsAsync().Result;
-        Users = GetUsersAsync().Result;
-
+        LocalGroups = GetLocalUserGroupsAsync().Result;
+        DomainGroups = GetDomainUserGroupsAsync().Result;
+        
+        LocalUsers = GetLocalUsersAsync().Result;
+        DomainUsers = GetDomainUsersAsync().Result;
+        
     }
     public async Task<string> GetDescriptionAsync(FileSystemAccessRule rule)
     {
@@ -40,10 +45,9 @@ public class UserGroupHelper
     }
     
     
-    private async Task<Dictionary<string, string>>  GetUserGroupsAsync()
+    private async Task<Dictionary<string, string>>  GetLocalUserGroupsAsync()
     {
         var userGroups = new Dictionary<string, string>();
-
         try
         {
             using (var context = new PrincipalContext(ContextType.Machine))
@@ -59,6 +63,7 @@ public class UserGroupHelper
                     }
                 }
             }
+            
         }
         catch (Exception ex)
         {
@@ -68,7 +73,36 @@ public class UserGroupHelper
         return userGroups;
     }
     
-    private async Task<Dictionary<string, string>>  GetUsersAsync()
+    private async Task<Dictionary<string, string>>  GetDomainUserGroupsAsync()
+    {
+        var userGroups = new Dictionary<string, string>();
+        try
+        {
+            using (var context = new PrincipalContext(ContextType.Domain))
+            using (var searcher = new PrincipalSearcher(new GroupPrincipal(context)))
+            {
+                foreach (var result in searcher.FindAll())
+                {
+                    if (result is GroupPrincipal group)
+                    {
+                        
+                        userGroups[group.SamAccountName] = group.Description;
+                        
+                    }
+                }
+            }
+            
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Проверка не пройдена: {ex.Message}");
+        }
+
+        return userGroups;
+    }
+    
+    
+    private async Task<Dictionary<string, string>> GetLocalUsersAsync()
     {
         var users = new Dictionary<string, string>();
 
@@ -95,16 +129,53 @@ public class UserGroupHelper
 
         return users;
     }
+    
+    
+    private async Task<Dictionary<string, string>> GetDomainUsersAsync()
+    {
+        var users = new Dictionary<string, string>();
+
+        try
+        {
+            using (var context = new PrincipalContext(ContextType.Domain))
+            using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
+            {
+                foreach (var result in searcher.FindAll())
+                {
+                    if (result is UserPrincipal user)
+                    {
+                        
+                        users[user.SamAccountName] = user.Description;
+                        
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Проверка не пройдена: {ex.Message}");
+        }
+
+        return users;
+    }
 
     private  async Task<string>  GetUserOrGroupDescriptionsAsync(string userName)
     {
-        if (Groups.ContainsKey(userName))
+        if (LocalGroups.ContainsKey(userName))
         {
-            return Groups[userName];
+            return LocalGroups[userName];
         }
-        if (Users.ContainsKey(userName))
+        if (LocalUsers.ContainsKey(userName))
         {
-            return Users[userName];
+            return LocalUsers[userName];
+        }
+        if (DomainGroups.ContainsKey(userName))
+        {
+            return DomainGroups[userName];
+        }
+        if (DomainUsers.ContainsKey(userName))
+        {
+            return DomainUsers[userName];
         }
         
         return "Нет групп или описания";
