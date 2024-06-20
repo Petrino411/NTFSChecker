@@ -51,6 +51,8 @@ namespace NTFSChecker
             this.экспортToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AllExportTool = new System.Windows.Forms.ToolStripMenuItem();
             this.IgnoreUndefinedTool = new System.Windows.Forms.ToolStripMenuItem();
+            this.доменToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.изменитьToolStripMenuItem = new System.Windows.Forms.ToolStripTextBox();
             this.Timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -191,7 +193,7 @@ namespace NTFSChecker
             // 
             // настройкиToolStripMenuItem
             // 
-            this.настройкиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.цветаToolStripMenuItem, this.экспортToolStripMenuItem });
+            this.настройкиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.цветаToolStripMenuItem, this.экспортToolStripMenuItem, this.доменToolStripMenuItem });
             this.настройкиToolStripMenuItem.Name = "настройкиToolStripMenuItem";
             this.настройкиToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
             this.настройкиToolStripMenuItem.Text = "Настройки";
@@ -199,7 +201,7 @@ namespace NTFSChecker
             // цветаToolStripMenuItem
             // 
             this.цветаToolStripMenuItem.Name = "цветаToolStripMenuItem";
-            this.цветаToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.цветаToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.цветаToolStripMenuItem.Text = "Цвета";
             this.цветаToolStripMenuItem.Click += new System.EventHandler(this.цветаToolStripMenuItem_Click);
             // 
@@ -207,7 +209,7 @@ namespace NTFSChecker
             // 
             this.экспортToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.AllExportTool, this.IgnoreUndefinedTool });
             this.экспортToolStripMenuItem.Name = "экспортToolStripMenuItem";
-            this.экспортToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.экспортToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.экспортToolStripMenuItem.Text = "Экспорт";
             // 
             // AllExportTool
@@ -224,6 +226,19 @@ namespace NTFSChecker
             this.IgnoreUndefinedTool.Size = new System.Drawing.Size(285, 22);
             this.IgnoreUndefinedTool.Text = "Игнорировать неопределенные права";
             this.IgnoreUndefinedTool.Click += new System.EventHandler(this.IgnoreUndefinedTool_CheckedChanged);
+            // 
+            // доменToolStripMenuItem
+            // 
+            this.доменToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.изменитьToolStripMenuItem });
+            this.доменToolStripMenuItem.Name = "доменToolStripMenuItem";
+            this.доменToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.доменToolStripMenuItem.Text = "Домен";
+            // 
+            // изменитьToolStripMenuItem
+            // 
+            this.изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
+            this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(152, 23);
+            this.изменитьToolStripMenuItem.Text = "Изменить";
             // 
             // Timer1
             // 
@@ -250,6 +265,10 @@ namespace NTFSChecker
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.ToolStripTextBox изменитьToolStripMenuItem;
+
+        private System.Windows.Forms.ToolStripMenuItem доменToolStripMenuItem;
 
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label labelTimer;

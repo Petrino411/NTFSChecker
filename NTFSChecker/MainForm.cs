@@ -23,28 +23,30 @@ namespace NTFSChecker
         private string SelectedFolderPath { get; set; }
 
         private readonly DirectoryChecker _directoryChecker;
+        private readonly UserGroupHelper _reGroupHelper;
 
         private int _files = 0;
         private int _directories = 0;
         
         public event EventHandler<int> ItemsCounted;
 
-        public MainForm(ILogger<MainForm> logger, ExcelWriter excelWriter, DirectoryChecker directoryChecker)
+        public MainForm(ILogger<MainForm> logger, ExcelWriter excelWriter, DirectoryChecker directoryChecker, UserGroupHelper reGroupHelper)
         {
+            InitializeComponent();
             _stopwatch  = new Stopwatch();
             ItemsCounted += OnItemsCounted;
 
             SelectedFolderPath = string.Empty;
             _directoryChecker = directoryChecker;
+            _reGroupHelper = reGroupHelper;
             _excelWriter = excelWriter;
             _logger = logger;
-            InitializeComponent();
-            
             _directoryChecker.LogMessage += OnLogMessage;
             _directoryChecker.ProgressUpdate += OnProgressUpdate;
             
             bool.TryParse(ConfigurationManager.AppSettings["IgnoreUndefined"], out bool flag); 
             IgnoreUndefinedTool.Checked = flag;
+            изменитьToolStripMenuItem.Text = ConfigurationManager.AppSettings["DefaultLDAPPath"];
         }
 
         private void BtnOpen_Click(object sender, EventArgs e)
@@ -131,7 +133,7 @@ namespace NTFSChecker
                         return;
                     }
 
-                    List<ExcelDataModel> data = new List<ExcelDataModel>();
+                    
                     var headers = new List<string>
                     {
                         "Наименование сервера",
@@ -144,16 +146,8 @@ namespace NTFSChecker
                         "Тип прав"
                     };
 
-                    if (!AllExportTool.Checked)
-                    {
-                        data.Add(_directoryChecker.RootData.FirstOrDefault());
-                        data.AddRange(_directoryChecker.RootData.Where(x => x.ChangesFlag).ToList());
-                    }
-                    else
-                    {
-                        data = _directoryChecker.RootData;
-                    }
                     
+                    var data  = await PrepareDataToExport();
                     _excelWriter.CreateNewFile();
                     await _excelWriter.SetTableHeadAsync(headers);
                     await _excelWriter.WriteDataAsync(data);
@@ -171,7 +165,31 @@ namespace NTFSChecker
                 }
             });
         }
-        
+
+        private async Task<List<ExcelDataModel>> PrepareDataToExport()
+        {
+            List<ExcelDataModel> data = new List<ExcelDataModel>();
+            if (!AllExportTool.Checked)
+            {
+                data.Add(_directoryChecker.RootData.FirstOrDefault());
+                data.AddRange(_directoryChecker.RootData.Where(x => x.ChangesFlag).ToList());
+            }
+            else
+            {
+                data = _directoryChecker.RootData;
+            }
+            
+            foreach (var item in data)
+            {
+                foreach (var ac in item.AccessUsers)
+                {
+                    ac[0] = await _reGroupHelper.GetDescriptionAsync(ac[1]);
+                }
+            }
+            return data;
+            
+        }
+
         private void OnProgressUpdate(object sender, (int dirs, int files) info )
         {
             _files = info.files;
@@ -186,7 +204,6 @@ namespace NTFSChecker
 
             Invoke(new Action(() => labelInfo.Text = $"Проверено:\nпапок:{info.dirs}\nфайлов:{info.files}"));
         }
-        
         
         
         private void OnLogMessage(object sender, string message)
@@ -267,5 +284,6 @@ namespace NTFSChecker
             menuStrip1.Enabled  =  true;
             
         }
+
     }
 }

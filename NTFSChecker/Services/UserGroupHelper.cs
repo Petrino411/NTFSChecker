@@ -6,46 +6,47 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using System.DirectoryServices;
 
 namespace NTFSChecker.Services;
 
 public class UserGroupHelper
 {
     private Dictionary<string, string> LocalGroups { get; set; }
-    private Dictionary<string, string> DomainGroups { get; set; }
     private Dictionary<string, string> LocalUsers { get; set; }
-    private Dictionary<string, string> DomainUsers { get; set; }
+
+
     private ILogger<UserGroupHelper> _logger;
 
     public UserGroupHelper(ILogger<UserGroupHelper> logger)
     {
         _logger = logger;
         LocalGroups = GetLocalUserGroupsAsync().Result;
-        DomainGroups = GetDomainUserGroupsAsync().Result;
-        
         LocalUsers = GetLocalUsersAsync().Result;
-        DomainUsers = GetDomainUsersAsync().Result;
-        
     }
-    public async Task<string> GetDescriptionAsync(FileSystemAccessRule rule)
+
+    public async Task<string> GetDescriptionAsync(string identity)
     {
         try
         {
-            var identity = rule.IdentityReference as NTAccount;
-
-            var groupDescription =await GetUserOrGroupDescriptionsAsync(identity.Value.Split('\\')[1]);
-            return  groupDescription;
+            var groupDescription = await GetUserOrGroupDescriptionsAsync(identity.Split('\\')[1]);
+            if (groupDescription != null)
+            {
+                return groupDescription;
+            }
+            
+            
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Ошибка в получении прав: {ex.Message}? {rule.IdentityReference}");
+            _logger.LogError($"Ошибка в получении описания: {ex.Message}? {identity}");
         }
-        return  null;
-        
+
+        return "Нет описания";
     }
-    
-    
-    private async Task<Dictionary<string, string>>  GetLocalUserGroupsAsync()
+
+
+    private async Task<Dictionary<string, string>> GetLocalUserGroupsAsync()
     {
         var userGroups = new Dictionary<string, string>();
         try
@@ -57,13 +58,10 @@ public class UserGroupHelper
                 {
                     if (result is GroupPrincipal group)
                     {
-                        
                         userGroups[group.SamAccountName] = group.Description;
-                        
                     }
                 }
             }
-            
         }
         catch (Exception ex)
         {
@@ -72,35 +70,6 @@ public class UserGroupHelper
 
         return userGroups;
     }
-    
-    private async Task<Dictionary<string, string>>  GetDomainUserGroupsAsync()
-    {
-        var userGroups = new Dictionary<string, string>();
-        try
-        {
-            using (var context = new PrincipalContext(ContextType.Domain))
-            using (var searcher = new PrincipalSearcher(new GroupPrincipal(context)))
-            {
-                foreach (var result in searcher.FindAll())
-                {
-                    if (result is GroupPrincipal group)
-                    {
-                        
-                        userGroups[group.SamAccountName] = group.Description;
-                        
-                    }
-                }
-            }
-            
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Проверка не пройдена: {ex.Message}");
-        }
-
-        return userGroups;
-    }
-    
     
     private async Task<Dictionary<string, string>> GetLocalUsersAsync()
     {
@@ -115,38 +84,7 @@ public class UserGroupHelper
                 {
                     if (result is UserPrincipal user)
                     {
-                        
                         users[user.SamAccountName] = user.Description;
-                        
-                    }
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Проверка не пройдена: {ex.Message}");
-        }
-
-        return users;
-    }
-    
-    
-    private async Task<Dictionary<string, string>> GetDomainUsersAsync()
-    {
-        var users = new Dictionary<string, string>();
-
-        try
-        {
-            using (var context = new PrincipalContext(ContextType.Domain))
-            using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
-            {
-                foreach (var result in searcher.FindAll())
-                {
-                    if (result is UserPrincipal user)
-                    {
-                        
-                        users[user.SamAccountName] = user.Description;
-                        
                     }
                 }
             }
@@ -159,25 +97,51 @@ public class UserGroupHelper
         return users;
     }
 
-    private  async Task<string>  GetUserOrGroupDescriptionsAsync(string userName)
+
+    private async Task<string> GetUserOrGroupDescriptionsAsync(string userName)
     {
         if (LocalGroups.ContainsKey(userName))
         {
             return LocalGroups[userName];
         }
+
         if (LocalUsers.ContainsKey(userName))
         {
             return LocalUsers[userName];
         }
-        if (DomainGroups.ContainsKey(userName))
+
+        return await GetDescFromActiveDirectoryAsync(userName);
+    }
+
+    private async Task<string> GetDescFromActiveDirectoryAsync(string userName)
+    {
+        DirectorySearcher searcher;
+        try
         {
-            return DomainGroups[userName];
+            var entry = new DirectoryEntry(System.Configuration.ConfigurationManager.AppSettings["DefaultLDAPPath"]);
+            searcher = new DirectorySearcher(entry);
         }
-        if (DomainUsers.ContainsKey(userName))
+        catch (Exception e)
         {
-            return DomainUsers[userName];
+            _logger.LogError(e.Message);
+            throw;
         }
-        
-        return "Нет групп или описания";
+        searcher.Filter = $"(sAMAccountName={userName})";
+        searcher.PropertiesToLoad.Add("description");
+        var result = searcher.FindOne();
+        if (result != null)
+        {
+            return result.Properties["description"][0].ToString();
+        }
+
+        searcher.Filter = $"(cn={userName})";
+        searcher.PropertiesToLoad.Add("description");
+        result = searcher.FindOne();
+        if (result != null)
+        {
+            return result.Properties["description"][0].ToString();
+        }
+
+        return "Нет описания";
     }
 }

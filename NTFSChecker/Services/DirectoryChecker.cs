@@ -13,17 +13,14 @@ namespace NTFSChecker.Services
     public class DirectoryChecker
     {
         private readonly ILogger<DirectoryChecker> _logger;
-        private readonly UserGroupHelper _userGroupHelper;
-
-        public List<ExcelDataModel> RootData { get; set; } = new List<ExcelDataModel>();
+        public List<ExcelDataModel> RootData { get; set; } = [];
         
         public event EventHandler<string> LogMessage;
         public event EventHandler<(int, int)> ProgressUpdate;
 
-        public DirectoryChecker(ILogger<DirectoryChecker> logger, UserGroupHelper userGroupHelper)
+        public DirectoryChecker(ILogger<DirectoryChecker> logger)
         {
             _logger = logger;
-            _userGroupHelper = userGroupHelper;
         }
 
         public async Task CheckDirectoryAsync(string path)
@@ -41,12 +38,12 @@ namespace NTFSChecker.Services
                 {
                     if (!await CompareAccessRules(rootAcl, currentAcl))
                     {
-                        RootData.Add(new ExcelDataModel(subPath, _userGroupHelper, currentAcl, true));
+                        RootData.Add(new ExcelDataModel(subPath, currentAcl, true));
                         LogMessage?.Invoke(this, $"Различия в правах доступа обнаружены в папке: {subPath}");
                     }
                     else
                     {
-                        RootData.Add(new ExcelDataModel(subPath, _userGroupHelper, currentAcl, false));
+                        RootData.Add(new ExcelDataModel(subPath, currentAcl, false));
                     }
                     dirs ++;
                     ProgressUpdate?.Invoke(this, (dirs,  files));
@@ -84,12 +81,12 @@ namespace NTFSChecker.Services
                         
                             if (!await CompareAccessRules(rootAcl, fileAcl))
                             {
-                                RootData.Add(new ExcelDataModel(file, _userGroupHelper, fileAcl, true));
+                                RootData.Add(new ExcelDataModel(file, fileAcl, true));
                                 LogMessage?.Invoke(this, $"Различия в правах доступа обнаружены в файле: {file}");
                             }
                             else
                             {
-                                RootData.Add(new ExcelDataModel(file, _userGroupHelper, fileAcl, false));
+                                RootData.Add(new ExcelDataModel(file, fileAcl, false));
                             }
                             files ++;
                             ProgressUpdate?.Invoke(this, (dirs,  files));
@@ -105,7 +102,7 @@ namespace NTFSChecker.Services
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    LogMessage?.Invoke(this, $"Отказано в доступе:  {subPath}\n {ex.Message}");
+                    LogMessage?.Invoke(this, $"Отказано в доступе: {subPath}\n {ex.Message}");
                 }
                 catch (Exception e)
                 {

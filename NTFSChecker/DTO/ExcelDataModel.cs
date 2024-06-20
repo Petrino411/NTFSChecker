@@ -23,7 +23,7 @@ public class ExcelDataModel
         
     }
 
-    private async void SetAccessUsers(IEnumerable<FileSystemAccessRule> rules, UserGroupHelper userGroupHelper)
+    private void SetAccessUsers(IEnumerable<FileSystemAccessRule> rules)
     {
         AccessUsers.Clear();
         foreach (FileSystemAccessRule rule in rules)
@@ -41,7 +41,7 @@ public class ExcelDataModel
             {
                 accessType = "Права не определены";
             }
-            var item  = new List<string>(){ await userGroupHelper.GetDescriptionAsync(rule), 
+            var item  = new List<string>(){ "Нет описания", 
                 rule.IdentityReference.Value,  accessType,  rule.AccessControlType.ToString()};
             AccessUsers.Add(item);
             
@@ -50,11 +50,11 @@ public class ExcelDataModel
         }        
     }
 
-    public ExcelDataModel(string path, UserGroupHelper userGroupHelper, IEnumerable<FileSystemAccessRule> rules,
+    public ExcelDataModel(string path, IEnumerable<FileSystemAccessRule> rules,
         bool areChanges)
     {
         DirName = path;
-        SetAccessUsers(rules,userGroupHelper);
+        SetAccessUsers(rules);
         ChangesFlag = areChanges;
     }
 }

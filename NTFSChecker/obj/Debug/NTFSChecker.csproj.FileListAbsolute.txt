@@ -160,3 +160,7 @@ F:\PracticeFNS\NTFSChecker\bin\Debug\System.Text.Encoding.CodePages.xml
 F:\PracticeFNS\NTFSChecker\obj\Debug\NTFSChecker.ColorSettingsForm.resources
 F:\PracticeFNS\NTFSChecker\bin\Debug\Newtonsoft.Json.dll
 F:\PracticeFNS\NTFSChecker\bin\Debug\Newtonsoft.Json.xml
+F:\PracticeFNS\NTFSChecker\bin\Debug\System.IO.FileSystem.AccessControl.dll
+F:\PracticeFNS\NTFSChecker\bin\Debug\System.Security.AccessControl.dll
+F:\PracticeFNS\NTFSChecker\bin\Debug\System.IO.FileSystem.AccessControl.xml
+F:\PracticeFNS\NTFSChecker\bin\Debug\System.Security.AccessControl.xml
