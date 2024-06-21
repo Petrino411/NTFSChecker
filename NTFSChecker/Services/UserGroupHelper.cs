@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.DirectoryServices.AccountManagement;
-using System.IO;
-using System.Security.AccessControl;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System.DirectoryServices;
@@ -36,7 +33,7 @@ public class UserGroupHelper
         {
             using (var rootDSE = new DirectoryEntry(path))
             {
-                _isDomainAvailable = rootDSE.Properties["defaultNamingContext"].Value != null;
+                _isDomainAvailable = rootDSE.Name != null;
             }
         }
         catch (Exception e)
