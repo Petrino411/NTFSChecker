@@ -85,6 +85,7 @@ namespace NTFSChecker
                 Task.Run(async () => { await CountItems(txtFolderPath.Text); });
                 await Task.Run(async () => { await _directoryChecker.CheckDirectoryAsync(txtFolderPath.Text); });
                 LogToUI("Операция прошла успешно");
+                progressBar.Value = progressBar.Maximum;
                 StopWatchStop();
                 EnableControls();
             }
