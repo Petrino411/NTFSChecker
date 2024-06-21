@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using NTFSChecker.Properties;
 using NTFSChecker.Services;
 using static System.Text.Json.JsonSerializer;
 
@@ -53,7 +54,7 @@ namespace NTFSChecker
             
 
             services.AddTransient<MainForm>();
-            services.AddSingleton<ColorSettingsForm>();
+            services.AddTransient<SettingsForm>();
             services.AddSingleton<ExcelWriter>();
             services.AddSingleton<UserGroupHelper>();
             services.AddSingleton<DirectoryChecker>();

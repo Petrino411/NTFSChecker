@@ -170,4 +170,4 @@ C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\System.Security.Acces
 C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\System.IO.FileSystem.AccessControl.xml
 C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\bin\Debug\System.Security.AccessControl.xml
-C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\obj\Debug\NTFSChecker.ColorSettingsForm.resources
+C:\Users\Petrino\Desktop\PracticeFNS\NTFSChecker\obj\Debug\NTFSChecker.SettingsForm.resources

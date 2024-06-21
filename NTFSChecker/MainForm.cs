@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NTFSChecker.DTO;
+using NTFSChecker.Properties;
 using NTFSChecker.Services;
 
 
@@ -33,8 +34,10 @@ namespace NTFSChecker
         public MainForm(ILogger<MainForm> logger, ExcelWriter excelWriter, DirectoryChecker directoryChecker, UserGroupHelper reGroupHelper)
         {
             InitializeComponent();
+            
             _stopwatch  = new Stopwatch();
             ItemsCounted += OnItemsCounted;
+            
 
             SelectedFolderPath = string.Empty;
             _directoryChecker = directoryChecker;
@@ -43,10 +46,7 @@ namespace NTFSChecker
             _logger = logger;
             _directoryChecker.LogMessage += OnLogMessage;
             _directoryChecker.ProgressUpdate += OnProgressUpdate;
-            
-            bool.TryParse(ConfigurationManager.AppSettings["IgnoreUndefined"], out bool flag); 
-            IgnoreUndefinedTool.Checked = flag;
-            изменитьToolStripMenuItem.Text = ConfigurationManager.AppSettings["DefaultLDAPPath"];
+
         }
 
         private void BtnOpen_Click(object sender, EventArgs e)
@@ -170,7 +170,9 @@ namespace NTFSChecker
         private async Task<List<ExcelDataModel>> PrepareDataToExport()
         {
             List<ExcelDataModel> data = new List<ExcelDataModel>();
-            if (!AllExportTool.Checked)
+            bool.TryParse(ConfigurationManager.AppSettings["ExportAll"], out bool allExp);
+            _reGroupHelper.CheckDomainAvailability();
+            if (!allExp)
             {
                 data.Add(_directoryChecker.RootData.FirstOrDefault());
                 data.AddRange(_directoryChecker.RootData.Where(x => x.ChangesFlag).ToList());
@@ -230,20 +232,6 @@ namespace NTFSChecker
 
         
 
-        private void цветаToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var myForm = Program.ServiceProvider.GetRequiredService<ColorSettingsForm>();
-            myForm.Show();
-        }
-
-        private void IgnoreUndefinedTool_CheckedChanged(object sender, EventArgs e)
-        {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["IgnoreUndefined"].Value = IgnoreUndefinedTool.Checked.ToString();
-            config.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
-        }
-
         private void StopWatchStart()
         {
             Timer1.Start();
@@ -286,5 +274,11 @@ namespace NTFSChecker
             
         }
 
+        private void настройкиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var _settingsForm = Program.ServiceProvider.GetRequiredService<SettingsForm>();
+            _settingsForm.Show();
+            
+        }
     }
 }

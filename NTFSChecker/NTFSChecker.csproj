@@ -183,12 +183,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColorSettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ColorSettingsForm.Designer.cs">
-      <DependentUpon>ColorSettingsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Extentions\DictionaryExtensions.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -202,9 +196,12 @@
     <Compile Include="Services\DirectoryChecker.cs" />
     <Compile Include="Services\ExcelWriter.cs" />
     <Compile Include="Services\UserGroupHelper.cs" />
-    <EmbeddedResource Include="ColorSettingsForm.resx">
-      <DependentUpon>ColorSettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -217,6 +214,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

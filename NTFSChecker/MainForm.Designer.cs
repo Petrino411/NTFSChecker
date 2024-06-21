@@ -47,12 +47,6 @@ namespace NTFSChecker
             this.менюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExcelTool = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.цветаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.экспортToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.AllExportTool = new System.Windows.Forms.ToolStripMenuItem();
-            this.IgnoreUndefinedTool = new System.Windows.Forms.ToolStripMenuItem();
-            this.доменToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.изменитьToolStripMenuItem = new System.Windows.Forms.ToolStripTextBox();
             this.Timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -63,7 +57,7 @@ namespace NTFSChecker
             this.BtnCheck.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.tableLayoutPanel1.SetColumnSpan(this.BtnCheck, 3);
             this.BtnCheck.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BtnCheck.Location = new System.Drawing.Point(448, 75);
+            this.BtnCheck.Location = new System.Drawing.Point(448, 77);
             this.BtnCheck.Name = "BtnCheck";
             this.BtnCheck.Size = new System.Drawing.Size(109, 33);
             this.BtnCheck.TabIndex = 2;
@@ -79,7 +73,7 @@ namespace NTFSChecker
             this.txtFolderPath.Location = new System.Drawing.Point(5, 45);
             this.txtFolderPath.Margin = new System.Windows.Forms.Padding(5);
             this.txtFolderPath.Name = "txtFolderPath";
-            this.txtFolderPath.Size = new System.Drawing.Size(995, 22);
+            this.txtFolderPath.Size = new System.Drawing.Size(995, 24);
             this.txtFolderPath.TabIndex = 1;
             // 
             // BtnOpen
@@ -102,8 +96,8 @@ namespace NTFSChecker
             this.ListLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.818182F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ListLogs.FormattingEnabled = true;
             this.ListLogs.HorizontalScrollbar = true;
-            this.ListLogs.ItemHeight = 16;
-            this.ListLogs.Location = new System.Drawing.Point(5, 116);
+            this.ListLogs.ItemHeight = 18;
+            this.ListLogs.Location = new System.Drawing.Point(5, 118);
             this.ListLogs.Margin = new System.Windows.Forms.Padding(5);
             this.ListLogs.Name = "ListLogs";
             this.ListLogs.Size = new System.Drawing.Size(995, 372);
@@ -123,7 +117,7 @@ namespace NTFSChecker
             this.tableLayoutPanel1.Controls.Add(this.BtnCheck, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.labelTimer, 2, 5);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 24);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 27);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -132,13 +126,13 @@ namespace NTFSChecker
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1005, 548);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1005, 545);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
             // progressBar
             // 
             this.progressBar.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.progressBar.Location = new System.Drawing.Point(204, 509);
+            this.progressBar.Location = new System.Drawing.Point(204, 508);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(597, 23);
             this.progressBar.TabIndex = 10;
@@ -146,16 +140,16 @@ namespace NTFSChecker
             // labelInfo
             // 
             this.labelInfo.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.labelInfo.Location = new System.Drawing.Point(3, 494);
+            this.labelInfo.Location = new System.Drawing.Point(3, 495);
             this.labelInfo.Name = "labelInfo";
-            this.labelInfo.Size = new System.Drawing.Size(176, 52);
+            this.labelInfo.Size = new System.Drawing.Size(176, 50);
             this.labelInfo.TabIndex = 10;
             this.labelInfo.Text = "Проверено:\nпапок:\nфайлов:";
             // 
             // labelTimer
             // 
             this.labelTimer.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.labelTimer.Location = new System.Drawing.Point(902, 509);
+            this.labelTimer.Location = new System.Drawing.Point(902, 508);
             this.labelTimer.Name = "labelTimer";
             this.labelTimer.Size = new System.Drawing.Size(100, 23);
             this.labelTimer.TabIndex = 11;
@@ -171,7 +165,7 @@ namespace NTFSChecker
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.менюToolStripMenuItem, this.настройкиToolStripMenuItem });
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1005, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1005, 27);
             this.menuStrip1.TabIndex = 9;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -179,66 +173,24 @@ namespace NTFSChecker
             // 
             this.менюToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.ExcelTool });
             this.менюToolStripMenuItem.Name = "менюToolStripMenuItem";
-            this.менюToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
+            this.менюToolStripMenuItem.Size = new System.Drawing.Size(60, 23);
             this.менюToolStripMenuItem.Text = "Меню";
             // 
             // ExcelTool
             // 
             this.ExcelTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.ExcelTool.Name = "ExcelTool";
-            this.ExcelTool.Size = new System.Drawing.Size(158, 22);
+            this.ExcelTool.Size = new System.Drawing.Size(174, 24);
             this.ExcelTool.Text = "Экспорт в Excel";
             this.ExcelTool.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ExcelTool.Click += new System.EventHandler(this.ExportToExcelClick);
             // 
             // настройкиToolStripMenuItem
             // 
-            this.настройкиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.цветаToolStripMenuItem, this.экспортToolStripMenuItem, this.доменToolStripMenuItem });
             this.настройкиToolStripMenuItem.Name = "настройкиToolStripMenuItem";
-            this.настройкиToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
+            this.настройкиToolStripMenuItem.Size = new System.Drawing.Size(89, 23);
             this.настройкиToolStripMenuItem.Text = "Настройки";
-            // 
-            // цветаToolStripMenuItem
-            // 
-            this.цветаToolStripMenuItem.Name = "цветаToolStripMenuItem";
-            this.цветаToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.цветаToolStripMenuItem.Text = "Цвета";
-            this.цветаToolStripMenuItem.Click += new System.EventHandler(this.цветаToolStripMenuItem_Click);
-            // 
-            // экспортToolStripMenuItem
-            // 
-            this.экспортToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.AllExportTool, this.IgnoreUndefinedTool });
-            this.экспортToolStripMenuItem.Name = "экспортToolStripMenuItem";
-            this.экспортToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.экспортToolStripMenuItem.Text = "Экспорт";
-            // 
-            // AllExportTool
-            // 
-            this.AllExportTool.CheckOnClick = true;
-            this.AllExportTool.Name = "AllExportTool";
-            this.AllExportTool.Size = new System.Drawing.Size(285, 22);
-            this.AllExportTool.Text = "Экспортировать все";
-            // 
-            // IgnoreUndefinedTool
-            // 
-            this.IgnoreUndefinedTool.CheckOnClick = true;
-            this.IgnoreUndefinedTool.Name = "IgnoreUndefinedTool";
-            this.IgnoreUndefinedTool.Size = new System.Drawing.Size(285, 22);
-            this.IgnoreUndefinedTool.Text = "Игнорировать неопределенные права";
-            this.IgnoreUndefinedTool.Click += new System.EventHandler(this.IgnoreUndefinedTool_CheckedChanged);
-            // 
-            // доменToolStripMenuItem
-            // 
-            this.доменToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.изменитьToolStripMenuItem });
-            this.доменToolStripMenuItem.Name = "доменToolStripMenuItem";
-            this.доменToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.доменToolStripMenuItem.Text = "Домен";
-            // 
-            // изменитьToolStripMenuItem
-            // 
-            this.изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
-            this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(152, 23);
-            this.изменитьToolStripMenuItem.Text = "Изменить";
+            this.настройкиToolStripMenuItem.Click += new System.EventHandler(this.настройкиToolStripMenuItem_Click);
             // 
             // Timer1
             // 
@@ -266,10 +218,6 @@ namespace NTFSChecker
             this.PerformLayout();
         }
 
-        private System.Windows.Forms.ToolStripTextBox изменитьToolStripMenuItem;
-
-        private System.Windows.Forms.ToolStripMenuItem доменToolStripMenuItem;
-
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label labelTimer;
 
@@ -278,10 +226,6 @@ namespace NTFSChecker
         private System.Windows.Forms.ToolStripMenuItem ExcelTool;
 
         private System.Windows.Forms.ToolStripMenuItem настройкиToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem цветаToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem экспортToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem AllExportTool;
-        private System.Windows.Forms.ToolStripMenuItem IgnoreUndefinedTool;
 
         private System.Windows.Forms.ToolStripMenuItem менюToolStripMenuItem;
 

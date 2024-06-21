@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.DirectoryServices.AccountManagement;
 using System.IO;
 using System.Security.AccessControl;
@@ -15,14 +16,34 @@ public class UserGroupHelper
     private Dictionary<string, string> LocalGroups { get; set; }
     private Dictionary<string, string> LocalUsers { get; set; }
 
+    private bool _isDomainAvailable;
+
 
     private ILogger<UserGroupHelper> _logger;
 
     public UserGroupHelper(ILogger<UserGroupHelper> logger)
     {
         _logger = logger;
+        CheckDomainAvailability();
         LocalGroups = GetLocalUserGroupsAsync().Result;
         LocalUsers = GetLocalUsersAsync().Result;
+    }
+    
+    public void CheckDomainAvailability()
+    {
+        var path = ConfigurationManager.AppSettings["DefaultLDAPPath"];
+        try
+        {
+            using (var rootDSE = new DirectoryEntry(path))
+            {
+                _isDomainAvailable = rootDSE.Properties["defaultNamingContext"].Value != null;
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, $"Domain {path} is not available.");
+            _isDomainAvailable = false;
+        }
     }
 
     public async Task<string> GetDescriptionAsync(string identity)
@@ -110,7 +131,14 @@ public class UserGroupHelper
             return LocalUsers[userName];
         }
 
-        return await GetDescFromActiveDirectoryAsync(userName);
+        if (_isDomainAvailable)
+        {
+            return await GetDescFromActiveDirectoryAsync(userName);
+        }
+
+        return "Нет описания";
+
+
     }
 
     private async Task<string> GetDescFromActiveDirectoryAsync(string userName)
