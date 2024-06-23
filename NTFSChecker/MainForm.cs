@@ -9,7 +9,6 @@ using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NTFSChecker.DTO;
-using NTFSChecker.Properties;
 using NTFSChecker.Services;
 
 
@@ -26,27 +25,30 @@ namespace NTFSChecker
         private readonly DirectoryChecker _directoryChecker;
         private readonly UserGroupHelper _reGroupHelper;
 
-        private int _files = 0;
-        private int _directories = 0;
+        private int _files;
+        private int _directories;
         
         public event EventHandler<int> ItemsCounted;
 
         public MainForm(ILogger<MainForm> logger, ExcelWriter excelWriter, DirectoryChecker directoryChecker, UserGroupHelper reGroupHelper)
         {
             InitializeComponent();
-            
             _stopwatch  = new Stopwatch();
-            ItemsCounted += OnItemsCounted;
-            
-
             SelectedFolderPath = string.Empty;
             _directoryChecker = directoryChecker;
             _reGroupHelper = reGroupHelper;
             _excelWriter = excelWriter;
             _logger = logger;
+            
+            ConfigureEvents();
+
+        }
+
+        private void ConfigureEvents()
+        {
+            ItemsCounted += OnItemsCounted;
             _directoryChecker.LogMessage += OnLogMessage;
             _directoryChecker.ProgressUpdate += OnProgressUpdate;
-
         }
 
         private void BtnOpen_Click(object sender, EventArgs e)
@@ -76,7 +78,7 @@ namespace NTFSChecker
         {
             StopWatchReset();
             StopWatchStart();
-            Reset();
+            Reset(resetLogs:  false);
             DisableControls();
             
             if (string.IsNullOrEmpty(txtFolderPath.Text)) return;
@@ -103,12 +105,15 @@ namespace NTFSChecker
             ItemsCounted?.Invoke(this, totalItems);
         }
 
-        private void Reset()
+        private void Reset(bool resetLogs = true)
         {
             progressBar.Value = 0;
             progressBar.Maximum = 100;
             _directoryChecker.RootData.Clear();
-            ListLogs.Items.Clear();
+            if (resetLogs)
+            {
+                ListLogs.Items.Clear();
+            }
             labelInfo.Text = $"Проверено:\nпапок:\nфайлов:";
             
         }
@@ -169,7 +174,7 @@ namespace NTFSChecker
 
         private async Task<List<ExcelDataModel>> PrepareDataToExport()
         {
-            List<ExcelDataModel> data = new List<ExcelDataModel>();
+            List<ExcelDataModel> data = [];
             bool.TryParse(ConfigurationManager.AppSettings["ExportAll"], out bool allExp);
             _reGroupHelper.CheckDomainAvailability();
             if (!allExp)

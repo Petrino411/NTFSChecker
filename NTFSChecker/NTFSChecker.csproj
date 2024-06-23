@@ -183,9 +183,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extentions\DictionaryExtensions.cs" />
-    <Compile Include="Extentions\NetworkPathResolver.cs" />
-    <Compile Include="Extentions\SidExtentions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\NetworkPathResolver.cs" />
+    <Compile Include="Extensions\SidExtensions.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

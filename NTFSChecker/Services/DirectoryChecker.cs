@@ -11,26 +11,18 @@ using NTFSChecker.Extentions;
 
 namespace NTFSChecker.Services
 {
-    public class DirectoryChecker
+    public class DirectoryChecker(ILogger<DirectoryChecker> logger)
     {
-        private readonly ILogger<DirectoryChecker> _logger;
         public List<ExcelDataModel> RootData { get; set; } = [];
         
         public event EventHandler<string> LogMessage;
         public event EventHandler<(int, int)> ProgressUpdate;
-
-        public DirectoryChecker(ILogger<DirectoryChecker> logger)
-        {
-            _logger = logger;
-        }
 
         public async Task CheckDirectoryAsync(string path)
         {
             NetworkPathResolver.TryGetRemoteComputerName(path, out string remoteComputerName);
             
             var rootAcl = await GetAccessRules(path);
-            // var totalItems = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length +
-            //                  Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Length;
             
             var dirs = 0;
             var files = 0;
@@ -130,7 +122,7 @@ namespace NTFSChecker.Services
 
                 foreach (var rule in acl1List)
                 {
-                    bool match = acl2List.Any(rule2 =>
+                    var match = acl2List.Any(rule2 =>
                         rule.IdentityReference.Value == rule2.IdentityReference.Value &&
                         rule.AccessControlType == rule2.AccessControlType &&
                         rule.FileSystemRights == rule2.FileSystemRights);
@@ -159,7 +151,7 @@ namespace NTFSChecker.Services
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError(e, "Ошибка при получении прав доступа к файлу: {path}", path);
+                    logger.LogError(e, "Ошибка при получении прав доступа к файлу: {path}", path);
                     return null;
                 }
                 
@@ -180,7 +172,7 @@ namespace NTFSChecker.Services
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError(e, "Ошибка при получении прав доступа к файлу: {filePath}", filePath);
+                    logger.LogError(e, "Ошибка при получении прав доступа к файлу: {filePath}", filePath);
                     return null;
                     
                 }
@@ -191,7 +183,7 @@ namespace NTFSChecker.Services
         private IEnumerable<FileSystemAccessRule> FilterAccessRules(AuthorizationRuleCollection acl)
         {
             bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["IgnoreUndefined"],
-                out bool flag);
+                out var flag);
             
             foreach (FileSystemAccessRule rule in acl)
             {

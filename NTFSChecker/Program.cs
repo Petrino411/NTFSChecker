@@ -1,16 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using NTFSChecker.Properties;
 using NTFSChecker.Services;
-using static System.Text.Json.JsonSerializer;
 
 
 namespace NTFSChecker

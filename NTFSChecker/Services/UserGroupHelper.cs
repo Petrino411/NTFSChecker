@@ -5,9 +5,8 @@ using System.DirectoryServices.AccountManagement;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System.DirectoryServices;
-using System.Security.Principal;
 using NTFSChecker.DTO;
-using NTFSChecker.Extentions;
+using NTFSChecker.Extensions;
 
 namespace NTFSChecker.Services;
 
@@ -19,7 +18,7 @@ public class UserGroupHelper
     private bool _isDomainAvailable;
 
 
-    private ILogger<UserGroupHelper> _logger;
+    private readonly ILogger<UserGroupHelper> _logger;
 
     public UserGroupHelper(ILogger<UserGroupHelper> logger)
     {
@@ -28,7 +27,7 @@ public class UserGroupHelper
         LocalGroups = GetLocalUserGroupsAsync().Result;
         LocalUsers = GetLocalUsersAsync().Result;
     }
-    
+
     public void CheckDomainAvailability()
     {
         var path = ConfigurationManager.AppSettings["DefaultLDAPPath"];
@@ -41,7 +40,7 @@ public class UserGroupHelper
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Domain {path} is not available.");
+            _logger.LogError($"Domain {path} is not available.");
             _isDomainAvailable = false;
         }
     }
@@ -55,12 +54,14 @@ public class UserGroupHelper
             {
                 datacopy.Add(await FillUserOrGroupDescriptionsAsync(item));
             }
+
             return datacopy;
         }
         catch (Exception ex)
         {
             _logger.LogError($"Ошибка в получении описания: {ex.Message}? {data}");
         }
+
         return data;
     }
 
@@ -89,7 +90,7 @@ public class UserGroupHelper
 
         return userGroups;
     }
-    
+
     private async Task<Dictionary<string, string>> GetLocalUsersAsync()
     {
         var users = new Dictionary<string, string>();
@@ -121,15 +122,13 @@ public class UserGroupHelper
     {
         foreach (var ac in dataItem.AccessUsers)
         {
-            var userName  = ac[1];
-            if (SidExtentions.TryParseSid(userName, out var _))
+            var userName = ac[1];
+            if (SidExtensions.TryParseSid(userName, out var _))
             {
-                if (SidExtentions.TryLookupAccountSid( dataItem.ServerName, userName, out string accountName, out string description))
-                {
-                    ac[1] = accountName;
-                    ac[0] = description;
-                    //TODO desc
-                }
+                if (!SidExtensions.TryLookupAccountSid(dataItem.ServerName, userName, out string accountName,
+                        out string description)) continue;
+                ac[1] = accountName;
+                ac[0] = description;
             }
             else
             {
@@ -150,8 +149,8 @@ public class UserGroupHelper
                 }
             }
         }
+
         return dataItem;
-        
     }
 
     private async Task<string> GetDescFromActiveDirectoryAsync(string userName)
@@ -167,6 +166,7 @@ public class UserGroupHelper
             _logger.LogError(e.Message);
             throw;
         }
+
         searcher.Filter = $"(sAMAccountName={userName})";
         searcher.PropertiesToLoad.Add("description");
         var result = searcher.FindOne();
@@ -185,27 +185,4 @@ public class UserGroupHelper
 
         return "Нет описания";
     }
-
-    private NTAccount TryGetNTFromSID(SecurityIdentifier sid)
-    {
-        try
-        {
-            NTAccount account = (NTAccount)sid.Translate(typeof(NTAccount));
-            return account;
-        }
-        catch (IdentityNotMappedException)
-        {
-            _logger.LogError("SID не удалось сопоставить с именем пользователя или группы.");
-            return null;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError("Произошла ошибка: " + ex.Message);
-            return null;
-        }
-    }
-    
-    
-
-    
 }

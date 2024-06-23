@@ -1,13 +1,11 @@
 ﻿using System;
-using System.DirectoryServices;
-using System.DirectoryServices.AccountManagement;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
 
-namespace NTFSChecker.Extentions;
+namespace NTFSChecker.Extensions;
 
-public static class SidExtentions
+public static class SidExtensions
 {
     public static bool TryParseSid(string sidString, out SecurityIdentifier sid)
     {

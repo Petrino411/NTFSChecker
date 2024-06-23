@@ -115,7 +115,7 @@ namespace NTFSChecker.Services
         {
             var row = 2;
             var mainDirAccessUsers = data.FirstOrDefault()!.AccessUsers;
-            var prevRow = 0;
+            int prevRow;
 
             foreach (var item in data)
             {
@@ -148,7 +148,7 @@ namespace NTFSChecker.Services
                 if (isRootDirectory)
                 {
                     // корневой каталог
-                    for (int i = 0; i < accessUser.Count; i++)
+                    for (var i = 0; i < accessUser.Count; i++)
                     {
                         var cell = _worksheet.Cells[startRow, startColumn + i];
                         cell.Value = accessUser[i];
@@ -159,9 +159,9 @@ namespace NTFSChecker.Services
                 }
                 else
                 {
-                    bool isGroupInMainDir = mainDirAccessUsers.Any(mu => mu[1] == accessUser[1]);
+                    var isGroupInMainDir = mainDirAccessUsers.Any(mu => mu[1] == accessUser[1]);
 
-                    for (int i = 0; i < accessUser.Count; i++)
+                    for (var i = 0; i < accessUser.Count; i++)
                     {
                         var cell = _worksheet.Cells[startRow, startColumn + i];
                         cell.Value = accessUser[i];
@@ -203,7 +203,7 @@ namespace NTFSChecker.Services
             {
                 if (!accessUsers.Any(x => x.SequenceEqual(mainDirAccessUser)))
                 {
-                    for (int i = 0; i < mainDirAccessUser.Count; i++)
+                    for (var i = 0; i < mainDirAccessUser.Count; i++)
                     {
                         var cell = _worksheet.Cells[startRow, startColumn + i];
                         cell.Value = mainDirAccessUser[i];
@@ -224,7 +224,7 @@ namespace NTFSChecker.Services
         public async Task AutoFitColumnsAndRowsAsync()
         {
             _worksheet.Cells[_worksheet.Dimension.Address].AutoFitColumns();
-            for (int i = 1; i <= _worksheet.Dimension.Columns; i++)
+            for (var i = 1; i <= _worksheet.Dimension.Columns; i++)
             {
                 _worksheet.Column(i).Width = 40;
             }

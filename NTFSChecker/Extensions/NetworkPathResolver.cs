@@ -24,7 +24,7 @@ public static class NetworkPathResolver
 
     public static bool TryGetRemoteComputerName(string localPath, out string remoteComputerName)
     {
-        int bufferSize = 66000; // большой начальный размер буфера
+        int bufferSize = 66000; 
         IntPtr buffer = Marshal.AllocHGlobal(bufferSize);
 
         try
