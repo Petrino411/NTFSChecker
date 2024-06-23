@@ -24,7 +24,6 @@ public static class SidExtentions
         catch (Exception ex) 
         {
             sid = null;
-            Console.WriteLine("Произошла ошибка: " + ex.Message);
             return false;
         }
     }
