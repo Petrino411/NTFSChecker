@@ -5,6 +5,9 @@ using System.DirectoryServices.AccountManagement;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System.DirectoryServices;
+using System.Security.Principal;
+using NTFSChecker.DTO;
+using NTFSChecker.Extentions;
 
 namespace NTFSChecker.Services;
 
@@ -43,24 +46,22 @@ public class UserGroupHelper
         }
     }
 
-    public async Task<string> GetDescriptionAsync(string identity)
+    public async Task<List<ExcelDataModel>> SetDescriptionsAsync(List<ExcelDataModel> data)
     {
         try
         {
-            var groupDescription = await GetUserOrGroupDescriptionsAsync(identity.Split('\\')[1]);
-            if (groupDescription != null)
+            var datacopy = new List<ExcelDataModel>();
+            foreach (var item in data)
             {
-                return groupDescription;
+                datacopy.Add(await FillUserOrGroupDescriptionsAsync(item));
             }
-            
-            
+            return datacopy;
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Ошибка в получении описания: {ex.Message}? {identity}");
+            _logger.LogError($"Ошибка в получении описания: {ex.Message}? {data}");
         }
-
-        return "Нет описания";
+        return data;
     }
 
 
@@ -116,26 +117,41 @@ public class UserGroupHelper
     }
 
 
-    private async Task<string> GetUserOrGroupDescriptionsAsync(string userName)
+    private async Task<ExcelDataModel> FillUserOrGroupDescriptionsAsync(ExcelDataModel dataItem)
     {
-        if (LocalGroups.ContainsKey(userName))
+        foreach (var ac in dataItem.AccessUsers)
         {
-            return LocalGroups[userName];
+            var userName  = ac[1];
+            if (SidExtentions.TryParseSid(userName, out var _))
+            {
+                if (SidExtentions.TryLookupAccountSid( dataItem.ServerName, userName, out string accountName, out string description))
+                {
+                    ac[1] = accountName;
+                    ac[0] = description;
+                    //TODO desc
+                }
+            }
+            else
+            {
+                var identity = userName.Split('\\')[1];
+                if (LocalGroups.ContainsKey(identity))
+                {
+                    ac[0] = LocalGroups[identity];
+                }
+
+                if (LocalUsers.ContainsKey(identity))
+                {
+                    ac[0] = LocalUsers[identity];
+                }
+
+                if (_isDomainAvailable)
+                {
+                    ac[0] = await GetDescFromActiveDirectoryAsync(identity);
+                }
+            }
         }
-
-        if (LocalUsers.ContainsKey(userName))
-        {
-            return LocalUsers[userName];
-        }
-
-        if (_isDomainAvailable)
-        {
-            return await GetDescFromActiveDirectoryAsync(userName);
-        }
-
-        return "Нет описания";
-
-
+        return dataItem;
+        
     }
 
     private async Task<string> GetDescFromActiveDirectoryAsync(string userName)
@@ -143,7 +159,7 @@ public class UserGroupHelper
         DirectorySearcher searcher;
         try
         {
-            var entry = new DirectoryEntry(System.Configuration.ConfigurationManager.AppSettings["DefaultLDAPPath"]);
+            var entry = new DirectoryEntry(ConfigurationManager.AppSettings["DefaultLDAPPath"]);
             searcher = new DirectorySearcher(entry);
         }
         catch (Exception e)
@@ -169,4 +185,27 @@ public class UserGroupHelper
 
         return "Нет описания";
     }
+
+    private NTAccount TryGetNTFromSID(SecurityIdentifier sid)
+    {
+        try
+        {
+            NTAccount account = (NTAccount)sid.Translate(typeof(NTAccount));
+            return account;
+        }
+        catch (IdentityNotMappedException)
+        {
+            _logger.LogError("SID не удалось сопоставить с именем пользователя или группы.");
+            return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Произошла ошибка: " + ex.Message);
+            return null;
+        }
+    }
+    
+    
+
+    
 }

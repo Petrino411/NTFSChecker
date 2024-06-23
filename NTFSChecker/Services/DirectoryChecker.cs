@@ -7,6 +7,7 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NTFSChecker.DTO;
+using NTFSChecker.Extentions;
 
 namespace NTFSChecker.Services
 {
@@ -25,6 +26,8 @@ namespace NTFSChecker.Services
 
         public async Task CheckDirectoryAsync(string path)
         {
+            NetworkPathResolver.TryGetRemoteComputerName(path, out string remoteComputerName);
+            
             var rootAcl = await GetAccessRules(path);
             // var totalItems = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length +
             //                  Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Length;
@@ -38,12 +41,12 @@ namespace NTFSChecker.Services
                 {
                     if (!await CompareAccessRules(rootAcl, currentAcl))
                     {
-                        RootData.Add(new ExcelDataModel(subPath, currentAcl, true));
+                        RootData.Add(new ExcelDataModel(remoteComputerName,subPath, currentAcl, true));
                         LogMessage?.Invoke(this, $"Различия в правах доступа обнаружены в папке: {subPath}");
                     }
                     else
                     {
-                        RootData.Add(new ExcelDataModel(subPath, currentAcl, false));
+                        RootData.Add(new ExcelDataModel(remoteComputerName,subPath, currentAcl, false));
                     }
                     dirs ++;
                     ProgressUpdate?.Invoke(this, (dirs,  files));
@@ -81,12 +84,12 @@ namespace NTFSChecker.Services
                         
                             if (!await CompareAccessRules(rootAcl, fileAcl))
                             {
-                                RootData.Add(new ExcelDataModel(file, fileAcl, true));
+                                RootData.Add(new ExcelDataModel(remoteComputerName,file, fileAcl, true));
                                 LogMessage?.Invoke(this, $"Различия в правах доступа обнаружены в файле: {file}");
                             }
                             else
                             {
-                                RootData.Add(new ExcelDataModel(file, fileAcl, false));
+                                RootData.Add(new ExcelDataModel(remoteComputerName,file, fileAcl, false));
                             }
                             files ++;
                             ProgressUpdate?.Invoke(this, (dirs,  files));

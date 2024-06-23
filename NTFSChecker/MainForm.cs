@@ -182,15 +182,7 @@ namespace NTFSChecker
                 data = _directoryChecker.RootData;
             }
             
-            foreach (var item in data)
-            {
-                foreach (var ac in item.AccessUsers)
-                {
-                    ac[0] = await _reGroupHelper.GetDescriptionAsync(ac[1]);
-                }
-            }
-            return data;
-            
+            return await _reGroupHelper.SetDescriptionsAsync(data);
         }
 
         private void OnProgressUpdate(object sender, (int dirs, int files) info )

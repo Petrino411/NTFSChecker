@@ -50,9 +50,13 @@ public class ExcelDataModel
         }        
     }
 
-    public ExcelDataModel(string path, IEnumerable<FileSystemAccessRule> rules,
+    public ExcelDataModel(string remoteName, string path, IEnumerable<FileSystemAccessRule> rules,
         bool areChanges)
     {
+        if (!string.IsNullOrEmpty(remoteName))
+        {
+            ServerName = remoteName;
+        }
         DirName = path;
         SetAccessUsers(rules);
         ChangesFlag = areChanges;

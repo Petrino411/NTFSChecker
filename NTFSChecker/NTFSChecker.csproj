@@ -184,6 +184,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extentions\DictionaryExtensions.cs" />
+    <Compile Include="Extentions\NetworkPathResolver.cs" />
+    <Compile Include="Extentions\SidExtentions.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
