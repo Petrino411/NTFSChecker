@@ -2,18 +2,336 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54d52656-0dbb-43ac-95b2-b7b2c78793ce" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../NTFSChecker/MainForm.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NTFSChecker/MainForm.Designer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NTFSChecker/MainForm.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NTFSChecker/MainForm.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NTFSChecker/MainForm.resx" beforeDir="false" afterPath="$PROJECT_DIR$/../NTFSChecker/MainForm.resx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NTFSChecker/Models/ExcelDataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NTFSChecker/DTO/ExcelDataModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NTFSChecker/NTFSChecker.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../NTFSChecker/NTFSChecker.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NTFSChecker/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NTFSChecker/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NTFSChecker/Services/ExcelWriter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NTFSChecker/Services/ExcelWriter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NTFSChecker/bin/Debug/NTFSChecker.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../NTFSChecker/bin/Debug/NTFSChecker.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NTFSChecker/obj/Debug/NTFSChecker.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../NTFSChecker/obj/Debug/NTFSChecker.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NTFSChecker/obj/Debug/NTFSChecker.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../NTFSChecker/obj/Debug/NTFSChecker.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NTFSChecker/obj/Debug/NTFSChecker.csproj.GenerateResource.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../NTFSChecker/obj/Debug/NTFSChecker.csproj.GenerateResource.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NTFSChecker/obj/Debug/NTFSChecker.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../NTFSChecker/obj/Debug/NTFSChecker.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.NTFSCheckerWPF/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NTFSCheckerWPF/.idea/projectSettingsUpdater.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.NTFSCheckerWPF/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NTFSCheckerWPF/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.config" beforeDir="false" afterPath="$PROJECT_DIR$/App.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NTFSCheckerWPF.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NTFSCheckerWPF.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages.config" beforeDir="false" afterPath="$PROJECT_DIR$/packages.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Binder.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Binder.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Binder.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Binder.8.0.0/Microsoft.Extensions.Configuration.Binder.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Binder.8.0.0/PACKAGE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Binder.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Binder.8.0.0/buildTransitive/netstandard2.0/Microsoft.Extensions.Configuration.Binder.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Binder.8.0.0/lib/net462/Microsoft.Extensions.Configuration.Binder.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Binder.8.0.0/lib/net6.0/Microsoft.Extensions.Configuration.Binder.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Binder.8.0.0/lib/net7.0/Microsoft.Extensions.Configuration.Binder.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Binder.8.0.0/lib/net8.0/Microsoft.Extensions.Configuration.Binder.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Binder.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Configuration.Binder.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Binder.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/Microsoft.Extensions.Configuration.FileExtensions.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/PACKAGE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/buildTransitive/net461/Microsoft.Extensions.Configuration.FileExtensions.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/buildTransitive/net462/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/buildTransitive/net6.0/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.Configuration.FileExtensions.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/lib/net462/Microsoft.Extensions.Configuration.FileExtensions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/lib/net6.0/Microsoft.Extensions.Configuration.FileExtensions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/lib/net7.0/Microsoft.Extensions.Configuration.FileExtensions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/lib/net8.0/Microsoft.Extensions.Configuration.FileExtensions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Configuration.FileExtensions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.FileExtensions.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/Microsoft.Extensions.Configuration.Json.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/PACKAGE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/buildTransitive/net461/Microsoft.Extensions.Configuration.Json.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/buildTransitive/net462/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/buildTransitive/net6.0/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.Configuration.Json.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/lib/net462/Microsoft.Extensions.Configuration.Json.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/lib/net6.0/Microsoft.Extensions.Configuration.Json.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/lib/net7.0/Microsoft.Extensions.Configuration.Json.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/lib/net8.0/Microsoft.Extensions.Configuration.Json.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Configuration.Json.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/lib/netstandard2.1/Microsoft.Extensions.Configuration.Json.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.Json.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/Microsoft.Extensions.Configuration.UserSecrets.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/PACKAGE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/buildTransitive/net461/Microsoft.Extensions.Configuration.UserSecrets.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/buildTransitive/net462/Microsoft.Extensions.Configuration.UserSecrets.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/buildTransitive/net462/Microsoft.Extensions.Configuration.UserSecrets.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/buildTransitive/net6.0/Microsoft.Extensions.Configuration.UserSecrets.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/buildTransitive/net6.0/Microsoft.Extensions.Configuration.UserSecrets.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.Configuration.UserSecrets.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/buildTransitive/netstandard2.0/Microsoft.Extensions.Configuration.UserSecrets.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/buildTransitive/netstandard2.0/Microsoft.Extensions.Configuration.UserSecrets.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/lib/net462/Microsoft.Extensions.Configuration.UserSecrets.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/lib/net6.0/Microsoft.Extensions.Configuration.UserSecrets.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/lib/net7.0/Microsoft.Extensions.Configuration.UserSecrets.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/lib/net8.0/Microsoft.Extensions.Configuration.UserSecrets.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Configuration.UserSecrets.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Configuration.UserSecrets.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/Microsoft.Extensions.DependencyInjection.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/PACKAGE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/buildTransitive/net461/Microsoft.Extensions.DependencyInjection.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/buildTransitive/net462/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/buildTransitive/net6.0/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.DependencyInjection.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/lib/net462/Microsoft.Extensions.DependencyInjection.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/lib/net6.0/Microsoft.Extensions.DependencyInjection.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/lib/net7.0/Microsoft.Extensions.DependencyInjection.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/lib/net8.0/Microsoft.Extensions.DependencyInjection.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/PACKAGE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/buildTransitive/net461/Microsoft.Extensions.DependencyInjection.Abstractions.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/buildTransitive/net462/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/buildTransitive/net6.0/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.DependencyInjection.Abstractions.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/lib/net462/Microsoft.Extensions.DependencyInjection.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/lib/net7.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.8.0.0/Microsoft.Extensions.Diagnostics.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.8.0.0/buildTransitive/net461/Microsoft.Extensions.Diagnostics.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.8.0.0/buildTransitive/net462/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.8.0.0/buildTransitive/net6.0/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.Diagnostics.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.8.0.0/lib/net462/Microsoft.Extensions.Diagnostics.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.8.0.0/lib/net6.0/Microsoft.Extensions.Diagnostics.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.8.0.0/lib/net7.0/Microsoft.Extensions.Diagnostics.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.8.0.0/lib/net8.0/Microsoft.Extensions.Diagnostics.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Diagnostics.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0/buildTransitive/net461/Microsoft.Extensions.Diagnostics.Abstractions.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0/buildTransitive/net462/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0/buildTransitive/net6.0/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.Diagnostics.Abstractions.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0/lib/net462/Microsoft.Extensions.Diagnostics.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0/lib/net6.0/Microsoft.Extensions.Diagnostics.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0/lib/net7.0/Microsoft.Extensions.Diagnostics.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0/lib/net8.0/Microsoft.Extensions.Diagnostics.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Diagnostics.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Diagnostics.Abstractions.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/Microsoft.Extensions.Hosting.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/PACKAGE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/buildTransitive/net461/Microsoft.Extensions.Hosting.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/buildTransitive/net462/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/buildTransitive/net6.0/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.Hosting.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/lib/net462/Microsoft.Extensions.Hosting.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/lib/net6.0/Microsoft.Extensions.Hosting.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/lib/net7.0/Microsoft.Extensions.Hosting.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/lib/net8.0/Microsoft.Extensions.Hosting.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Hosting.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/lib/netstandard2.1/Microsoft.Extensions.Hosting.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/Microsoft.Extensions.Hosting.Abstractions.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/PACKAGE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/buildTransitive/net461/Microsoft.Extensions.Hosting.Abstractions.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/buildTransitive/net462/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/buildTransitive/net6.0/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.Hosting.Abstractions.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/lib/net462/Microsoft.Extensions.Hosting.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/lib/net6.0/Microsoft.Extensions.Hosting.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/lib/net7.0/Microsoft.Extensions.Hosting.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/lib/net8.0/Microsoft.Extensions.Hosting.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Hosting.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/lib/netstandard2.1/Microsoft.Extensions.Hosting.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Hosting.Abstractions.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/Microsoft.Extensions.Logging.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/PACKAGE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/buildTransitive/net461/Microsoft.Extensions.Logging.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/buildTransitive/net462/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/buildTransitive/net6.0/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.Logging.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/lib/net462/Microsoft.Extensions.Logging.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/lib/net6.0/Microsoft.Extensions.Logging.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/lib/net7.0/Microsoft.Extensions.Logging.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/lib/net8.0/Microsoft.Extensions.Logging.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Logging.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/lib/netstandard2.1/Microsoft.Extensions.Logging.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/Microsoft.Extensions.Logging.Abstractions.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/PACKAGE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/buildTransitive/net461/Microsoft.Extensions.Logging.Abstractions.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/buildTransitive/net462/Microsoft.Extensions.Logging.Abstractions.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/buildTransitive/net6.0/Microsoft.Extensions.Logging.Abstractions.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.Logging.Abstractions.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/buildTransitive/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/lib/net462/Microsoft.Extensions.Logging.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/lib/net6.0/Microsoft.Extensions.Logging.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/lib/net7.0/Microsoft.Extensions.Logging.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/lib/net8.0/Microsoft.Extensions.Logging.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Abstractions.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Configuration.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Configuration.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Configuration.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Configuration.8.0.0/Microsoft.Extensions.Logging.Configuration.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Configuration.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Configuration.8.0.0/buildTransitive/net461/Microsoft.Extensions.Logging.Configuration.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Configuration.8.0.0/buildTransitive/net462/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Configuration.8.0.0/buildTransitive/net6.0/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Configuration.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.Logging.Configuration.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Configuration.8.0.0/lib/net462/Microsoft.Extensions.Logging.Configuration.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Configuration.8.0.0/lib/net6.0/Microsoft.Extensions.Logging.Configuration.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Configuration.8.0.0/lib/net7.0/Microsoft.Extensions.Logging.Configuration.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Configuration.8.0.0/lib/net8.0/Microsoft.Extensions.Logging.Configuration.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Configuration.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Logging.Configuration.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Configuration.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/Microsoft.Extensions.Logging.Console.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/PACKAGE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/buildTransitive/net461/Microsoft.Extensions.Logging.Console.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/buildTransitive/net462/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/buildTransitive/net6.0/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.Logging.Console.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/lib/net462/Microsoft.Extensions.Logging.Console.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/lib/net6.0/Microsoft.Extensions.Logging.Console.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/lib/net7.0/Microsoft.Extensions.Logging.Console.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/lib/net8.0/Microsoft.Extensions.Logging.Console.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Logging.Console.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Console.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/Microsoft.Extensions.Logging.Debug.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/PACKAGE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/buildTransitive/net461/Microsoft.Extensions.Logging.Debug.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/buildTransitive/net462/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/buildTransitive/net6.0/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.Logging.Debug.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/lib/net462/Microsoft.Extensions.Logging.Debug.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/lib/net6.0/Microsoft.Extensions.Logging.Debug.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/lib/net7.0/Microsoft.Extensions.Logging.Debug.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/lib/net8.0/Microsoft.Extensions.Logging.Debug.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Logging.Debug.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.Debug.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventLog.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventLog.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventLog.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventLog.8.0.0/Microsoft.Extensions.Logging.EventLog.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventLog.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventLog.8.0.0/buildTransitive/net461/Microsoft.Extensions.Logging.EventLog.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventLog.8.0.0/buildTransitive/net462/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventLog.8.0.0/buildTransitive/net6.0/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventLog.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.Logging.EventLog.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventLog.8.0.0/lib/net462/Microsoft.Extensions.Logging.EventLog.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventLog.8.0.0/lib/net6.0/Microsoft.Extensions.Logging.EventLog.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventLog.8.0.0/lib/net7.0/Microsoft.Extensions.Logging.EventLog.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventLog.8.0.0/lib/net8.0/Microsoft.Extensions.Logging.EventLog.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventLog.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Logging.EventLog.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventLog.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventSource.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventSource.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventSource.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventSource.8.0.0/Microsoft.Extensions.Logging.EventSource.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventSource.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventSource.8.0.0/buildTransitive/net461/Microsoft.Extensions.Logging.EventSource.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventSource.8.0.0/buildTransitive/net462/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventSource.8.0.0/buildTransitive/net6.0/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventSource.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.Logging.EventSource.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventSource.8.0.0/lib/net462/Microsoft.Extensions.Logging.EventSource.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventSource.8.0.0/lib/net6.0/Microsoft.Extensions.Logging.EventSource.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventSource.8.0.0/lib/net7.0/Microsoft.Extensions.Logging.EventSource.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventSource.8.0.0/lib/net8.0/Microsoft.Extensions.Logging.EventSource.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventSource.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Logging.EventSource.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Logging.EventSource.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/Microsoft.Extensions.Options.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/PACKAGE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/buildTransitive/net461/Microsoft.Extensions.Options.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/buildTransitive/net462/Microsoft.Extensions.Options.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/buildTransitive/net6.0/Microsoft.Extensions.Options.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/buildTransitive/netcoreapp2.0/Microsoft.Extensions.Options.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/buildTransitive/netstandard2.0/Microsoft.Extensions.Options.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/lib/net462/Microsoft.Extensions.Options.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/lib/net6.0/Microsoft.Extensions.Options.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/lib/net7.0/Microsoft.Extensions.Options.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/lib/net8.0/Microsoft.Extensions.Options.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/lib/netstandard2.0/Microsoft.Extensions.Options.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/lib/netstandard2.1/Microsoft.Extensions.Options.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/Microsoft.Extensions.Options.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Diagnostics.DiagnosticSource.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Diagnostics.DiagnosticSource.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Diagnostics.DiagnosticSource.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Diagnostics.DiagnosticSource.8.0.0/System.Diagnostics.DiagnosticSource.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Diagnostics.DiagnosticSource.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Diagnostics.DiagnosticSource.8.0.0/buildTransitive/net461/System.Diagnostics.DiagnosticSource.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Diagnostics.DiagnosticSource.8.0.0/buildTransitive/net462/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Diagnostics.DiagnosticSource.8.0.0/buildTransitive/net6.0/_._" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Diagnostics.DiagnosticSource.8.0.0/buildTransitive/netcoreapp2.0/System.Diagnostics.DiagnosticSource.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Diagnostics.DiagnosticSource.8.0.0/lib/net462/System.Diagnostics.DiagnosticSource.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Diagnostics.DiagnosticSource.8.0.0/lib/net6.0/System.Diagnostics.DiagnosticSource.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Diagnostics.DiagnosticSource.8.0.0/lib/net7.0/System.Diagnostics.DiagnosticSource.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Diagnostics.DiagnosticSource.8.0.0/lib/net8.0/System.Diagnostics.DiagnosticSource.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Diagnostics.DiagnosticSource.8.0.0/lib/netstandard2.0/System.Diagnostics.DiagnosticSource.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Diagnostics.DiagnosticSource.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/.signature.p7s" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/LICENSE.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/PACKAGE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/System.Text.Json.8.0.0.nupkg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/THIRD-PARTY-NOTICES.TXT" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/buildTransitive/net461/System.Text.Json.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/buildTransitive/net462/System.Text.Json.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/buildTransitive/net6.0/System.Text.Json.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/buildTransitive/netcoreapp2.0/System.Text.Json.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/buildTransitive/netstandard2.0/System.Text.Json.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/lib/net462/System.Text.Json.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/lib/net6.0/System.Text.Json.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/lib/net7.0/System.Text.Json.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/lib/net8.0/System.Text.Json.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/lib/netstandard2.0/System.Text.Json.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/System.Text.Json.8.0.0/useSharedDesignerContext.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +341,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Petrino411"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Petrino411/PracticeFNS.git",
+    "accountId": "33dd617f-a8ee-40c4-9be1-f62c1035a30a"
+  }
+}]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="Toolset" />
   </component>
@@ -54,13 +384,16 @@
       <workItem from="1718222716176" duration="12000" />
       <workItem from="1718223909802" duration="24000" />
       <workItem from="1718223967491" duration="26000" />
+      <workItem from="1730287629153" duration="236000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
+    <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
 </project>
