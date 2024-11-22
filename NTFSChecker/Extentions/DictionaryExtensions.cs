@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NTFSChecker.Extensions;
+namespace NTFSChecker.Extentions;
 
 public static class DictionaryExtensions
 {
