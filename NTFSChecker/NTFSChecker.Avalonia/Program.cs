@@ -1,5 +1,8 @@
 ﻿using Avalonia;
 using System;
+using System.IO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace NTFSChecker.Avalonia;
 
@@ -18,4 +21,5 @@ class Program
             .UsePlatformDetect()
             .WithInterFont()
             .LogToTrace();
+    
 }
