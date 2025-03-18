@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NTFSChecker.Avalonia.DTO;
@@ -29,7 +30,7 @@ public partial class MainWindow : Window
     private int _files;
     private int _directories;
 
-    public event EventHandler<int> ItemsCounted;
+    public Action<int> ItemsCounted;
 
 
     public MainWindow(ExcelWriter excelWriter, DirectoryChecker directoryChecker, UserGroupHelper reGroupHelper,
@@ -41,26 +42,30 @@ public partial class MainWindow : Window
         _logger = logger;
         _settingsForm = settingsForm;
         InitializeComponent();
+        ConfigureEvents();
     }
 
     private void ConfigureEvents()
     {
-        _directoryChecker.LogMessage += OnLogMessage;
-        _directoryChecker.ProgressUpdate += OnProgressUpdate;
+        _directoryChecker.logAction = OnLogMessage;
+        _directoryChecker.progressAction = OnProgressUpdate;
+        ItemsCounted += OnItemsCounted;
+
     }
 
     private async void BtnOpen_Click(object sender, RoutedEventArgs e)
     {
         try
         {
-            var topLevel = GetTopLevel(this); 
+            var topLevel = GetTopLevel(this);
 
             if (topLevel == null) return;
 
             var options = new FolderPickerOpenOptions
             {
                 Title = "Выберите папку",
-                SuggestedStartLocation = await topLevel.StorageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Documents),
+                SuggestedStartLocation =
+                    await topLevel.StorageProvider.TryGetWellKnownFolderAsync(WellKnownFolder.Documents),
                 AllowMultiple = false
             };
 
@@ -80,25 +85,31 @@ public partial class MainWindow : Window
 
     private async void BtnCheck_Click(object sender, RoutedEventArgs e)
     {
-        StopWatchReset();
-        StopWatchStart();
-        Reset(resetLogs: false);
-        // DisableControls();
-
-        if (string.IsNullOrEmpty(txtFolderPath.Text)) return;
         try
         {
-            Task.Run(async () => { await CountItems(txtFolderPath.Text); });
-            await Task.Run(async () => { await _directoryChecker.CheckDirectoryAsync(txtFolderPath.Text); });
-            LogToUI("Операция прошла успешно");
-            progressBar.Value = progressBar.Maximum;
-            StopWatchStop();
-            // EnableControls();
+
+            if (string.IsNullOrEmpty(txtFolderPath.Text)) return;
+            DisableControls();
+            Reset();
+            CountItems(txtFolderPath.Text);
+
+            await  _directoryChecker.CheckDirectoryAsync(txtFolderPath.Text);
+
+
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                LogToUI("Операция прошла успешно");
+                progressBar.Value = progressBar.Maximum;
+            });
         }
-        catch (Exception exception)
+        catch (Exception ex)
         {
-            _logger.LogError(exception.ToString());
-            throw;
+            _logger.LogError(ex.ToString());
+            await Dispatcher.UIThread.InvokeAsync(() => { LogToUI($"Ошибка: {ex.Message}"); });
+        }
+        finally
+        {
+            EnableControls();
         }
     }
 
@@ -106,7 +117,7 @@ public partial class MainWindow : Window
     {
         var totalItems = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length +
                          Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Length;
-        ItemsCounted?.Invoke(this, totalItems);
+        await Dispatcher.UIThread.InvokeAsync(() => { ItemsCounted(totalItems); });
     }
 
     private void Reset(bool resetLogs = true)
@@ -122,26 +133,12 @@ public partial class MainWindow : Window
         labelInfo.Text = $"Проверено:\nпапок:\nфайлов:";
     }
 
-    // private void OnItemsCounted(object sender, int count)
-    // {
-    //     Invoke(new Action(() => progressBar.Maximum = count+1));
-    //     Invoke(new Action(() => progressBar.Value = _files + _directories));
-    // }
-
-
     private void ExportToExcelClick(object sender, RoutedEventArgs e)
     {
         Task.Run(async () =>
         {
             try
             {
-                // Invoke(new Action(() => Cursor = Cursors.WaitCursor));
-                //
-                // if (_directoryChecker.RootData.Count == 0)
-                // {
-                //     Invoke(new Action(() => Cursor = Cursors.Default));
-                //     return;
-                // }
 
 
                 var headers = new List<string>
@@ -165,7 +162,6 @@ public partial class MainWindow : Window
                 await _excelWriter.AutoFitColumnsAndRowsAsync();
 
                 await _excelWriter.SaveTempAndShowAsync();
-                // Invoke(new Action(() => Cursor = Cursors.Default));
             }
             catch (Exception ex)
             {
@@ -193,68 +189,42 @@ public partial class MainWindow : Window
         return await _reGroupHelper.SetDescriptionsAsync(data);
     }
 
-    private void OnProgressUpdate(object sender, (int dirs, int files) info)
+    private void OnProgressUpdate((int dirs, int files) info)
     {
         _files = info.files;
         _directories = info.dirs;
-        var max = 0;
-        // // Invoke(new Action(() => max = progressBar.Maximum));
-        // if (max > 100)
-        // {
-        //     Invoke(new Action(() => progressBar.Value = _files + _directories));
-        // }
-        //
-        //
-        // Invoke(new Action(() => labelInfo.Text = $"Проверено:\nпапок:{info.dirs}\nфайлов:{info.files}"));
+        double max = 0;
+        Dispatcher.UIThread.Invoke(() => max = progressBar.Maximum);
+        if (max > 100)
+        {
+            Dispatcher.UIThread.InvokeAsync(() => progressBar.Value = _files + _directories);
+        }
+
+
+        Dispatcher.UIThread.InvokeAsync(() => labelInfo.Text = $"Проверено:\nпапок:{info.dirs}\nфайлов:{info.files}");
     }
 
 
-    private void OnLogMessage(object sender, string message)
+    private void OnLogMessage(string message)
     {
         LogToUI(message);
     }
 
     private void LogToUI(string message)
     {
-        // if (InvokeRequired)
-        // {
-        //     Invoke(new Action(() => ListLogs.Items.Add(message)));
-        //     Invoke(new Action(() => ListLogs.SelectedItem = message));
-        // }
-        // else
-        {
-            ListLogs.Items.Add(message);
-            ListLogs.SelectedItem = message;
-        }
+
+        Dispatcher.UIThread.InvokeAsync(() => ListLogs.Items.Add(message));
+        Dispatcher.UIThread.InvokeAsync(() => ListLogs.SelectedItem = message);
 
         _logger.LogInformation(message);
     }
 
-
-    private void StopWatchStart()
+    private void OnItemsCounted(int count)
     {
-        // Timer1.Start();
-        _stopwatch.Start();
+        Dispatcher.UIThread.InvokeAsync(() => progressBar.Maximum = count + 1);
+        Dispatcher.UIThread.InvokeAsync(() => progressBar.Value = _files + _directories);
     }
 
-    private void StopWatchStop()
-    {
-        // Timer1.Stop();
-        _stopwatch.Stop();
-    }
-
-    private void StopWatchReset()
-    {
-        _stopwatch.Reset();
-        labelTimer.Text = "00:00:00:000";
-    }
-
-    private void TimerTick(object sender, RoutedEventArgs e)
-    {
-        var elapsed = _stopwatch.Elapsed;
-        labelTimer.Text =
-            $"{Math.Floor(elapsed.TotalHours):00}:{elapsed.Minutes:00}:{elapsed.Seconds:00}:{elapsed.Milliseconds:00}";
-    }
 
     private void DisableControls()
     {
@@ -263,7 +233,7 @@ public partial class MainWindow : Window
         txtFolderPath.IsEnabled = false;
         MenuDock.IsEnabled = false;
     }
-    
+
     private void EnableControls()
     {
         BtnOpen.IsEnabled = true;
@@ -276,6 +246,4 @@ public partial class MainWindow : Window
     {
         _settingsForm.Show();
     }
-
-
 }
