@@ -49,6 +49,7 @@ public partial class App : Application
             builder.AddConfiguration(Configuration.GetSection("Logging"));
             builder.AddConsole();
             builder.AddDebug();
+            
         });
         
         services.AddTransient<MainWindow>();

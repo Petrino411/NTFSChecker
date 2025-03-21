@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -94,8 +95,8 @@ public partial class MainWindow : Window
             CountItems(txtFolderPath.Text);
 
             await  _directoryChecker.CheckDirectoryAsync(txtFolderPath.Text);
-
-
+                
+            
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
                 LogToUI("Операция прошла успешно");
