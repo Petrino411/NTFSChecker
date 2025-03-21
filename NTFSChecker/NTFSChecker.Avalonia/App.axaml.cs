@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,8 @@ public partial class App : Application
 
     public override void Initialize()
     {
+        
+       
         var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
@@ -40,16 +43,14 @@ public partial class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
-    private void ConfigureServices(IServiceCollection services)
+    private static void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton(Configuration);
         
         services.AddLogging(builder =>
         {
-            builder.AddConfiguration(Configuration.GetSection("Logging"));
             builder.AddConsole();
             builder.AddDebug();
-            
         });
         
         services.AddTransient<MainWindow>();
