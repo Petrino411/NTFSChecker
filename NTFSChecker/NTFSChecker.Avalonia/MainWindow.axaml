@@ -57,7 +57,7 @@
 
             <!-- Таймер -->
             <TextBlock Grid.Row="4" Grid.Column="2" Margin="5" Text="00:00:00:000" VerticalAlignment="Center"
-                       HorizontalAlignment="Right" x:Name="labelTimer"  />
+                       HorizontalAlignment="Right" x:Name="labelTimer" />
         </Grid>
     </DockPanel>
 </Window>

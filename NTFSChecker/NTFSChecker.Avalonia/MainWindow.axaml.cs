@@ -26,7 +26,7 @@ public partial class MainWindow : Window
 
     private readonly DirectoryChecker _directoryChecker;
     private readonly UserGroupHelper _reGroupHelper;
-    private readonly SettingsForm _settingsForm;
+
 
     private int _files;
     private int _directories;
@@ -35,13 +35,12 @@ public partial class MainWindow : Window
 
 
     public MainWindow(ExcelWriter excelWriter, DirectoryChecker directoryChecker, UserGroupHelper reGroupHelper,
-        ILogger<MainWindow> logger, SettingsForm settingsForm)
+        ILogger<MainWindow> logger)
     {
         _excelWriter = excelWriter;
         _directoryChecker = directoryChecker;
         _reGroupHelper = reGroupHelper;
         _logger = logger;
-        _settingsForm = settingsForm;
         InitializeComponent();
         ConfigureEvents();
     }
@@ -245,6 +244,7 @@ public partial class MainWindow : Window
 
     private void SettingsClick(object? sender, RoutedEventArgs e)
     {
-        _settingsForm.Show();
+        var settingsForm = App.ServiceProvider.GetRequiredService<SettingsForm>();
+        settingsForm.Show();
     }
 }

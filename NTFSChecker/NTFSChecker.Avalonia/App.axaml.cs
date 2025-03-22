@@ -18,8 +18,6 @@ public partial class App : Application
 
     public override void Initialize()
     {
-        
-       
         var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
