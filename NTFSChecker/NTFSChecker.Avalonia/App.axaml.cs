@@ -14,7 +14,7 @@ namespace NTFSChecker.Avalonia;
 public partial class App : Application
 {
     public static IServiceProvider ServiceProvider { get; set; }
-    public static IConfiguration Configuration { get; private set; }
+    public static IConfigurationRoot Configuration { get; private set; }
 
     public override void Initialize()
     {

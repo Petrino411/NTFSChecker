@@ -7,6 +7,7 @@ public static class ColorExtentions
 {
     public static Color FromHex(string hex)
     {
+        if (string.IsNullOrEmpty(hex)) return Colors.Black;
         if (hex.StartsWith("#"))
             hex = hex.Substring(1);
 

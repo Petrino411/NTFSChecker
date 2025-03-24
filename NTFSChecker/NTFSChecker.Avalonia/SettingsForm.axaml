@@ -3,33 +3,74 @@
         x:Class="NTFSChecker.Avalonia.SettingsForm"
         Title="Настройки"
         Width="528"
-        Height="252">
+        Height="300">
     <Grid>
         <TabControl Name="SettingsTabControl" Grid.Row="0">
             <TabItem Header="Экспорт">
                 <StackPanel>
-                    <CheckBox Name="AllExportCheckBox" Content="Экспортировать все" IsCheckedChanged="ExportAllCheckedChanged" />
+                    <CheckBox Name="AllExportCheckBox" Content="Экспортировать все" KeyBindings=""
+                              IsCheckedChanged="ExportAllCheckedChanged" />
                     <CheckBox Name="IgnoreUndefinedCheckBox" Content="Игнорировать неопределенные права"
                               IsCheckedChanged="IgnoreUndefinedCheckedChanged" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="Цвета">
-                <Grid>
+                <Grid Margin="10" Name="ColorsGrid">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Группы пользователей нет у корневого каталога" />
-                    <ColorPicker Grid.Row="0" Grid.Column="1" Name="ColorMainPicker" Width="75" Height="20" />
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Группы пользователей нет у дочернего каталога" />
-                    <ColorPicker Grid.Row="1" Grid.Column="1" Name="ColorCurPicker" Width="75" Height="20" />
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Отличия в правах" />
-                    <ColorPicker Grid.Row="2" Grid.Column="1" Name="ColorRightPicker" Width="75" Height="20" />
+
+                    <!-- Строка 1 -->
+                    <TextBlock Grid.Row="0" Grid.Column="0"
+                               Text="Группы пользователей нет у корневого каталога"
+                               VerticalAlignment="Center" />
+                    <TextBox Grid.Row="0" Grid.Column="1"
+                             Name="HexMainTextBox"
+                             Width="70"
+                             Margin="5,0"
+                             TextChanged="HexTextChanged" />
+                    <Border Grid.Row="0" Grid.Column="2"
+                            Width="20" Height="20"
+                            Margin="0,0,5,0"
+                            BorderBrush="Gray" BorderThickness="1"
+                            Name="PreviewMainBorder" />
+
+                    <!-- Строка 2 -->
+                    <TextBlock Grid.Row="1" Grid.Column="0"
+                               Text="Группы пользователей нет у дочернего каталога"
+                               VerticalAlignment="Center" />
+                    <TextBox Grid.Row="1" Grid.Column="1"
+                             Name="HexCurTextBox"
+                             Width="70"
+                             Margin="5,0"
+                             TextChanged="HexTextChanged" />
+                    <Border Grid.Row="1" Grid.Column="2"
+                            Width="20" Height="20"
+                            Margin="0,0,5,0"
+                            BorderBrush="Gray" BorderThickness="1"
+                            Name="PreviewCurBorder" />
+
+                    <!-- Строка 3 -->
+                    <TextBlock Grid.Row="2" Grid.Column="0"
+                               Text="Отличия в правах"
+                               VerticalAlignment="Center" />
+                    <TextBox Grid.Row="2" Grid.Column="1"
+                             Name="HexRightTextBox"
+                             Width="70"
+                             Margin="5,0"
+                             TextChanged="HexTextChanged" />
+                    <Border Grid.Row="2" Grid.Column="2"
+                            Width="20" Height="20"
+                            Margin="0,0,5,0"
+                            BorderBrush="Gray" BorderThickness="1"
+                            Name="PreviewRightBorder" />
                 </Grid>
             </TabItem>
             <TabItem Header="Домен">
@@ -39,7 +80,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Домен" />
-                    <TextBox Grid.Column="1" Name="DomainTextBox" />
+                    <TextBox Grid.Column="1" FontSize="14" Height="100" Name="DomainTextBox" />
                 </Grid>
             </TabItem>
         </TabControl>

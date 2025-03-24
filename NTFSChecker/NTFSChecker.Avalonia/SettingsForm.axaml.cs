@@ -1,8 +1,10 @@
-using System.Drawing;
-using Avalonia;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NTFSChecker.Avalonia.Extentions;
@@ -12,9 +14,9 @@ namespace NTFSChecker.Avalonia;
 public partial class SettingsForm : Window
 {
     private readonly ILogger<SettingsForm> _logger;
-    private readonly IConfigurationRoot  _config;
+    private readonly IConfigurationRoot _config;
 
-    public SettingsForm(ILogger<SettingsForm> logger, IConfigurationRoot  config)
+    public SettingsForm(ILogger<SettingsForm> logger, IConfigurationRoot config)
     {
         InitializeComponent();
         _logger = logger;
@@ -29,35 +31,56 @@ public partial class SettingsForm : Window
 
     private void LoadSettings()
     {
-        var colorMainPicker = this.FindControl<ColorPicker>("ColorMainPicker");
-        var colorCurPicker = this.FindControl<ColorPicker>("ColorCurPicker");
-        var colorRightPicker = this.FindControl<ColorPicker>("ColorRightPicker");
-        var allExportCheckBox = this.FindControl<CheckBox>("AllExportCheckBox");
-        var ignoreUndefinedCheckBox = this.FindControl<CheckBox>("IgnoreUndefinedCheckBox");
-        var domainTextBox = this.FindControl<TextBox>("DomainTextBox");
+        var hexMainTextBox = this.FindControl<TextBox>("HexMainTextBox");
+        var hexCurTextBox = this.FindControl<TextBox>("HexCurTextBox");
+        var hexRightTextBox = this.FindControl<TextBox>("HexRightTextBox");
 
-        // Загружаем цвета из конфига (HEX -> Avalonia.Media.Color)
-        colorMainPicker.Color = ColorExtentions.FromHex(_config["AppSettings:MainDirColor"]);
-        colorCurPicker.Color = ColorExtentions.FromHex(_config["AppSettings:CurDirColor"]);
-        colorRightPicker.Color = ColorExtentions.FromHex(_config["AppSettings:RightsColor"]);
+        // Загружаем цвета из конфига
+        hexMainTextBox.Text = _config["AppSettings:MainDirColor"];
+        hexCurTextBox.Text = _config["AppSettings:CurDirColor"];
+        hexRightTextBox.Text = _config["AppSettings:RightsColor"];
 
-        allExportCheckBox.IsChecked = bool.Parse(_config["AppSettings:ExportAll"]);
-        ignoreUndefinedCheckBox.IsChecked = bool.Parse(_config["AppSettings:IgnoreUndefined"]);
-        domainTextBox.Text = _config["AppSettings:DefaultLDAPPath"];
+        // Инициализируем предпросмотр
+        UpdatePreview(hexMainTextBox, "PreviewMainBorder");
+        UpdatePreview(hexCurTextBox, "PreviewCurBorder");
+        UpdatePreview(hexRightTextBox, "PreviewRightBorder");
     }
+
+    private void UpdatePreview(TextBox textBox, string borderName)
+    {
+        var border = this.FindControl<Border>(borderName);
+        try
+        {
+            var color = ColorExtentions.FromHex(textBox.Text);
+            border.Background = new SolidColorBrush(color);
+        }
+        catch
+        {
+            border.Background = new SolidColorBrush(Colors.Transparent);
+        }
+    }
+
+    private void HexTextChanged(object sender, TextChangedEventArgs e)
+    {
+        var textBox = (TextBox)sender;
+        var borderName = textBox.Name.Replace("Hex", "Preview").Replace("TextBox", "Border");
+        UpdatePreview(textBox, borderName);
+    }
+
 
     private void BtnOK_Click(object sender, RoutedEventArgs e)
     {
-        var colorMainPicker = this.FindControl<ColorPicker>("ColorMainPicker");
-        var colorCurPicker = this.FindControl<ColorPicker>("ColorCurPicker");
-        var colorRightPicker = this.FindControl<ColorPicker>("ColorRightPicker");
+        var hexMainTextBox = this.FindControl<TextBox>("HexMainTextBox");
+        var hexCurTextBox = this.FindControl<TextBox>("HexCurTextBox");
+        var hexRightTextBox = this.FindControl<TextBox>("HexRightTextBox");
         var domainTextBox = this.FindControl<TextBox>("DomainTextBox");
 
-        // Сохраняем цвета в конфиг (Avalonia.Media.Color -> HEX)
-        _config["AppSettings:MainDirColor"] = ColorExtentions.ToHex(colorMainPicker.Color);
-        _config["AppSettings:CurDirColor"] = ColorExtentions.ToHex(colorCurPicker.Color);
-        _config["AppSettings:RightsColor"] = ColorExtentions.ToHex(colorRightPicker.Color);
+        // Сохраняем цвета в конфиг
+        _config["AppSettings:MainDirColor"] = hexMainTextBox.Text;
+        _config["AppSettings:CurDirColor"] = hexCurTextBox.Text;
+        _config["AppSettings:RightsColor"] = hexRightTextBox.Text;
         _config["AppSettings:DefaultLDAPPath"] = domainTextBox.Text;
+        ConfigSave();
 
         Close();
     }
@@ -73,5 +96,11 @@ public partial class SettingsForm : Window
         var allExportCheckBox = this.FindControl<CheckBox>("AllExportCheckBox");
         _config["AppSettings:ExportAll"] = allExportCheckBox.IsChecked.ToString();
     }
-}
 
+    private void ConfigSave()
+    {
+        var config = App.Configuration.AsEnumerable().ToDictionary();
+        var json = JsonSerializer.Serialize(config);
+        File.WriteAllText("appsettings.json", json);
+    }
+}
