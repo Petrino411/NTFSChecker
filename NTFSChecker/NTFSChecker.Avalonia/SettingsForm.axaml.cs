@@ -11,11 +11,16 @@ using NTFSChecker.Avalonia.Extentions;
 
 namespace NTFSChecker.Avalonia;
 
+
 public partial class SettingsForm : Window
 {
     private readonly ILogger<SettingsForm> _logger;
     private readonly IConfigurationRoot _config;
 
+    public SettingsForm()
+    {
+        InitializeComponent();
+    }
     public SettingsForm(ILogger<SettingsForm> logger, IConfigurationRoot config)
     {
         InitializeComponent();

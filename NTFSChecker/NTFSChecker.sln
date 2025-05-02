@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTFSChecker", "NTFSChecker.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTFSChecker.Avalonia", "NTFSChecker.Avalonia\NTFSChecker.Avalonia.csproj", "{31242E99-C508-4033-9223-F98EAB9CF564}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTFSChecker.Windows", "NTFSChecker.Windows\NTFSChecker.Windows.csproj", "{2B9D533E-CE83-4F07-A30D-4E9A4288D67F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{31242E99-C508-4033-9223-F98EAB9CF564}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31242E99-C508-4033-9223-F98EAB9CF564}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31242E99-C508-4033-9223-F98EAB9CF564}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B9D533E-CE83-4F07-A30D-4E9A4288D67F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B9D533E-CE83-4F07-A30D-4E9A4288D67F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B9D533E-CE83-4F07-A30D-4E9A4288D67F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B9D533E-CE83-4F07-A30D-4E9A4288D67F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

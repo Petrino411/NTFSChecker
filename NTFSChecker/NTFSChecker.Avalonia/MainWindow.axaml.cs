@@ -20,12 +20,13 @@ public partial class MainWindow : Window
 {
     private readonly ExcelWriter _excelWriter;
     private readonly ILogger<MainWindow> _logger;
-
-    private readonly Stopwatch _stopwatch;
     private string SelectedFolderPath { get; set; }
 
     private readonly DirectoryChecker _directoryChecker;
     private readonly UserGroupHelper _reGroupHelper;
+    
+    private Stopwatch _stopwatch = new();
+    private CancellationTokenSource _timerCts;
 
 
     private int _files;
@@ -33,15 +34,19 @@ public partial class MainWindow : Window
 
     public Action<int> ItemsCounted;
 
+    public MainWindow()
+    {
+        InitializeComponent();
+    }
 
     public MainWindow(ExcelWriter excelWriter, DirectoryChecker directoryChecker, UserGroupHelper reGroupHelper,
         ILogger<MainWindow> logger)
     {
+        InitializeComponent();
         _excelWriter = excelWriter;
         _directoryChecker = directoryChecker;
         _reGroupHelper = reGroupHelper;
         _logger = logger;
-        InitializeComponent();
         ConfigureEvents();
     }
 
@@ -50,7 +55,6 @@ public partial class MainWindow : Window
         _directoryChecker.logAction = OnLogMessage;
         _directoryChecker.progressAction = OnProgressUpdate;
         ItemsCounted += OnItemsCounted;
-
     }
 
     private async void BtnOpen_Click(object sender, RoutedEventArgs e)
@@ -87,15 +91,16 @@ public partial class MainWindow : Window
     {
         try
         {
-
             if (string.IsNullOrEmpty(txtFolderPath.Text)) return;
             DisableControls();
             Reset();
             CountItems(txtFolderPath.Text);
-
-            await  _directoryChecker.CheckDirectoryAsync(txtFolderPath.Text);
-                
             
+            _stopwatch.Restart();
+            _timerCts = new CancellationTokenSource();
+            _ = UpdateTimerAsync(_timerCts.Token);
+            
+            await _directoryChecker.CheckDirectoryAsync(txtFolderPath.Text);
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
                 LogToUI("Операция прошла успешно");
@@ -110,6 +115,22 @@ public partial class MainWindow : Window
         finally
         {
             EnableControls();
+        }
+    }
+    private async Task UpdateTimerAsync(CancellationToken token)
+    {
+        try
+        {
+            while (!token.IsCancellationRequested)
+            {
+                var elapsed = _stopwatch.Elapsed;
+                var formatted = $"{elapsed:hh\\:mm\\:ss\\.fff}";
+                await Dispatcher.UIThread.InvokeAsync(() => labelTimer.Text = formatted);
+                await Task.Delay(100, token);
+            }
+        }
+        catch (TaskCanceledException)
+        {
         }
     }
 
@@ -130,7 +151,7 @@ public partial class MainWindow : Window
             ListLogs.Items.Clear();
         }
 
-        labelInfo.Text = $"Проверено:\nпапок:\nфайлов:";
+        labelInfo.Text = $"Проверено:";
     }
 
     private void ExportToExcelClick(object sender, RoutedEventArgs e)
@@ -139,8 +160,6 @@ public partial class MainWindow : Window
         {
             try
             {
-
-
                 var headers = new List<string>
                 {
                     "Наименование сервера",
@@ -212,7 +231,6 @@ public partial class MainWindow : Window
 
     private void LogToUI(string message)
     {
-
         Dispatcher.UIThread.InvokeAsync(() => ListLogs.Items.Add(message));
         Dispatcher.UIThread.InvokeAsync(() => ListLogs.SelectedItem = message);
 

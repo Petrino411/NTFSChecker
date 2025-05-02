@@ -18,12 +18,13 @@ public partial class App : Application
 
     public override void Initialize()
     {
+        AvaloniaXamlLoader.Load(this);
         var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
         Configuration = builder.Build();
-        
+
         var services = new ServiceCollection();
         ConfigureServices(services);
         ServiceProvider = services.BuildServiceProvider();
@@ -50,7 +51,7 @@ public partial class App : Application
             builder.AddConsole();
             builder.AddDebug();
         });
-        
+
         services.AddTransient<MainWindow>();
         services.AddTransient<SettingsForm>();
         services.AddSingleton<ExcelWriter>();

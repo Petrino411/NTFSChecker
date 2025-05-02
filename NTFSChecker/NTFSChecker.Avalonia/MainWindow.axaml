@@ -8,7 +8,6 @@
         Width="1005"
         Height="572">
     <DockPanel>
-        <!-- Меню -->
         <Menu DockPanel.Dock="Top" Name="MenuDock">
             <MenuItem Header="Меню">
                 <MenuItem Header="Экспорт в Excel" Click="ExportToExcelClick" />
@@ -16,7 +15,6 @@
             <MenuItem Header="Настройки" Click="SettingsClick" />
         </Menu>
 
-        <!-- Основной контент -->
         <Grid DockPanel.Dock="Top" Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -31,32 +29,24 @@
                 <ColumnDefinition Width="0.6*" />
                 <ColumnDefinition Width="0.2*" />
             </Grid.ColumnDefinitions>
-
-            <!-- Кнопка "Открыть" -->
             <Button Grid.Row="0" Grid.Column="1" Name="BtnOpen" Content="Открыть" HorizontalAlignment="Center"
                     Click="BtnOpen_Click" />
 
-            <!-- Поле для пути к папке -->
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="5" FontSize="14" HorizontalAlignment="Stretch"
+            <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  Margin="5" FontSize="14" HorizontalAlignment="Stretch"
                      x:Name="txtFolderPath" />
 
-            <!-- Кнопка "Проверить" -->
             <Button Grid.Row="2" Grid.Column="1" Name="BtnCheck" Content="Проверить" HorizontalAlignment="Center"
                     Click="BtnCheck_Click" />
 
-            <!-- Логи -->
-            <ListBox Grid.Row="3" Grid.Column="1" Margin="5" FontSize="14" x:Name="ListLogs"
+            <ListBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" FontSize="14" x:Name="ListLogs"
                      ScrollViewer.HorizontalScrollBarVisibility="Auto" />
 
-            <!-- Прогресс-бар -->
             <ProgressBar Grid.Row="4" Grid.Column="1" Margin="5" Height="23" x:Name="progressBar" />
 
-            <!-- Информация -->
-            <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" Text="Проверено:\nпапок:\nфайлов:"
+            <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" Text=""
                        VerticalAlignment="Center" MaxLines="3" x:Name="labelInfo" />
 
-            <!-- Таймер -->
-            <TextBlock Grid.Row="4" Grid.Column="2" Margin="5" Text="00:00:00:000" VerticalAlignment="Center"
+            <TextBlock Grid.Row="4" Grid.Column="2" Margin="5" Text="" VerticalAlignment="Center"
                        HorizontalAlignment="Right" x:Name="labelTimer" />
         </Grid>
     </DockPanel>
