@@ -1,0 +1,90 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:vm="using:NTFSChecker.AvaloniaUI.ViewModels"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:extensions="clr-namespace:NTFSChecker.Core.Extensions;assembly=NTFSChecker.Core"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="NTFSChecker.AvaloniaUI.Views.SettingsForm"
+        x:DataType="vm:SettingsWinViewModel"
+        Title="Настройки"
+        Width="550"
+        Height="300">
+    <Window.Resources>
+        <extensions:ColorHexConverter x:Key="ColorConverter" />
+    </Window.Resources>
+    <Design.DataContext>
+        <vm:SettingsWinViewModel />
+    </Design.DataContext>
+    <Window.DataContext>
+        <vm:SettingsWinViewModel />
+    </Window.DataContext>
+    <Grid>
+        <TabControl Grid.Row="0">
+            <TabItem Header="Экспорт">
+                <StackPanel>
+                    <CheckBox Content="Экспортировать все"
+                              IsChecked="{Binding Settings.ExportAll, Mode=TwoWay}" />
+                    <CheckBox Content="Игнорировать неопределенные права"
+                              IsChecked="{Binding Settings.IgnoreUndefined, Mode=TwoWay}" />
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Цвета" >
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Строка 1 -->
+                    <TextBlock Grid.Row="0" Grid.Column="0"
+                               Text="Группы пользователей нет у корневого каталога"
+                               VerticalAlignment="Center" />
+                    <ColorPicker Grid.Row="0" Grid.Column="1" Color="{Binding Settings.MainDirColor, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
+                    <!-- Строка 2 -->
+                    <TextBlock Grid.Row="1" Grid.Column="0"
+                               Text="Группы пользователей нет у дочернего каталога"
+                               VerticalAlignment="Center" />
+                    <ColorPicker Grid.Row="1" Grid.Column="1" Color="{Binding Settings.CurDirColor, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
+
+                    <!-- Строка 3 -->
+                    <TextBlock Grid.Row="2" Grid.Column="0"
+                               Text="Отличия в правах"
+                               VerticalAlignment="Center" />
+                    <ColorPicker Grid.Row="2" Grid.Column="1" Color="{Binding Settings.RightsColor, Mode=TwoWay, Converter={StaticResource ColorConverter}}" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Домен" IsSelected="True">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Text="Домен"
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0" />
+        
+                    <TextBox Grid.Column="1"
+                             FontSize="14"
+                             Text="{Binding Settings.DefaultLDAPPath, Mode=TwoWay}"
+                             VerticalAlignment="Center"
+                             MinHeight="30" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Button Grid.Row="1" Content="OK" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="75"
+                Command="{Binding SaveCommand}" />
+    </Grid>
+
+</Window>

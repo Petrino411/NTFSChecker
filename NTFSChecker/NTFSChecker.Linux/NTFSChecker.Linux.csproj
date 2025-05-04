@@ -10,9 +10,4 @@
       <ProjectReference Include="..\NTFSChecker.Core\NTFSChecker.Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="System.DirectoryServices" Version="8.0.0" />
-      <PackageReference Include="System.DirectoryServices.AccountManagement" Version="8.0.0" />
-    </ItemGroup>
-
 </Project>

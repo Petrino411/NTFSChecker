@@ -3,11 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTFSChecker", "NTFSChecker.csproj", "{8B2569FA-388E-4824-90BD-DE3CD363675E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTFSChecker.WinForms", "NTFSChecker.Winforms\NTFSChecker.WinForms.csproj", "{8B2569FA-388E-4824-90BD-DE3CD363675E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTFSChecker.Avalonia", "NTFSChecker.Avalonia\NTFSChecker.Avalonia.csproj", "{31242E99-C508-4033-9223-F98EAB9CF564}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTFSChecker.Core", "NTFSChecker.Core\NTFSChecker.Core.csproj", "{BC09207E-9B28-487C-A8B6-7DB77093481F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTFSChecker.Windows", "NTFSChecker.Windows\NTFSChecker.Windows.csproj", "{2B9D533E-CE83-4F07-A30D-4E9A4288D67F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTFSChecker.AvaloniaUI", "NTFSChecker.AvaloniaUI\NTFSChecker.AvaloniaUI.csproj", "{E19780FC-23CB-400E-84E0-6FC8A0B3D9EB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F7F089EE-BE67-4C32-A4EB-6D76A31DBA9E} = {F7F089EE-BE67-4C32-A4EB-6D76A31DBA9E}
+		{D07B5BE5-F043-46CF-8AB2-2E235841AD4B} = {D07B5BE5-F043-46CF-8AB2-2E235841AD4B}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTFSChecker.Windows", "NTFSChecker.Windows\NTFSChecker.Windows.csproj", "{F7F089EE-BE67-4C32-A4EB-6D76A31DBA9E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BC09207E-9B28-487C-A8B6-7DB77093481F} = {BC09207E-9B28-487C-A8B6-7DB77093481F}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTFSChecker.Linux", "NTFSChecker.Linux\NTFSChecker.Linux.csproj", "{D07B5BE5-F043-46CF-8AB2-2E235841AD4B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BC09207E-9B28-487C-A8B6-7DB77093481F} = {BC09207E-9B28-487C-A8B6-7DB77093481F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +33,22 @@ Global
 		{8B2569FA-388E-4824-90BD-DE3CD363675E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B2569FA-388E-4824-90BD-DE3CD363675E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B2569FA-388E-4824-90BD-DE3CD363675E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{31242E99-C508-4033-9223-F98EAB9CF564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{31242E99-C508-4033-9223-F98EAB9CF564}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{31242E99-C508-4033-9223-F98EAB9CF564}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{31242E99-C508-4033-9223-F98EAB9CF564}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2B9D533E-CE83-4F07-A30D-4E9A4288D67F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2B9D533E-CE83-4F07-A30D-4E9A4288D67F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2B9D533E-CE83-4F07-A30D-4E9A4288D67F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2B9D533E-CE83-4F07-A30D-4E9A4288D67F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC09207E-9B28-487C-A8B6-7DB77093481F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC09207E-9B28-487C-A8B6-7DB77093481F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC09207E-9B28-487C-A8B6-7DB77093481F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC09207E-9B28-487C-A8B6-7DB77093481F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E19780FC-23CB-400E-84E0-6FC8A0B3D9EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E19780FC-23CB-400E-84E0-6FC8A0B3D9EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E19780FC-23CB-400E-84E0-6FC8A0B3D9EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E19780FC-23CB-400E-84E0-6FC8A0B3D9EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7F089EE-BE67-4C32-A4EB-6D76A31DBA9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7F089EE-BE67-4C32-A4EB-6D76A31DBA9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7F089EE-BE67-4C32-A4EB-6D76A31DBA9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7F089EE-BE67-4C32-A4EB-6D76A31DBA9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D07B5BE5-F043-46CF-8AB2-2E235841AD4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D07B5BE5-F043-46CF-8AB2-2E235841AD4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D07B5BE5-F043-46CF-8AB2-2E235841AD4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D07B5BE5-F043-46CF-8AB2-2E235841AD4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

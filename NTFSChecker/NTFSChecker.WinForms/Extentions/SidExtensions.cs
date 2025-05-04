@@ -1,8 +1,9 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
 
-namespace NTFSChecker.Windows.Extensions;
+namespace NTFSChecker.WinForms.Extentions;
 
 public static class SidExtensions
 {

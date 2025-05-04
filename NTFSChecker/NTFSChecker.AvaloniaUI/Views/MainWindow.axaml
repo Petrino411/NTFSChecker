@@ -1,0 +1,77 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:NTFSChecker.AvaloniaUI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:global="clr-namespace:"
+        xmlns:windows="clr-namespace:NTFSChecker.AvaloniaUI"
+        x:Class="NTFSChecker.AvaloniaUI.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="NTFSChecker">
+
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    <Window.DataContext>
+        <vm:MainWindowViewModel />
+    </Window.DataContext>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Name="MenuDock">
+            <MenuItem Header="Меню">
+                <MenuItem Header="Экспорт в Excel" Command="{Binding ExportToExcelCommand}" />
+            </MenuItem>
+            <MenuItem Header="Настройки" Command="{Binding SettingsShowCommand}" />
+        </Menu>
+
+        <Grid DockPanel.Dock="Top" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.2*" />
+                <ColumnDefinition Width="0.6*" />
+                <ColumnDefinition Width="0.2*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="0" Grid.Column="1" Name="BtnOpen" Content="Открыть" HorizontalAlignment="Center"
+                    Command="{Binding SelectFolderCommand}" CommandParameter="{Binding $parent[Window]}" />
+
+            <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" FontSize="14"
+                     HorizontalAlignment="Stretch"
+                     x:Name="txtFolderPath" Text="{Binding SelectedFolderPath}" />
+
+            <Button Grid.Row="2" Grid.Column="1" Name="BtnCheck" Content="Проверить" HorizontalAlignment="Center"
+                    Command="{Binding CheckDirectoryCommand}" />
+
+            <!-- <ListBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" FontSize="14" x:Name="ListLogs" -->
+            <!--          ScrollViewer.HorizontalScrollBarVisibility="Auto" -->
+            <!--           -->
+            <!--          AutoScrollToSelectedItem="True" -->
+            <!--          SelectedIndex = "{Binding SelectedLogInd}" -->
+            <!--          ItemsSource="{Binding Logs}"/> -->
+            <ListBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" FontSize="14" x:Name="ListLogs"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     ItemsSource="{Binding Logs}"/>
+
+            <ProgressBar Grid.Row="4" Grid.Column="1" Margin="5" Height="23" x:Name="progressBar"
+                         Maximum="{Binding ProgressMax}" Value="{Binding ProgressValue}" />
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" Text="{Binding LabelText}"
+                       VerticalAlignment="Center" MaxLines="3" x:Name="labelInfo" />
+
+            <TextBlock Grid.Row="4" Grid.Column="2" Margin="5" Text="{Binding LabelTimer}" VerticalAlignment="Center"
+                       HorizontalAlignment="Right" x:Name="labelTimer" />
+        </Grid>
+    </DockPanel>
+
+</Window>

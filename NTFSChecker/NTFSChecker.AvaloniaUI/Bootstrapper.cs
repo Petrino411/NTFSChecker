@@ -1,0 +1,72 @@
+using System;
+using System.IO;
+using System.Runtime.InteropServices;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using NTFSChecker.AvaloniaUI.Interfaces;
+using NTFSChecker.AvaloniaUI.Services;
+using NTFSChecker.AvaloniaUI.ViewModels;
+using NTFSChecker.AvaloniaUI.Views;
+using NTFSChecker.Core.Interfaces;
+using NTFSChecker.Core.Services;
+using NTFSChecker.Linux.Services;
+using NTFSChecker.Windows.Services;
+
+namespace NTFSChecker.AvaloniaUI;
+
+public static class Bootstrapper
+{
+    public static IServiceProvider Configure()
+    {
+        var services = new ServiceCollection();
+
+        // ViewModels
+        services.AddSingleton<MainWindowViewModel>();
+        services.AddSingleton<SettingsWinViewModel>();
+
+        // Views
+        services.AddSingleton<SettingsForm>();
+        services.AddSingleton<MainWindow>();
+
+        // Services
+        
+        services.AddSingleton<IExcelWriter, ExcelWriter>();
+        services.AddSingleton<IWindowService, WindowService>();
+        services.AddSingleton<ISettingsService, SettingsService>();
+
+        #region Windows
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            services.AddSingleton<IDirectoryChecker, WindowsDirectoryChecker>();
+            services.AddSingleton<IUserGroupHelper, WindowsUserGroupHelper>();
+            services.AddSingleton<INetworkPathResolver, WindowsNetworkPathResolver>();
+        }
+
+        #endregion
+
+        #region Linux
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            services.AddSingleton<IDirectoryChecker, LinuxDirectoryChecker>();
+            services.AddSingleton<INetworkPathResolver, LinuxNetworkPathResolver>();
+        }
+
+        #endregion
+        
+  
+        // Logging
+        services.AddLogging(configure => configure.AddConsole());
+        
+        var builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+        services.AddSingleton(builder.Build());
+
+
+        return services.BuildServiceProvider();
+    }
+}
