@@ -42,9 +42,14 @@ public class LinuxDirectoryChecker : IDirectoryChecker
 
             RootData.Add(new ExcelDataModel(remoteComputerName, subPath, FormatAclForExcel(currentAcl), isDifferent));
 
-            await logAction(isDifferent
-                ? $"Различия в правах: {subPath}"
-                : $"Совпадают права: {subPath}");
+            if (isDifferent)
+            {
+                await logAction($"Различия в правах: {subPath}");
+            }
+
+            // await logAction(isDifferent
+            //     ? $"Различия в правах: {subPath}"
+            //     : $"Совпадают права: {subPath}");
 
             if (Directory.Exists(subPath))
             {

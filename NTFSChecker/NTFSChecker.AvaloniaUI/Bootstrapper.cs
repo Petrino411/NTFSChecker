@@ -52,6 +52,7 @@ public static class Bootstrapper
         {
             services.AddSingleton<IDirectoryChecker, LinuxDirectoryChecker>();
             services.AddSingleton<INetworkPathResolver, LinuxNetworkPathResolver>();
+            services.AddSingleton<IUserGroupHelper, LinuxUserGroupHelper>();
         }
 
         #endregion

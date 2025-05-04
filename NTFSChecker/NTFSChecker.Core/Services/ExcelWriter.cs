@@ -19,11 +19,12 @@ public class ExcelWriter : IExcelWriter
     private readonly ISettingsService _settingsService;
     private readonly IUserGroupHelper _reGroupHelper;
     private readonly IDirectoryChecker _directoryChecker;
-    
+
     private List<ExcelDataModel> ExportData { get; set; } = [];
 
 
-    public ExcelWriter(ILogger<ExcelWriter> logger, ISettingsService settingsService, IUserGroupHelper reGroupHelper, IDirectoryChecker directoryChecker)
+    public ExcelWriter(ILogger<ExcelWriter> logger, ISettingsService settingsService, IUserGroupHelper reGroupHelper,
+        IDirectoryChecker directoryChecker)
     {
         _logger = logger;
         _settingsService = settingsService;
@@ -46,23 +47,25 @@ public class ExcelWriter : IExcelWriter
         await CreateLegendAsync();
         await AutoFitColumnsAndRowsAsync();
         await SaveTempAndShowAsync();
-
     }
 
 
     private string GetUniqueFilePath(string rootDir)
     {
-        var workDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\Reports";
+        var workDirectory = Path.Combine(AppContext.BaseDirectory, "Reports");
         if (!Directory.Exists(workDirectory))
         {
             Directory.CreateDirectory(workDirectory);
         }
 
-        var fileName = Path.Combine(workDirectory,
-            $"Отчет о проверке {rootDir.Replace("\\","_").Replace(":","")} {DateTime.UtcNow.ToString("yyyyMMdd__HH_mm_ss", CultureInfo.InvariantCulture)}.xlsx");
+        var safeRootDir = string.Join("_",
+            rootDir.Split(Path.GetInvalidFileNameChars(), StringSplitOptions.RemoveEmptyEntries));
 
-        _logger.LogInformation($"Получен путь сохранения файла {fileName}");
-        return fileName;
+        var fileName = $"Report_{safeRootDir}_{DateTime.UtcNow:yyyyMMdd_HHmmss}.xlsx";
+        var fullPath = Path.Combine(workDirectory, fileName);
+
+        _logger.LogInformation($"Файл будет сохранён по пути: {fullPath}");
+        return fullPath;
     }
 
     public async Task CreateLegendAsync()
@@ -255,7 +258,7 @@ public class ExcelWriter : IExcelWriter
             throw;
         }
     }
-    
+
     public async Task PrepareDataToExport()
     {
         try
@@ -278,7 +281,7 @@ public class ExcelWriter : IExcelWriter
         }
         catch (Exception e)
         {
-            _logger.LogError(e.ToString()); 
+            _logger.LogError(e.ToString());
         }
     }
 }
