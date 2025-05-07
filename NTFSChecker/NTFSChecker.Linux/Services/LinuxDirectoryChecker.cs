@@ -68,9 +68,14 @@ public class LinuxDirectoryChecker : IDirectoryChecker
                     bool fileDiff = !CompareAcl(rootAcl, fileAcl);
                     RootData.Add(new ExcelDataModel(remoteComputerName, file, FormatAclForExcel(fileAcl), fileDiff));
 
-                    await logAction(fileDiff
-                        ? $"Различия в файле: {file}"
-                        : $"Совпадают права в файле: {file}");
+                    // await logAction(fileDiff
+                    //     ? $"Различия в файле: {file}"
+                    //     : $"Совпадают права в файле: {file}");
+                    
+                    if (fileDiff)
+                    {
+                        await logAction($"Различия в правах: {subPath}");
+                    }
 
                     await progressAction(dirs, files);
                 }

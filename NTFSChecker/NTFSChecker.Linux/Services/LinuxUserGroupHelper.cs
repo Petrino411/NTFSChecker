@@ -41,6 +41,7 @@ public class LinuxUserGroupHelper : IUserGroupHelper
                 }
                 else
                 {
+                    continue;
                     ac[0] = "Нет описания";
                 }
             }
