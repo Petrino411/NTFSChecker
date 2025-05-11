@@ -2,6 +2,8 @@ using Microsoft.Extensions.Logging;
 using NTFSChecker.Core.Interfaces;
 using NTFSChecker.Core.Models;
 
+namespace NTFSChecker.Linux.Services;
+
 public class LinuxUserGroupHelper : IUserGroupHelper
 {
     private readonly ILogger<IUserGroupHelper> _logger;
