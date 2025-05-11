@@ -9,11 +9,21 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <Folder Include="Extensions\" />
+        <Folder Include="Models\"/>
         <AvaloniaResource Include="Assets\**"/>
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.2.1"/>
+        <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.2.1" />
         <PackageReference Include="Avalonia.Desktop" Version="11.2.1"/>
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.1"/>
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.1"/>

@@ -11,7 +11,8 @@ public class LinuxDirectoryChecker : IDirectoryChecker
     private readonly ISettingsService _settingsService;
     private readonly INetworkPathResolver _networkPathResolver;
 
-    public LinuxDirectoryChecker(ILogger<LinuxDirectoryChecker> logger, ISettingsService settingsService, INetworkPathResolver networkPathResolver)
+    public LinuxDirectoryChecker(ILogger<LinuxDirectoryChecker> logger, ISettingsService settingsService,
+        INetworkPathResolver networkPathResolver)
     {
         _logger = logger;
         _settingsService = settingsService;
@@ -20,7 +21,8 @@ public class LinuxDirectoryChecker : IDirectoryChecker
 
     public List<ExcelDataModel> RootData { get; set; } = new();
 
-    public async Task CheckDirectoryAsync(string path, Func<string, Task> logAction, Func<int, int, Task> progressAction)
+    public async Task CheckDirectoryAsync(string path, Func<string, Task> logAction,
+        Func<int, int, Task> progressAction)
     {
         _networkPathResolver.TryGetRemoteComputerName(path, out var remoteComputerName);
 
@@ -71,7 +73,7 @@ public class LinuxDirectoryChecker : IDirectoryChecker
                     // await logAction(fileDiff
                     //     ? $"Различия в файле: {file}"
                     //     : $"Совпадают права в файле: {file}");
-                    
+
                     if (fileDiff)
                     {
                         await logAction($"Различия в правах: {subPath}");
@@ -125,12 +127,46 @@ public class LinuxDirectoryChecker : IDirectoryChecker
 
     private List<List<string>> FormatAclForExcel(List<string> acl)
     {
-        return acl.Select(line => new List<string>
+        var result = new List<List<string>>();
+
+        foreach (var line in acl)
         {
-            line,        // raw acl entry
-            "N/A",       // user
-            "N/A",       // rights
-            "N/A"        // access type
-        }).ToList();
+            // Пример строки: user:zerotier-one:rwx
+            var parts = line.Split(':');
+            if (parts.Length < 3)
+                continue;
+
+            string type = parts[0]; // user / group / other / mask
+            string name = parts[1]; // имя пользователя/группы или пусто
+            string perms = parts[2]; // rwx, r-- и т.п.
+
+            string target = name switch
+            {
+                "" => type switch
+                {
+                    "user" => "(file owner)",
+                    "group" => "(file group)",
+                    "other" => "(others)",
+                    _ => "(unknown)"
+                },
+                _ => name
+            };
+
+            string permissions = perms
+                .Replace("r", "read ")
+                .Replace("w", "write ")
+                .Replace("x", "execute ")
+                .Replace("-", "").Trim();
+
+            result.Add(new List<string>
+            {
+                "", // пока "Описание" пустое
+                $"{type}:{target}", // тип и имя объекта
+                permissions, // права в текстовом виде
+                "" // тип доступа (опущен)
+            });
+        }
+
+        return result;
     }
 }
