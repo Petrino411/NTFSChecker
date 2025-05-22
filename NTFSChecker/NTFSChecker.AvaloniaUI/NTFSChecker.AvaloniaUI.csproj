@@ -16,8 +16,6 @@
 
 
     <ItemGroup>
-        <Folder Include="Extensions\" />
-        <Folder Include="Models\"/>
         <AvaloniaResource Include="Assets\**"/>
     </ItemGroup>
 

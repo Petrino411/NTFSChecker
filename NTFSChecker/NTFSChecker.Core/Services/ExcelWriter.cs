@@ -220,7 +220,7 @@ public class ExcelWriter : IExcelWriter
                     cell.Style.WrapText = true;
                     cell.Style.VerticalAlignment = ExcelVerticalAlignment.Top;
                     cell.Style.Font.Color.SetColor(
-                        FromHtml(_settingsService.GetString("CurDirColor"))); // Нет в дочернем
+                        FromHtml(_settingsService.GetString("AppSettings:CurDirColor"))); // Нет в дочернем
                 }
 
                 startRow++;
@@ -263,7 +263,9 @@ public class ExcelWriter : IExcelWriter
     {
         try
         {
+            
             _logger.LogInformation("Подготовка к экспорту");
+            ExportData.Clear();
             List<ExcelDataModel> data = [];
             bool.TryParse(_settingsService.GetString("AppSettings:ExportAll"), out bool allExp);
             _reGroupHelper.CheckDomainAvailability();

@@ -7,7 +7,10 @@ using NTFSChecker.Core.Services;
 
 namespace NTFSChecker.Windows.Services;
 
-public class WindowsDirectoryChecker(ILogger<WindowsDirectoryChecker> logger, ISettingsService settingsService, INetworkPathResolver networkPathResolver): IDirectoryChecker
+public class WindowsDirectoryChecker(
+    ILogger<WindowsDirectoryChecker> logger,
+    ISettingsService settingsService,
+    INetworkPathResolver networkPathResolver) : IDirectoryChecker
 {
     private readonly ISettingsService _settingsService = settingsService;
     private readonly INetworkPathResolver _networkPathResolver = networkPathResolver;
@@ -22,6 +25,7 @@ public class WindowsDirectoryChecker(ILogger<WindowsDirectoryChecker> logger, IS
         Func<string, Task> logAction,
         Func<int, int, Task> progressAction)
     {
+        RootData.Clear();
         _networkPathResolver.TryGetRemoteComputerName(path, out string remoteComputerName);
 
         var rootAcl = await GetAccessRules(path);
@@ -223,6 +227,7 @@ public class WindowsDirectoryChecker(ILogger<WindowsDirectoryChecker> logger, IS
 
             accessUsers.Sort((x, y) => string.Compare(x[1], y[1], StringComparison.OrdinalIgnoreCase));
         }
+
         return accessUsers;
     }
 }
