@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -19,6 +11,16 @@ using NTFSChecker.AvaloniaUI.Views;
 using NTFSChecker.Core.Interfaces;
 using NTFSChecker.Core.Models;
 using NTFSChecker.Core.Services;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Win32;
 
 namespace NTFSChecker.AvaloniaUI.ViewModels;
 
@@ -72,23 +74,42 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private async Task SelectFolderAsync(Window window)
     {
-        var topLevel = TopLevel.GetTopLevel(window);
-        if (topLevel?.StorageProvider is { CanOpen: true } storageProvider)
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            var folders = await storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+            var dialog = new OpenFolderDialog
             {
                 Title = "Выберите папку",
-                AllowMultiple = false
-            });
-            if (folders != null && folders.Count != 0) {
+            };
 
-                SelectedFolderPath = folders[0].Path.LocalPath;
+            var result = await Task.Run(() => dialog.ShowAsync(window));
+
+            if (!string.IsNullOrEmpty(result))
+            {
+                SelectedFolderPath = result;
                 Logs.Add($"Выбрана папка: {SelectedFolderPath}");
             }
         }
         else
         {
-            Logs.Add("Платформа не поддерживает выбор папки.");
+            var topLevel = TopLevel.GetTopLevel(window);
+            if (topLevel?.StorageProvider is { CanOpen: true } storageProvider)
+            {
+                var folders = await storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+                {
+                    Title = "Выберите папку",
+                    AllowMultiple = false
+                });
+
+                if (folders.Count > 0)
+                {
+                    SelectedFolderPath = folders[0].Path.LocalPath;
+                    Logs.Add($"Выбрана папка: {SelectedFolderPath}");
+                }
+            }
+            else
+            {
+                Logs.Add("Платформа не поддерживает выбор папки.");
+            }
         }
     }
 

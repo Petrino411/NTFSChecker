@@ -8,7 +8,6 @@
         xmlns:windows="clr-namespace:NTFSChecker.AvaloniaUI"
         x:Class="NTFSChecker.AvaloniaUI.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
         Title="NTFSChecker">
 
 
