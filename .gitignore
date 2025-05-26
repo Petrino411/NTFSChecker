@@ -4,3 +4,8 @@
 *bin
 *obj
 
+/NTFSChecker/.vs
+/NTFSChecker/NTFSChecker.AvaloniaUI/Properties
+NTFSChecker/NTFSChecker.sln.DotSettings.user
+NTFSChecker/NTFSChecker.sln.DotSettings.user
+/Reports

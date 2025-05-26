@@ -34,7 +34,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public ObservableCollection<string> Logs { get; } = new();
 
     [ObservableProperty] private string selectedFolderPath;
-    [ObservableProperty] private double progressValue = 0;
+    [ObservableProperty] private double progressValue;
     [ObservableProperty] private double progressMax;
     [ObservableProperty] private string labelText;
     [ObservableProperty] private string labelTimer;
@@ -64,6 +64,8 @@ public partial class MainWindowViewModel : ViewModelBase
         _logger = logger;
         _settingsService = settingsService;
         _windowService = windowService;
+        ProgressValue = 0;
+        ProgressMax = 100;
     }
 
 
@@ -78,9 +80,11 @@ public partial class MainWindowViewModel : ViewModelBase
                 Title = "Выберите папку",
                 AllowMultiple = false
             });
+            if (folders != null && folders.Count != 0) {
 
-            SelectedFolderPath = folders[0].Path.LocalPath;
-            Logs.Add($"Выбрана папка: {SelectedFolderPath}");
+                SelectedFolderPath = folders[0].Path.LocalPath;
+                Logs.Add($"Выбрана папка: {SelectedFolderPath}");
+            }
         }
         else
         {

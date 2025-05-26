@@ -1,10 +1,11 @@
-﻿using System.DirectoryServices;
-using System.DirectoryServices.AccountManagement;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using NTFSChecker.Core.Interfaces;
 using NTFSChecker.Core.Models;
 using NTFSChecker.Core.Services;
 using NTFSChecker.Windows.Extensions;
+using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
+using System.Security.Principal;
 using DirectoryEntry = System.DirectoryServices.DirectoryEntry;
 
 
@@ -61,7 +62,7 @@ public class WindowsUserGroupHelper : IUserGroupHelper
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Ошибка в получении описания: {ex.Message}? {data}");
+            _logger.LogError($"Ошибка в получении описания: {ex.Message}? ");
         }
 
         return data;
@@ -122,37 +123,53 @@ public class WindowsUserGroupHelper : IUserGroupHelper
 
     private async Task<ExcelDataModel> FillUserOrGroupDescriptionsAsync(ExcelDataModel dataItem)
     {
-        foreach (var ac in dataItem.AccessUsers)
-        {
-            var userName = ac[1];
-            if (SidExtensions.TryParseSid(userName, out var _))
+        try {
+            var copy = dataItem;
+            foreach (var ac in copy.AccessUsers)
             {
-                if (!SidExtensions.TryLookupAccountSid(dataItem.ServerName, userName, out string accountName,
-                        out string description)) continue;
-                ac[1] = accountName;
-                ac[0] = description;
-            }
-            else
-            {
-                var identity = userName.Split('\\')[1];
-                if (LocalGroups.ContainsKey(identity))
+                var userName = ac[1];
+                if (SidExtensions.TryParseSid(userName, out var _))
                 {
-                    ac[0] = LocalGroups[identity];
+                    if (!SidExtensions.TryLookupAccountSid(dataItem.ServerName, userName, out string accountName,
+                            out string description)) continue;
+                    ac[1] = accountName;
+                    ac[0] = description;
                 }
+                else
+                {
 
-                if (LocalUsers.ContainsKey(identity))
-                {
-                    ac[0] = LocalUsers[identity];
-                }
+                    string identity = "";
+                    var data = userName.Split('\\');
+                    if (data.Length == 2) {
+                        identity = data[1];
+                    }
+                    else {
+                        identity = data.FirstOrDefault();
+                    }
+                    if (LocalGroups.ContainsKey(identity))
+                    {
+                        ac[0] = LocalGroups[identity];
+                    }
 
-                if (_isDomainAvailable)
-                {
-                    ac[0] = await GetDescFromActiveDirectoryAsync(identity);
+                    if (LocalUsers.ContainsKey(identity))
+                    {
+                        ac[0] = LocalUsers[identity];
+                    }
+
+                    if (_isDomainAvailable)
+                    {
+                        ac[0] = await GetDescFromActiveDirectoryAsync(identity);
+                    }
                 }
             }
+
+            return copy;
         }
-
-        return dataItem;
+        catch (Exception ex){
+            _logger.LogError($"Ошибка при попытке получения описания: {ex.Message}");
+            return dataItem;
+        }
+        
     }
 
     private async Task<string> GetDescFromActiveDirectoryAsync(string userName)
@@ -162,29 +179,31 @@ public class WindowsUserGroupHelper : IUserGroupHelper
         {
             var entry = new DirectoryEntry(_settingsService.GetString("AppSettings:DefaultLDAPPath"));
             searcher = new DirectorySearcher(entry);
+
+            searcher.Filter = $"(sAMAccountName={userName})";
+            searcher.PropertiesToLoad.Add("description");
+            var result = searcher.FindOne();
+            if (result != null)
+            {
+                return result.Properties["description"][0].ToString();
+            }
+
+            searcher.Filter = $"(cn={userName})";
+            searcher.PropertiesToLoad.Add("description");
+            result = searcher.FindOne();
+            if (result != null)
+            {
+                return result.Properties["description"][0].ToString();
+            }
+            return "Нет описания";
         }
+
         catch (Exception e)
         {
             _logger.LogError(e.Message);
-            throw;
+            return "Нет описания";
         }
 
-        searcher.Filter = $"(sAMAccountName={userName})";
-        searcher.PropertiesToLoad.Add("description");
-        var result = searcher.FindOne();
-        if (result != null)
-        {
-            return result.Properties["description"][0].ToString();
-        }
-
-        searcher.Filter = $"(cn={userName})";
-        searcher.PropertiesToLoad.Add("description");
-        result = searcher.FindOne();
-        if (result != null)
-        {
-            return result.Properties["description"][0].ToString();
-        }
-
-        return "Нет описания";
+        
     }
 }
