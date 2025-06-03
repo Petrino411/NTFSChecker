@@ -22,6 +22,8 @@ public static class Bootstrapper
         var services = new ServiceCollection();
 
         services.AddSingleton<MainWindowViewModel>();
+        services.AddSingleton<MainPageViewModel>();
+        services.AddSingleton<StatisticsPageViewModel>();
         services.AddSingleton<SettingsWinViewModel>();
 
         services.AddSingleton<SettingsForm>();

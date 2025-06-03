@@ -6,7 +6,7 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-        <ApplicationIcon>Resources\ico.ico</ApplicationIcon>
+        <ApplicationIcon>Assets\ico.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,11 +18,7 @@
 
     <ItemGroup>
         <AvaloniaResource Include="Assets\**" />
-    </ItemGroup>
-
-
-    <ItemGroup>
-      <Content Include="Resources\ico.ico" />
+        <AvaloniaResource Remove="Resources\ico.ico" />
     </ItemGroup>
 
     <ItemGroup>
@@ -61,5 +57,9 @@
       <ProjectReference Include="..\NTFSChecker.Core\NTFSChecker.Core.csproj" />
       <ProjectReference Include="..\NTFSChecker.Linux\NTFSChecker.Linux.csproj" />
       <ProjectReference Include="..\NTFSChecker.Windows\NTFSChecker.Windows.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Resources\ico.ico" />
     </ItemGroup>
 </Project>

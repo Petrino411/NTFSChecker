@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:vm="using:NTFSChecker.AvaloniaUI.ViewModels"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:extensions="clr-namespace:NTFSChecker.Core.Extensions;assembly=NTFSChecker.Core"
+        xmlns:converters="clr-namespace:NTFSChecker.AvaloniaUI.Converters"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="NTFSChecker.AvaloniaUI.Views.SettingsForm"
         x:DataType="vm:SettingsWinViewModel"
@@ -11,7 +11,7 @@
         Width="550"
         Height="300">
     <Window.Resources>
-        <extensions:ColorHexConverter x:Key="ColorConverter" />
+        <converters:ColorHexConverter x:Key="ColorConverter" />
     </Window.Resources>
     <Design.DataContext>
         <vm:SettingsWinViewModel />

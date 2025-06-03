@@ -1,8 +1,9 @@
+using System;
 using System.Globalization;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
 
-namespace NTFSChecker.Core.Extensions;
+namespace NTFSChecker.AvaloniaUI.Converters;
 
 public class ColorHexConverter : IValueConverter
 {

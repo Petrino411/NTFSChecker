@@ -1,0 +1,86 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="NTFSChecker.AvaloniaUI.Views.StatisticsPageView"
+             xmlns:converters="clr-namespace:NTFSChecker.AvaloniaUI.Converters"
+             xmlns:vm="using:NTFSChecker.AvaloniaUI.ViewModels"
+             xmlns:models="clr-namespace:NTFSChecker.AvaloniaUI.Models"
+             x:DataType="vm:StatisticsPageViewModel">
+
+
+    <UserControl.Resources>
+        <converters:HexToBrushConverter x:Key="ColorConverter" />
+    </UserControl.Resources>
+
+    <Grid ColumnDefinitions="Auto,5,*" RowDefinitions="Auto,*" Margin="10">
+        <!-- Верхняя панель -->
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="10">
+            <Button Content="Обновить" Command="{Binding RefreshCommand}" />
+            <TextBox Width="200" Watermark="Фильтр..." Text="{Binding Filter}" />
+        </StackPanel>
+
+        <!-- Дерево -->
+        <TreeView Grid.Row="1" Grid.Column="0"
+                  MinWidth="200" MaxWidth="600"
+                  ItemsSource="{Binding FileSystemTree}"
+                  SelectedItem="{Binding SelectedItem}">
+            <TreeView.ItemTemplate>
+                <TreeDataTemplate DataType="models:TreeItem" ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+                        <TextBlock Text="{Binding Icon}" />
+                        <TextBlock Text="{Binding DisplayName}"
+                                   Foreground="{Binding HasPermissionIssues, Converter={x:Static converters:TypeConverters.PermissionToBrushConverter}}" />
+                    </StackPanel>
+                </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+
+        <!-- Разделитель -->
+        <GridSplitter Grid.Column="1" Grid.Row="1"
+                      Width="2"
+                      Background="Gray"
+                      ShowsPreview="True"
+                      DragIncrement="1"
+                      ResizeDirection="Columns"
+                      ResizeBehavior="PreviousAndNext" />
+
+        <!-- Панель сведений -->
+        <Border Grid.Row="1" Grid.Column="2" Padding="10">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Margin="0 0 0 10">
+                <StackPanel>
+                    <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding SelectedItem.DisplayName}" />
+                    <ItemsControl ItemsSource="{Binding SelectedItem.AccessUserEntries}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="models:AccessUserEntry">
+                                <Expander Margin="0 0 0 10" Width="450">
+                                    <Expander.Header>
+                                        <TextBlock Text="{Binding Fields[1]}" 
+                                                   Foreground="{Binding DisplayColorHex, Converter={StaticResource ColorConverter}}"/>
+                                    </Expander.Header>
+                                    <StackPanel>
+                                        <ItemsControl ItemsSource="{Binding FieldsWithoutName}"
+                                                      Foreground="{Binding DisplayColorHex,  Converter={StaticResource ColorConverter}}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border BorderThickness="0,0,0,1" Padding="5">
+                                                        <TextBlock Text="{Binding .}"
+                                                                   Width="400" Margin="5" TextWrapping="Wrap"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Expander>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+
+</UserControl>
