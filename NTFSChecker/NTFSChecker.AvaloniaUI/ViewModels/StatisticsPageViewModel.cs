@@ -268,4 +268,10 @@ public partial class StatisticsPageViewModel : ViewModelBase
     {
         CurrentCursor = new Cursor(StandardCursorType.Wait);
     }
+    
+    [RelayCommand]
+    public void ShowProperties(string path)
+    {
+        WindowsShellInterop.ShowFileProperties(path);
+    }
 }
