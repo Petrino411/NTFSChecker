@@ -37,7 +37,7 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
                  ItemsSource="{Binding Logs}" />
 
-        <ProgressBar Grid.Row="4" Grid.Column="1" Margin="5" Height="23" x:Name="progressBar"
+        <ProgressBar Grid.Row="4" Grid.Column="1" Margin="5" Height="23" Width="300" x:Name="progressBar"
                      Maximum="{Binding ProgressMax}" Value="{Binding ProgressValue}" />
 
         <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" Text="{Binding LabelText}"

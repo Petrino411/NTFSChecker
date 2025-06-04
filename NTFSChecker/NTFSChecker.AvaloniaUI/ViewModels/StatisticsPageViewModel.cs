@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia.Input;
+using Avalonia.Platform;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -33,6 +34,8 @@ public partial class StatisticsPageViewModel : ViewModelBase
     [ObservableProperty] private string filter;
 
     [ObservableProperty] private TreeItem selectedItem;
+    
+    [ObservableProperty] private bool isLoading;
 
 
     public StatisticsPageViewModel(IDirectoryChecker directoryChecker, ISettingsService settingsService,
@@ -46,6 +49,7 @@ public partial class StatisticsPageViewModel : ViewModelBase
 
     public void RefreshIfNeeded()
     {
+
         SetWaitCursor();
         if (_directoryChecker.RootData is not { Count: > 0 })
         {
@@ -66,8 +70,9 @@ public partial class StatisticsPageViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async void Refresh()
+    private async Task Refresh()
     {
+        IsLoading = true;
         SetWaitCursor();
         try
         {
@@ -85,6 +90,7 @@ public partial class StatisticsPageViewModel : ViewModelBase
         finally
         {
             SetDefaultCursor();
+            IsLoading = false;
         }
     }
 
@@ -246,8 +252,7 @@ public partial class StatisticsPageViewModel : ViewModelBase
 
             result.Add(entry);
         }
-
-        // Записи из корня, которых нет в дочернем
+        
         foreach (var main in mainDirAccessUsers)
             if (!accessUsers.Any(x => x.SequenceEqual(main)))
                 result.Add(new AccessUserEntry

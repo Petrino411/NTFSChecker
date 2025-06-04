@@ -48,11 +48,6 @@ public partial class MainPageViewModel : ViewModelBase
 
     public ObservableCollection<string> Logs { get; } = new();
 
-    public string GetSelectedFolderPath()
-    {
-        return SelectedFolderPath;
-    }
-
 
     [RelayCommand]
     private async Task SelectFolderAsync(Window window)
@@ -132,12 +127,37 @@ public partial class MainPageViewModel : ViewModelBase
 
     private async Task CountItems(string path)
     {
-        Task.Run(async void () =>
+        Task.Run(async () =>
         {
-            var totalItems = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length +
-                             Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Length;
-            await Dispatcher.UIThread.InvokeAsync(() => ProgressMax = totalItems + 1);
-            await Dispatcher.UIThread.InvokeAsync(() => ProgressValue = _files + _dirs);
+            int totalItems = 0;
+
+            void CountRecursive(string currentPath)
+            {
+                try
+                {
+                    totalItems += Directory.GetFiles(currentPath).Length;
+                    
+                    foreach (var dir in Directory.GetDirectories(currentPath))
+                    {
+                        totalItems++; 
+                        CountRecursive(dir);
+                    }
+                }
+                catch (UnauthorizedAccessException)
+                {
+                }
+                catch (DirectoryNotFoundException)
+                {
+                }
+            }
+
+            CountRecursive(path);
+            
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                ProgressMax = totalItems + 1;
+                ProgressValue = _files + _dirs;
+            });
         });
     }
 
@@ -156,7 +176,7 @@ public partial class MainPageViewModel : ViewModelBase
     {
         await Dispatcher.UIThread.InvokeAsync(() => { Logs.Add(message); });
         SelectedLogInd = Logs.Count - 1;
-        _logger.LogInformation(message); // Можно оставить как есть
+        _logger.LogInformation(message); 
     }
 
     private async Task UpdateTimerAsync(CancellationToken token)

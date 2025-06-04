@@ -17,7 +17,7 @@
 
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="300" MaxWidth="800" /> 
+            <ColumnDefinition Width="Auto" MinWidth="300" MaxWidth="610" /> 
             <ColumnDefinition Width="5" /> 
             <ColumnDefinition Width="*" /> 
         </Grid.ColumnDefinitions>
@@ -27,7 +27,7 @@
         </Grid.RowDefinitions>
         <!-- Верхняя панель -->
         <StackPanel Grid.Row="0" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="10">
-            <Button Content="Обновить" Command="{Binding RefreshCommand}" />
+            <Button Content="Обновить" IsEnabled="{Binding !IsLoading}" Command="{Binding RefreshCommand}" />
             <TextBox Width="200" Watermark="Фильтр..." Text="{Binding Filter}" />
         </StackPanel>
 
