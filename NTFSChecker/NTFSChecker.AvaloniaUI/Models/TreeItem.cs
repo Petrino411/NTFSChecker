@@ -5,7 +5,6 @@ using NTFSChecker.Core.Models;
 
 namespace NTFSChecker.AvaloniaUI.Models;
 
-
 public class TreeItem : ExcelDataModel
 {
     public TreeItem(ExcelDataModel model)
@@ -23,7 +22,7 @@ public class TreeItem : ExcelDataModel
             accessUsers.Select(entry => new AccessUserEntry(entry))
         );
     }
-    
+
 
     public ObservableCollection<TreeItem> Children { get; set; } = new();
 
@@ -33,7 +32,7 @@ public class TreeItem : ExcelDataModel
     public bool IsExpanded { get; set; }
 
     public string DisplayName => $"{DirName}";
-    public string Icon => AccessUsers.Count > 0 ? "✔" : "⚠";
 
     public bool HasPermissionIssues => ChangesFlag;
+    public string Icon => !HasPermissionIssues ? "✔" : "⚠";
 }

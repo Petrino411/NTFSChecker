@@ -4,5 +4,4 @@ namespace NTFSChecker.AvaloniaUI.ViewModels;
 
 public class ViewModelBase : ObservableObject
 {
-    
 }

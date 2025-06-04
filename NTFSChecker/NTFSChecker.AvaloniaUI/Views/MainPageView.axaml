@@ -6,42 +6,44 @@
              x:Class="NTFSChecker.AvaloniaUI.Views.MainPageView"
              xmlns:vm="using:NTFSChecker.AvaloniaUI.ViewModels"
              x:DataType="vm:MainPageViewModel">
-   
-        <Grid DockPanel.Dock="Top" Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.2*" />
-                <ColumnDefinition Width="0.6*" />
-                <ColumnDefinition Width="0.2*" />
-            </Grid.ColumnDefinitions>
-            <Button Grid.Row="0" Grid.Column="1" Name="BtnOpen" Content="Открыть" HorizontalAlignment="Center"
-                    Command="{Binding SelectFolderCommand}" CommandParameter="{Binding $parent[Window]}" />
-    
-            <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" FontSize="14"
-                     HorizontalAlignment="Stretch"
-                     x:Name="txtFolderPath" Text="{Binding SelectedFolderPath}" />
-    
-            <Button Grid.Row="2" Grid.Column="1" Name="BtnCheck" Content="Проверить" HorizontalAlignment="Center"
-                    Command="{Binding CheckDirectoryCommand}" />
-    
-            <ListBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" FontSize="14" x:Name="ListLogs"
-                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                     ItemsSource="{Binding Logs}"/>
-    
-            <ProgressBar Grid.Row="4" Grid.Column="1" Margin="5" Height="23" x:Name="progressBar"
-                         Maximum="{Binding ProgressMax}" Value="{Binding ProgressValue}" />
-    
-            <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" Text="{Binding LabelText}"
-                       VerticalAlignment="Center" MaxLines="3" x:Name="labelInfo" />
-    
-            <TextBlock Grid.Row="4" Grid.Column="2" Margin="5" Text="{Binding LabelTimer}" VerticalAlignment="Center"
-                       HorizontalAlignment="Right" x:Name="labelTimer" />
-        </Grid>
+
+    <Grid DockPanel.Dock="Top" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.2*" />
+            <ColumnDefinition Width="0.6*" />
+            <ColumnDefinition Width="0.2*" />
+        </Grid.ColumnDefinitions>
+        <Button Grid.Row="0" Grid.Column="1" Name="BtnOpen" Width="100" HorizontalContentAlignment="Center"
+                Content="Открыть" HorizontalAlignment="Center"
+                Command="{Binding SelectFolderCommand}" CommandParameter="{Binding $parent[Window]}" />
+
+        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" FontSize="14"
+                 HorizontalAlignment="Stretch"
+                 x:Name="txtFolderPath" Text="{Binding SelectedFolderPath}" />
+
+        <Button Grid.Row="2" Grid.Column="1" Name="BtnCheck" Width="100" HorizontalContentAlignment="Center"
+                Content="Проверить" HorizontalAlignment="Center"
+                Command="{Binding CheckDirectoryCommand}" />
+
+        <ListBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" FontSize="14" x:Name="ListLogs"
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 ItemsSource="{Binding Logs}" />
+
+        <ProgressBar Grid.Row="4" Grid.Column="1" Margin="5" Height="23" x:Name="progressBar"
+                     Maximum="{Binding ProgressMax}" Value="{Binding ProgressValue}" />
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" Text="{Binding LabelText}"
+                   VerticalAlignment="Center" MaxLines="3" x:Name="labelInfo" />
+
+        <TextBlock Grid.Row="4" Grid.Column="2" Margin="5" Text="{Binding LabelTimer}" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" x:Name="labelTimer" />
+    </Grid>
 </UserControl>

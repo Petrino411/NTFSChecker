@@ -8,8 +8,8 @@ namespace NTFSChecker.AvaloniaUI.Services;
 
 public class WindowService : IWindowService
 {
-    private readonly IServiceProvider _services;
     private readonly Dictionary<Type, Window> _openWindows = new();
+    private readonly IServiceProvider _services;
 
     public WindowService(IServiceProvider services)
     {

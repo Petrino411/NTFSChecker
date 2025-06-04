@@ -1,23 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace NTFSChecker.AvaloniaUI.Models;
 
 public partial class AccessUserEntry : ObservableObject
 {
-    public List<string> Fields { get; set; } = new();
-
-    public List<string> FieldsWithoutName {
-        get
-        {
-            return Fields.Where((item, index) => index != 1).ToList();
-        }
-    }
-
     [ObservableProperty] private string displayColorHex;
-    
+
     public AccessUserEntry(IEnumerable<string> fields)
     {
         Fields = fields.ToList();
@@ -25,7 +15,12 @@ public partial class AccessUserEntry : ObservableObject
 
     public AccessUserEntry()
     {
-        
     }
 
+    public List<string> Fields { get; set; } = new();
+
+    public List<string> FieldsWithoutName
+    {
+        get { return Fields.Where((item, index) => index != 1).ToList(); }
+    }
 }

@@ -1,30 +1,17 @@
-﻿using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Platform.Storage;
-using Avalonia.Threading;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Microsoft.Extensions.Logging;
-using NTFSChecker.AvaloniaUI.Interfaces;
-using NTFSChecker.AvaloniaUI.Services;
-using NTFSChecker.AvaloniaUI.Views;
-using NTFSChecker.Core.Interfaces;
-using NTFSChecker.Core.Models;
-using NTFSChecker.Core.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.DependencyInjection;
+using Avalonia.Controls;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Win32;
+using Microsoft.Extensions.Logging;
+using NTFSChecker.AvaloniaUI.Interfaces;
 using NTFSChecker.AvaloniaUI.Models;
+using NTFSChecker.AvaloniaUI.Views;
+using NTFSChecker.Core.Interfaces;
 
 namespace NTFSChecker.AvaloniaUI.ViewModels;
 
@@ -33,14 +20,12 @@ public partial class MainWindowViewModel : ViewModelBase
     private readonly IExcelWriter _excelWriter;
     private readonly ILogger<MainWindowViewModel> _logger;
     private readonly IWindowService _windowService;
-
-    public ObservableCollection<ListItemTemplate> Items { get; }
-    [ObservableProperty] private ListItemTemplate selectedListItem;
     [ObservableProperty] private ViewModelBase currentPage;
-    [ObservableProperty] private bool isPaneOpen = true;
     [ObservableProperty] private bool isMenuVisible = true;
-    
-    
+    [ObservableProperty] private bool isPaneOpen;
+    [ObservableProperty] private ListItemTemplate selectedListItem;
+
+
     public MainWindowViewModel()
     {
     }
@@ -55,21 +40,21 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         Items = new ObservableCollection<ListItemTemplate>
         {
-            new(typeof(MainPageViewModel), "HomeRegular", "Домашняя страница" ),
+            new(typeof(MainPageViewModel), "HomeRegular", "Домашняя страница"),
             new(typeof(StatisticsPageViewModel), "DataUsageRegular", "Статистика")
         };
 
         SelectedListItem = Items.First();
-        
+
         _excelWriter = excelWriter;
         _logger = logger;
         _windowService = windowService;
-        
+
         CurrentPage = App.Services.GetRequiredService<MainPageViewModel>();
-        
-        
     }
-    
+
+    public ObservableCollection<ListItemTemplate> Items { get; }
+
     partial void OnSelectedListItemChanged(ListItemTemplate? value)
     {
         if (value is null) return;
@@ -77,16 +62,12 @@ public partial class MainWindowViewModel : ViewModelBase
         var vm = Design.IsDesignMode
             ? Activator.CreateInstance(value.ModelType)
             : App.Services.GetService(value.ModelType);
-        
+
 
         if (vm is not ViewModelBase vmb) return;
 
         CurrentPage = vmb;
-        if (vmb is StatisticsPageViewModel)
-        {
-            App.Services.GetService<StatisticsPageViewModel>()?.RefreshIfNeeded();
-        }
-
+        if (vmb is StatisticsPageViewModel) App.Services.GetService<StatisticsPageViewModel>()?.RefreshIfNeeded();
     }
 
 
@@ -101,7 +82,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         IsMenuVisible = !IsMenuVisible;
     }
-    
+
     [RelayCommand]
     public async Task ExportToExcelAsync()
     {
@@ -119,7 +100,8 @@ public partial class MainWindowViewModel : ViewModelBase
                 "Тип прав"
             };
 
-            await _excelWriter.CreateNewFile(App.Services.GetRequiredService<MainPageViewModel>().SelectedFolderPath, headers);
+            await _excelWriter.CreateNewFile(App.Services.GetRequiredService<MainPageViewModel>().SelectedFolderPath,
+                headers);
         }
         catch (Exception ex)
         {
@@ -132,7 +114,4 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         _windowService.ShowWindow<SettingsForm, SettingsWinViewModel>();
     }
-
-
-   
 }

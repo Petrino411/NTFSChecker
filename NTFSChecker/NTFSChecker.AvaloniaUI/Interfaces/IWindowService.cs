@@ -2,7 +2,7 @@ using Avalonia.Controls;
 
 namespace NTFSChecker.AvaloniaUI.Interfaces;
 
-public interface  IWindowService
+public interface IWindowService
 {
     void ShowWindow<TWindow, TViewModel>()
         where TWindow : Window

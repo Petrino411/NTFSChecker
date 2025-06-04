@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -12,7 +11,6 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using NTFSChecker.AvaloniaUI.Views;
 using NTFSChecker.Core.Interfaces;
 
 namespace NTFSChecker.AvaloniaUI.ViewModels;
@@ -20,24 +18,21 @@ namespace NTFSChecker.AvaloniaUI.ViewModels;
 public partial class MainPageViewModel : ViewModelBase
 {
     private readonly IDirectoryChecker _directoryChecker;
-    private readonly IUserGroupHelper _reGroupHelper;
     private readonly ILogger<MainWindowViewModel> _logger;
-
-
-    public ObservableCollection<string> Logs { get; } = new();
-
-    [ObservableProperty] private string selectedFolderPath;
-    [ObservableProperty] private double progressValue;
-    [ObservableProperty] private double progressMax;
-    [ObservableProperty] private string labelText;
-    [ObservableProperty] private string labelTimer;
-    [ObservableProperty] private int? selectedLogInd;
+    private readonly IUserGroupHelper _reGroupHelper;
+    private CancellationTokenSource? _cts;
 
 
     private int _dirs;
     private int _files;
-    private Stopwatch _stopwatch = new();
-    private CancellationTokenSource? _cts;
+    private readonly Stopwatch _stopwatch = new();
+    [ObservableProperty] private string labelText;
+    [ObservableProperty] private string labelTimer;
+    [ObservableProperty] private double progressMax;
+    [ObservableProperty] private double progressValue;
+
+    [ObservableProperty] private string selectedFolderPath;
+    [ObservableProperty] private int? selectedLogInd;
 
     public MainPageViewModel(IDirectoryChecker directoryChecker, IUserGroupHelper reGroupHelper,
         ILogger<MainWindowViewModel> logger)
@@ -49,6 +44,9 @@ public partial class MainPageViewModel : ViewModelBase
         ProgressValue = 0;
         ProgressMax = 100;
     }
+
+
+    public ObservableCollection<string> Logs { get; } = new();
 
     public string GetSelectedFolderPath()
     {
@@ -63,7 +61,7 @@ public partial class MainPageViewModel : ViewModelBase
         {
             var dialog = new OpenFolderDialog
             {
-                Title = "Выберите папку",
+                Title = "Выберите папку"
             };
 
             var result = await Task.Run(() => dialog.ShowAsync(window));
@@ -134,7 +132,7 @@ public partial class MainPageViewModel : ViewModelBase
 
     private async Task CountItems(string path)
     {
-        Task.Run(action: async void () =>
+        Task.Run(async void () =>
         {
             var totalItems = Directory.GetFiles(path, "*", SearchOption.AllDirectories).Length +
                              Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Length;

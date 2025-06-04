@@ -28,37 +28,41 @@ public static class Bootstrapper
 
         services.AddSingleton<SettingsForm>();
         services.AddSingleton<MainWindow>();
-        
+
         services.AddScoped<IExcelWriter, ExcelWriter>();
         services.AddSingleton<IWindowService, WindowService>();
         services.AddSingleton<ISettingsService, SettingsService>();
 
         #region Windows
+
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             services.AddScoped<IDirectoryChecker, WindowsDirectoryChecker>();
             services.AddSingleton<IUserGroupHelper, WindowsUserGroupHelper>();
             services.AddSingleton<INetworkPathResolver, WindowsNetworkPathResolver>();
         }
+
         #endregion
 
         #region Linux
+
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
             services.AddScoped<IDirectoryChecker, LinuxDirectoryChecker>();
             services.AddSingleton<INetworkPathResolver, LinuxNetworkPathResolver>();
             services.AddSingleton<IUserGroupHelper, LinuxUserGroupHelper>();
         }
+
         #endregion
 
         services.AddLogging(configure => configure.AddConsole());
-        
+
         var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            .AddJsonFile("appsettings.json", true, true);
 
         services.AddSingleton(builder.Build());
-        
+
         return services.BuildServiceProvider();
     }
 }

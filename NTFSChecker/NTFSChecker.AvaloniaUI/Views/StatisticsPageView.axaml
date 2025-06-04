@@ -7,7 +7,8 @@
              xmlns:converters="clr-namespace:NTFSChecker.AvaloniaUI.Converters"
              xmlns:vm="using:NTFSChecker.AvaloniaUI.ViewModels"
              xmlns:models="clr-namespace:NTFSChecker.AvaloniaUI.Models"
-             x:DataType="vm:StatisticsPageViewModel">
+             x:DataType="vm:StatisticsPageViewModel"
+             Cursor="{Binding CurrentCursor}">
 
 
     <UserControl.Resources>
@@ -58,8 +59,8 @@
                             <DataTemplate x:DataType="models:AccessUserEntry">
                                 <Expander Margin="0 0 0 10" Width="450">
                                     <Expander.Header>
-                                        <TextBlock Text="{Binding Fields[1]}" 
-                                                   Foreground="{Binding DisplayColorHex, Converter={StaticResource ColorConverter}}"/>
+                                        <TextBlock Text="{Binding Fields[1]}"
+                                                   Foreground="{Binding DisplayColorHex, Converter={StaticResource ColorConverter}}" />
                                     </Expander.Header>
                                     <StackPanel>
                                         <ItemsControl ItemsSource="{Binding FieldsWithoutName}"
@@ -68,7 +69,7 @@
                                                 <DataTemplate>
                                                     <Border BorderThickness="0,0,0,1" Padding="5">
                                                         <TextBlock Text="{Binding .}"
-                                                                   Width="400" Margin="5" TextWrapping="Wrap"/>
+                                                                   Width="400" Margin="5" TextWrapping="Wrap" />
                                                     </Border>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
