@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Threading;
@@ -11,6 +12,7 @@ using CommunityToolkit.Mvvm.Input;
 using NTFSChecker.AvaloniaUI.Models;
 using NTFSChecker.Core.Interfaces;
 using NTFSChecker.Core.Models;
+using NTFSChecker.Windows.Extensions;
 
 namespace NTFSChecker.AvaloniaUI.ViewModels;
 
