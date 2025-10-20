@@ -21,7 +21,6 @@ public class LinuxUserGroupHelper : IUserGroupHelper
 
     public void CheckDomainAvailability()
     {
-        // В Linux нет домена по умолчанию, метод можно оставить пустым или логгировать
         _logger.LogInformation("Проверка домена не поддерживается в Linux.");
     }
 
@@ -31,7 +30,7 @@ public class LinuxUserGroupHelper : IUserGroupHelper
         {
             foreach (var ac in item.AccessUsers)
             {
-                var identity = ac[1].Split(':').Last(); // имя пользователя или группы
+                var identity = ac[1].Split(':').Last(); 
 
                 if (_userDescriptions.TryGetValue(identity, out var userDesc))
                 {
@@ -85,7 +84,7 @@ public class LinuxUserGroupHelper : IUserGroupHelper
                 if (parts.Length >= 1)
                 {
                     var groupName = parts[0];
-                    _groupDescriptions[groupName] = "Группа без описания"; // В /etc/group описания нет, можно добавить из LDAP
+                    _groupDescriptions[groupName] = "Группа без описания"; 
                 }
             }
         }

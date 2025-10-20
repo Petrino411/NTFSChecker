@@ -49,9 +49,6 @@ public class LinuxDirectoryChecker : IDirectoryChecker
                 await logAction($"Различия в правах: {subPath}");
             }
 
-            // await logAction(isDifferent
-            //     ? $"Различия в правах: {subPath}"
-            //     : $"Совпадают права: {subPath}");
 
             if (Directory.Exists(subPath))
             {
@@ -70,10 +67,7 @@ public class LinuxDirectoryChecker : IDirectoryChecker
                     bool fileDiff = !CompareAcl(rootAcl, fileAcl);
                     RootData.Add(new ExcelDataModel(remoteComputerName, file, FormatAclForExcel(fileAcl), fileDiff));
 
-                    // await logAction(fileDiff
-                    //     ? $"Различия в файле: {file}"
-                    //     : $"Совпадают права в файле: {file}");
-
+  
                     if (fileDiff)
                     {
                         await logAction($"Различия в правах: {subPath}");
@@ -105,7 +99,7 @@ public class LinuxDirectoryChecker : IDirectoryChecker
 
             var output = process.StandardOutput.ReadToEnd();
             var lines = output.Split('\n', StringSplitOptions.RemoveEmptyEntries)
-                .Where(l => !l.StartsWith("#")) // Убираем метаинфо
+                .Where(l => !l.StartsWith("#")) 
                 .ToList();
 
             return lines;
@@ -131,14 +125,13 @@ public class LinuxDirectoryChecker : IDirectoryChecker
 
         foreach (var line in acl)
         {
-            // Пример строки: user:zerotier-one:rwx
             var parts = line.Split(':');
             if (parts.Length < 3)
                 continue;
 
-            string type = parts[0]; // user / group / other / mask
-            string name = parts[1]; // имя пользователя/группы или пусто
-            string perms = parts[2]; // rwx, r-- и т.п.
+            string type = parts[0]; 
+            string name = parts[1]; 
+            string perms = parts[2];
 
             string target = name switch
             {
